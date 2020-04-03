@@ -20,7 +20,7 @@ public struct Bumper {
         self.configsByTargetName = getConfigurationsByTargetName(bundleIdentifierPattern: bundleIdentifierPattern)
     }
     
-    public func bump(flag: VersionArgs) throws {
+    public func bump(flag: IncrementMode) throws {
         for (targetName, configs) in configsByTargetName {
             print(targetName)
             for config in configs {
@@ -51,7 +51,7 @@ public struct Bumper {
         return configsByTargetName
     }
     
-    private func applyBump(configuration: XCBuildConfiguration, flag: VersionArgs) {
+    private func applyBump(configuration: XCBuildConfiguration, flag: IncrementMode) {
         switch flag {
         case .major:
             bumpMajorVersion(configuration: configuration)
@@ -84,7 +84,7 @@ public struct Bumper {
     private func bumpPatchVersion(configuration: XCBuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
             let patch = Int(versionNumbers[2]) ?? 0
-            versionNumbers[2] = "\( patch + 1)"
+            versionNumbers[2] = "\(patch + 1)"
         }
     }
     
@@ -96,7 +96,7 @@ public struct Bumper {
     }
     
     private func bumpBuildVersion(configuration: XCBuildConfiguration) {
-        let buildNumber = configuration.buildNumber.flatMap(Int.init) ?? 0 + 1
+        let buildNumber = (configuration.buildNumber.flatMap(Int.init) ?? 0) + 1
         configuration.buildNumber = String(describing: buildNumber)
     }
 }

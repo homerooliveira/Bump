@@ -13,12 +13,15 @@ let package = Package(
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
-        .package(url: "https://github.com/tuist/xcodeproj.git", .upToNextMajor(from: "7.8.0"))
+        .package(url: "https://github.com/tuist/xcodeproj.git",
+                 .upToNextMajor(from: "7.10.0")),
+        .package(url: "https://github.com/apple/swift-argument-parser",
+                 from: "0.0.4"),
     ],
     targets: [
         .target(
             name: "Bump",
-            dependencies: ["BumpCore"]),
+            dependencies: ["BumpCore", "ArgumentParser"]),
         .target(
             name: "BumpCore",
             dependencies: ["XcodeProj"]),

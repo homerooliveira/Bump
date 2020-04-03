@@ -1,40 +1,56 @@
+import ArgumentParser
 import BumpCore
 import Foundation
 
-let fileManager = FileManager.default
-
-let dir = fileManager.currentDirectoryPath
-do {
-    guard let dirURL = URL(string: dir) else {
-        throw MessageError(localizedDescription: "Wrong directory.")
-    }
+struct BumpCommand: ParsableCommand {
     
-    let directoryContents = try fileManager.contentsOfDirectory(
-        at: dirURL,
-        includingPropertiesForKeys: nil
+    static var configuration = CommandConfiguration(
+        commandName: "bump",
+        abstract: "Bump your projects.",
+        discussion: "When no files are specified, it expects the source from standard input."
     )
     
-    guard let url = directoryContents.first(where: { $0.pathExtension == "xcodeproj" }) else {
-        throw MessageError(localizedDescription: "Needs exist a .xcodeproj file.")
+    @Argument(help: "Bundle Identifier to search aplications/frameworks.")
+    var bundleIdentifier: String
+    
+    @Argument(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    var mode: IncrementMode
+    
+    var url: URL!
+    
+    mutating func validate() throws {
+        guard !bundleIdentifier.isEmpty else {
+            throw ValidationError("Bundle Identifier cannot be empty.")
+        }
+        
+        let fileManager = FileManager.default
+        
+        let dir = fileManager.currentDirectoryPath
+        
+        guard let dirURL = URL(string: dir) else {
+            throw ValidationError("Wrong directory.")
+        }
+        
+        let directoryContents = try fileManager.contentsOfDirectory(
+            at: dirURL,
+            includingPropertiesForKeys: nil
+        )
+        
+        guard let url = directoryContents.first(where: { $0.pathExtension == "xcodeproj" }) else {
+            throw ValidationError("Needs exist a .xcodeproj file.")
+        }
+        
+        self.url = url
     }
     
-    let input = Array(CommandLine.arguments.dropFirst())
-    let bundleIdentifier = input[0]
-    
-    if let flag = input
-        .lazy
-        .dropFirst()
-        .compactMap(VersionArgs.init)
-        .first {
+    func run() throws {
         let bumper = try Bumper(
             path: url.path,
             bundleIdentifierPattern: bundleIdentifier
         )
         
-        try bumper.bump(flag: flag)
-    } else {
-        
+        try bumper.bump(flag: mode)
     }
-} catch {
-    print(error.localizedDescription)
 }
+
+BumpCommand.main()
