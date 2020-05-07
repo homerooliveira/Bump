@@ -84,18 +84,12 @@ public struct Bumper {
         }
     }
     
-    private func extractVersion(configuration: XCBuildConfiguration) -> Version {
-        Version(
-            version: configuration.version ?? "0.0.0",
-            buildNumber: configuration.buildNumber ?? "0.0.0.0"
-        )
-    }
-    
     private func changeVersionsNumbers(configuration: XCBuildConfiguration, transform: (inout [Substring]) -> Void) {
         var versions = configuration.version.map { $0.split(separator: ".") } ?? ["0", "0", "0"]
         transform(&versions)
-        configuration.version = versions.joined(separator: ".")
-        configuration.buildNumber = "1"
+        let version = versions.joined(separator: ".")
+        configuration.version = version
+        configuration.buildNumber = "\(version).1"
     }
     
     private func bumpBuildVersion(configuration: XCBuildConfiguration) {
