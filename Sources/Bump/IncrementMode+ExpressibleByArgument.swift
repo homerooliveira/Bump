@@ -9,6 +9,4 @@ import Foundation
 import ArgumentParser
 import BumpCore
 
-extension IncrementMode: ExpressibleByArgument {
-    
-}
+extension IncrementMode: ExpressibleByArgument {}

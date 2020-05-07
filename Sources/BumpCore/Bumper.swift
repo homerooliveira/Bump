@@ -22,14 +22,10 @@ public struct Bumper {
     
     public func bump(flag: IncrementMode) throws {
         for (targetName, configs) in configsByTargetName {
-            print(targetName)
-            for config in configs {
-                print("     \(config.name) \(config.version ?? "").\(config.buildNumber ?? "")",
-                    terminator: "")
-                applyBump(configuration: config, flag: flag)
-                print(" -> \(config.version ?? "").\(config.buildNumber ?? "")")
-            }
-            print()
+            guard let config = configs.first else { continue }
+            print("\(targetName) \(config.buildNumber ?? "")", terminator: "")
+            applyBump(configuration: config, flag: flag)
+            print(" -> \(config.buildNumber ?? "")")
         }
         
         try xcodeproj.writePBXProj(path: path, outputSettings: PBXOutputSettings())
@@ -88,6 +84,13 @@ public struct Bumper {
         }
     }
     
+    private func extractVersion(configuration: XCBuildConfiguration) -> Version {
+        Version(
+            version: configuration.version ?? "0.0.0",
+            buildNumber: configuration.buildNumber ?? "0.0.0.0"
+        )
+    }
+    
     private func changeVersionsNumbers(configuration: XCBuildConfiguration, transform: (inout [Substring]) -> Void) {
         var versions = configuration.version.map { $0.split(separator: ".") } ?? ["0", "0", "0"]
         transform(&versions)
@@ -96,7 +99,11 @@ public struct Bumper {
     }
     
     private func bumpBuildVersion(configuration: XCBuildConfiguration) {
-        let buildNumber = (configuration.buildNumber.flatMap(Int.init) ?? 0) + 1
-        configuration.buildNumber = String(describing: buildNumber)
+        let buildNumber = configuration.buildNumber?
+            .split(separator: ".")
+            .last
+            .map(String.init)
+            .flatMap(Int.init) ?? 0
+        configuration.buildNumber = "\(configuration.version ?? "0.0.0").\(buildNumber + 1)"
     }
 }

@@ -16,6 +16,9 @@ struct BumpCommand: ParsableCommand {
     @Argument(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
     
+    @Flag(help: "Show all the targets incremented.")
+    var verbose: Bool
+    
     var url: URL!
     
     mutating func validate() throws {
