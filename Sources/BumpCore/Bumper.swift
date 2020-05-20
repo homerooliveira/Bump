@@ -26,6 +26,10 @@ public struct Bumper {
             print("\(targetName) \(config.buildNumber ?? "")", terminator: "")
             applyBump(configuration: config, flag: flag)
             print(" -> \(config.buildNumber ?? "")")
+            configs.dropFirst()
+                .forEach { (config) in
+                applyBump(configuration: config, flag: flag)
+            }
         }
         
         try xcodeproj.writePBXProj(path: path, outputSettings: PBXOutputSettings())
