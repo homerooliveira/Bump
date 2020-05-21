@@ -9,15 +9,15 @@ import Foundation
 import XcodeProj
 import PathKit
 
-public struct Bumper {
+public struct Bump {
     private let path: Path
     private let xcodeproj: XcodeProj
     private var configsByTargetName: [String: [XCBuildConfiguration]] = [:]
     
-    public init(path: String, bundleIdentifierPattern: String) throws {
+    public init(path: String, bundleIdentifiers: Set<String>) throws {
         self.path = Path(path)
         self.xcodeproj = try XcodeProj(path: self.path)
-        self.configsByTargetName = getConfigurationsByTargetName(bundleIdentifierPattern: bundleIdentifierPattern)
+        self.configsByTargetName = getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
     }
     
     public func bump(flag: IncrementMode) throws {
@@ -35,14 +35,16 @@ public struct Bumper {
         try xcodeproj.writePBXProj(path: path, outputSettings: PBXOutputSettings())
     }
     
-    private func getConfigurationsByTargetName(bundleIdentifierPattern: String) -> [String: [XCBuildConfiguration]] {
+    private func getConfigurationsByTargetName(bundleIdentifiers: Set<String>) -> [String: [XCBuildConfiguration]] {
         var configsByTargetName: [String: [XCBuildConfiguration]] = [:]
         
         for target in xcodeproj.pbxproj.nativeTargets {
             let configurations = target.buildConfigurationList?.buildConfigurations ?? []
             
+            
             for configuration in configurations {
-                if configuration.bundleIdentifier.starts(with: bundleIdentifierPattern) {
+                let bundleIdentifierOfConfig = configuration.bundleIdentifier
+                if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:)) {
                     configsByTargetName[target.name, default: []].append(configuration)
                 }
             }

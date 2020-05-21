@@ -10,22 +10,30 @@ struct BumpCommand: ParsableCommand {
         discussion: "When no files are specified, it expects the source from standard input."
     )
     
-    @Argument(help: "Bundle Identifier to search aplications/frameworks.")
-    var bundleIdentifier: String
+    @Argument(help: "Bundle Identifiers to search aplications/frameworks.")
+    var bundleIdentifiers: [String]
     
-    @Argument(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    @Flag(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
     
-    @Flag(help: "Show all the targets incremented.")
-    var verbose: Bool
-    
-    var url: URL!
-    
     mutating func validate() throws {
-        guard !bundleIdentifier.isEmpty else {
+        guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifier cannot be empty.")
         }
+    }
+    
+    func run() throws {
+        let path = try findFirstXcodeProj()
         
+        let bumper = try Bump(
+            path: path,
+            bundleIdentifiers: Set(bundleIdentifiers)
+        )
+
+        try bumper.bump(flag: mode)
+    }
+    
+    private func findFirstXcodeProj() throws -> String  {
         let fileManager = FileManager.default
         
         let dir = fileManager.currentDirectoryPath
@@ -43,16 +51,7 @@ struct BumpCommand: ParsableCommand {
             throw ValidationError("Needs exist a .xcodeproj file.")
         }
         
-        self.url = url
-    }
-    
-    func run() throws {
-        let bumper = try Bumper(
-            path: url.path,
-            bundleIdentifierPattern: bundleIdentifier
-        )
-        
-        try bumper.bump(flag: mode)
+        return url.path
     }
 }
 
