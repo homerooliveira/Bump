@@ -41,7 +41,6 @@ public struct Bump {
         for target in xcodeproj.pbxproj.nativeTargets {
             let configurations = target.buildConfigurationList?.buildConfigurations ?? []
             
-            
             for configuration in configurations {
                 let bundleIdentifierOfConfig = configuration.bundleIdentifier
                 if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:)) {
