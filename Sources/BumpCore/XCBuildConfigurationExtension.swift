@@ -17,12 +17,7 @@ enum BuildSettingKey: String {
 extension XCBuildConfiguration {
     
     var bundleIdentifier: String {
-        get {
-            (buildSettings[BuildSettingKey.identifier.rawValue] as? String) ?? ""
-        }
-        set {
-            buildSettings[BuildSettingKey.identifier.rawValue] = newValue
-        }
+        (buildSettings[BuildSettingKey.identifier.rawValue] as? String) ?? ""
     }
     
     var buildNumber: String? {
