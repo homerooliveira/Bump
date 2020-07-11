@@ -15,7 +15,7 @@ struct BumpCommand: ParsableCommand {
     
     @Flag(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
-    
+        
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifier cannot be empty.")
@@ -25,12 +25,12 @@ struct BumpCommand: ParsableCommand {
     func run() throws {
         let path = try findFirstXcodeProj()
         
-        let bumper = try Bump(
+        let bump = try Bump(
             path: path,
             bundleIdentifiers: Set(bundleIdentifiers)
         )
 
-        try bumper.bump(flag: mode)
+        try bump.bump(flag: mode)
     }
     
     private func findFirstXcodeProj() throws -> String  {

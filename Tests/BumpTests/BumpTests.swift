@@ -24,7 +24,7 @@ final class BumpTests: XCTestCase {
         process.waitUntilExit()
 
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
-        let output = String(data: data, encoding: .utf8)
+        _ = String(data: data, encoding: .utf8)
     }
 
     /// Returns path to the built products directory.

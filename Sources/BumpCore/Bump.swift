@@ -67,42 +67,52 @@ public struct Bump {
     
     private func bumpMajorVersion(configuration: XCBuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
-            let major = Int(versionNumbers[0]) ?? 0
-            versionNumbers[0] = "\(major + 1)"
-            versionNumbers[1] = "0"
-            versionNumbers[2] = "0"
+            let major = Int(versionNumbers[VersionIndex.major]) ?? 0
+            versionNumbers[VersionIndex.major] = "\(major + 1)"
+            versionNumbers[VersionIndex.minor] = "0"
+            versionNumbers[VersionIndex.patch] = "0"
         }
     }
     
     private func bumpMinorVersion(configuration: XCBuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
-            let minor = Int(versionNumbers[1]) ?? 0
-            versionNumbers[1] = "\(minor + 1)"
-            versionNumbers[2] = "0"
+            let minor = Int(versionNumbers[VersionIndex.minor]) ?? 0
+            versionNumbers[VersionIndex.minor] = "\(minor + 1)"
+            versionNumbers[VersionIndex.patch] = "0"
         }
     }
     
     private func bumpPatchVersion(configuration: XCBuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
-            let patch = Int(versionNumbers[2]) ?? 0
-            versionNumbers[2] = "\(patch + 1)"
+            let patch = Int(versionNumbers[VersionIndex.patch]) ?? 0
+            versionNumbers[VersionIndex.patch] = "\(patch + 1)"
         }
     }
     
     private func changeVersionsNumbers(configuration: XCBuildConfiguration, transform: (inout [Substring]) -> Void) {
-        var versions = configuration.version.map { $0.split(separator: ".") } ?? ["0", "0", "0"]
-        transform(&versions)
-        let version = versions.joined(separator: ".")
+        var versionArray: [Substring] = getVersion(using: configuration)
+        transform(&versionArray)
+        let version = versionArray.joined(separator: ".")
         configuration.version = version
         configuration.buildNumber = "\(version).1"
     }
     
     private func bumpBuildVersion(configuration: XCBuildConfiguration) {
+        let version = getVersion(using: configuration).joined(separator: ".")
         let buildNumber = configuration.buildNumber?
             .split(separator: ".")
             .last
             .map(String.init)
             .flatMap(Int.init) ?? 0
-        configuration.buildNumber = "\(configuration.version ?? "0.0.0").\(buildNumber + 1)"
+        configuration.buildNumber = "\(version).\(buildNumber + 1)"
+    }
+    
+    func getVersion(using configuration: BuildConfiguration) -> [Substring] {
+        if let version = configuration.version.map({ $0.split(separator: ".") }),
+           version.count == 3 {
+            return version
+        } else {
+            return ["0", "0", "0"]
+        }
     }
 }
