@@ -30,9 +30,6 @@ let package = Package(
             name: "XcodeProjWrapper",
             dependencies: ["SwiftExtensions", "XcodeProj"]),
         .testTarget(
-            name: "BumpTests",
-            dependencies: ["Bump"]),
-        .testTarget(
             name: "BumpCoreTests",
             dependencies: ["BumpCore"]),
     ]
