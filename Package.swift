@@ -24,12 +24,11 @@ let package = Package(
             dependencies: ["BumpCore", "ArgumentParser", "XcodeProjWrapper"]),
         .target(
             name: "BumpCore",
-            dependencies: ["XcodeProjWrapperInterface", "SwiftExtensions"]),
+            dependencies: ["XcodeProjWrapper", "SwiftExtensions"]),
         .target(name: "SwiftExtensions"),
-        .target(name: "XcodeProjWrapperInterface"),
         .target(
             name: "XcodeProjWrapper",
-            dependencies: ["XcodeProjWrapperInterface", "SwiftExtensions", "XcodeProj"]),
+            dependencies: ["SwiftExtensions", "XcodeProj"]),
         .testTarget(
             name: "BumpTests",
             dependencies: ["Bump"]),

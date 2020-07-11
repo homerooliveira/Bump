@@ -19,7 +19,7 @@ struct BumpCommand: ParsableCommand {
         
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
-            throw ValidationError("Bundle Identifier cannot be empty.")
+            throw ValidationError("Bundle Identifiers cannot be empty.")
         }
     }
     

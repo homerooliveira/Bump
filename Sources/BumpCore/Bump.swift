@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import XcodeProjWrapperInterface
+import XcodeProjWrapper
 import SwiftExtensions
 
 public struct Bump {
@@ -19,7 +19,7 @@ public struct Bump {
     }
     
     public func bump(flag: IncrementMode) throws {
-        let configsByTargetName: [String: [BuildConfiguration]] = xcodeProj.getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
+        let configsByTargetName: [String: [BuildConfiguration]] = getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
         
         for (targetName, configs) in configsByTargetName {
             guard let config = configs.first else { continue }
@@ -35,7 +35,24 @@ public struct Bump {
         try xcodeProj.saveChanges()
     }
     
-    private func applyBump(configuration: BuildConfiguration, flag: IncrementMode) {
+    func getConfigurationsByTargetName(bundleIdentifiers: Set<String>) -> [String : [BuildConfiguration]] {
+        var configsByTargetName: [String: [BuildConfiguration]] = [:]
+        
+        for target in xcodeProj.targets {
+            let configurations = target.buildConfigurations ?? []
+            
+            for configuration in configurations {
+                let bundleIdentifierOfConfig = configuration.bundleIdentifier
+                if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:)) {
+                    configsByTargetName[target.name, default: []].append(configuration)
+                }
+            }
+        }
+        
+        return configsByTargetName
+    }
+    
+    func applyBump(configuration: BuildConfiguration, flag: IncrementMode) {
         switch flag {
         case .major:
             bumpMajorVersion(configuration: configuration)
@@ -87,13 +104,17 @@ public struct Bump {
             .last
             .map(String.init)
             .flatMap(Int.init) ?? 0
+        configuration.version = version
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
     
-    func getVersion(using configuration: BuildConfiguration) -> [Substring] {
-        if let version = configuration.version.map({ $0.split(separator: ".") }),
-           version.count == 3 {
-            return version
+    private func getVersion(using configuration: BuildConfiguration) -> [Substring] {
+        if let version = configuration.version?.split(separator: ".") {
+            if version.count == 3 {
+                return version
+            } else {
+                return version + Array(repeating: "0", count: 3 - version.count)
+            }
         } else {
             return ["0", "0", "0"]
         }

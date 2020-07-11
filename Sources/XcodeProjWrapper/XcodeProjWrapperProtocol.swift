@@ -8,6 +8,7 @@
 import Foundation
 
 public protocol XcodeProjWrapperProtocol {
-    func getConfigurationsByTargetName(bundleIdentifiers: Set<String>) -> [String: [BuildConfiguration]]
+    var targets: [Target] { get }
+    
     func saveChanges() throws
 }
