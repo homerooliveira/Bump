@@ -1,6 +1,7 @@
 import ArgumentParser
 import BumpCore
 import Foundation
+import XcodeProjWrapper
 
 struct BumpCommand: ParsableCommand {
     
@@ -26,7 +27,7 @@ struct BumpCommand: ParsableCommand {
         let path = try findFirstXcodeProj()
         
         let bump = try Bump(
-            path: path,
+            xcodeProj: XcodeProjWrapper(path: path),
             bundleIdentifiers: Set(bundleIdentifiers)
         )
 

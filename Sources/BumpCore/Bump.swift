@@ -6,21 +6,21 @@
 //
 
 import Foundation
-import XcodeProj
-import PathKit
+import XcodeProjWrapperInterface
+import SwiftExtensions
 
 public struct Bump {
-    private let path: Path
-    private let xcodeproj: XcodeProj
-    private var configsByTargetName: [String: [XCBuildConfiguration]] = [:]
+    private let xcodeProj: XcodeProjWrapperProtocol
+    private let bundleIdentifiers: Set<String>
     
-    public init(path: String, bundleIdentifiers: Set<String>) throws {
-        self.path = Path(path)
-        self.xcodeproj = try XcodeProj(path: self.path)
-        self.configsByTargetName = getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
+    public init(xcodeProj: XcodeProjWrapperProtocol, bundleIdentifiers: Set<String>) throws {
+        self.xcodeProj = xcodeProj
+        self.bundleIdentifiers = bundleIdentifiers
     }
     
     public func bump(flag: IncrementMode) throws {
+        let configsByTargetName: [String: [BuildConfiguration]] = xcodeProj.getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
+        
         for (targetName, configs) in configsByTargetName {
             guard let config = configs.first else { continue }
             print("\(targetName) \(config.buildNumber ?? "")", terminator: "")
@@ -32,27 +32,10 @@ public struct Bump {
             }
         }
         
-        try xcodeproj.writePBXProj(path: path, outputSettings: PBXOutputSettings())
+        try xcodeProj.saveChanges()
     }
     
-    private func getConfigurationsByTargetName(bundleIdentifiers: Set<String>) -> [String: [XCBuildConfiguration]] {
-        var configsByTargetName: [String: [XCBuildConfiguration]] = [:]
-        
-        for target in xcodeproj.pbxproj.nativeTargets {
-            let configurations = target.buildConfigurationList?.buildConfigurations ?? []
-            
-            for configuration in configurations {
-                let bundleIdentifierOfConfig = configuration.bundleIdentifier
-                if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:)) {
-                    configsByTargetName[target.name, default: []].append(configuration)
-                }
-            }
-        }
-        
-        return configsByTargetName
-    }
-    
-    private func applyBump(configuration: XCBuildConfiguration, flag: IncrementMode) {
+    private func applyBump(configuration: BuildConfiguration, flag: IncrementMode) {
         switch flag {
         case .major:
             bumpMajorVersion(configuration: configuration)
@@ -65,7 +48,7 @@ public struct Bump {
         }
     }
     
-    private func bumpMajorVersion(configuration: XCBuildConfiguration) {
+    private func bumpMajorVersion(configuration: BuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
             let major = Int(versionNumbers[VersionIndex.major]) ?? 0
             versionNumbers[VersionIndex.major] = "\(major + 1)"
@@ -74,7 +57,7 @@ public struct Bump {
         }
     }
     
-    private func bumpMinorVersion(configuration: XCBuildConfiguration) {
+    private func bumpMinorVersion(configuration: BuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
             let minor = Int(versionNumbers[VersionIndex.minor]) ?? 0
             versionNumbers[VersionIndex.minor] = "\(minor + 1)"
@@ -82,14 +65,14 @@ public struct Bump {
         }
     }
     
-    private func bumpPatchVersion(configuration: XCBuildConfiguration) {
+    private func bumpPatchVersion(configuration: BuildConfiguration) {
         changeVersionsNumbers(configuration: configuration) { (versionNumbers) in
             let patch = Int(versionNumbers[VersionIndex.patch]) ?? 0
             versionNumbers[VersionIndex.patch] = "\(patch + 1)"
         }
     }
     
-    private func changeVersionsNumbers(configuration: XCBuildConfiguration, transform: (inout [Substring]) -> Void) {
+    private func changeVersionsNumbers(configuration: BuildConfiguration, transform: (inout [Substring]) -> Void) {
         var versionArray: [Substring] = getVersion(using: configuration)
         transform(&versionArray)
         let version = versionArray.joined(separator: ".")
@@ -97,7 +80,7 @@ public struct Bump {
         configuration.buildNumber = "\(version).1"
     }
     
-    private func bumpBuildVersion(configuration: XCBuildConfiguration) {
+    private func bumpBuildVersion(configuration: BuildConfiguration) {
         let version = getVersion(using: configuration).joined(separator: ".")
         let buildNumber = configuration.buildNumber?
             .split(separator: ".")
@@ -107,7 +90,7 @@ public struct Bump {
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
     
-    func getVersion(using configuration: XCBuildConfiguration) -> [Substring] {
+    func getVersion(using configuration: BuildConfiguration) -> [Substring] {
         if let version = configuration.version.map({ $0.split(separator: ".") }),
            version.count == 3 {
             return version
