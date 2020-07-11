@@ -107,7 +107,7 @@ public struct Bump {
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
     
-    func getVersion(using configuration: BuildConfiguration) -> [Substring] {
+    func getVersion(using configuration: XCBuildConfiguration) -> [Substring] {
         if let version = configuration.version.map({ $0.split(separator: ".") }),
            version.count == 3 {
             return version
