@@ -57,31 +57,32 @@ final class BumpTests: XCTestCase {
     }
     
     func testGetConfigurationsByTargetName() throws {
-        let xcodeProj = XcodeProjWrapperMock()
-        xcodeProj.targets = [
-            TargetMock(
-                name: "Test1",
-                buildConfigurations: [
-                    BuildConfigurationMock(
-                        bundleIdentifier: "test",
-                        buildNumber: "1",
-                        version: "1.0"
-                    )
-                ]
-            ),
-            TargetMock(
-                name: "Test2",
-                buildConfigurations: [
-                    BuildConfigurationMock(
-                        bundleIdentifier: "com.test",
-                        buildNumber: "1",
-                        version: "1.0"
-                    )
-                ]
-            )
-        ]
-        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"])
+        let xcodeProj = XcodeProjWrapperMock(
+            targets: [
+                TargetMock(
+                    name: "Test1",
+                    buildConfigurations: [
+                        BuildConfigurationMock(
+                            bundleIdentifier: "test",
+                            buildNumber: "1",
+                            version: "1.0"
+                        )
+                    ]
+                ),
+                TargetMock(
+                    name: "Test2",
+                    buildConfigurations: [
+                        BuildConfigurationMock(
+                            bundleIdentifier: "com.test",
+                            buildNumber: "1",
+                            version: "1.0"
+                        )
+                    ]
+                )
+            ]
+        )
         
+        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"])
         let configByTargetName = bump.getConfigurationsByTargetName(bundleIdentifiers: ["test"]) as? [String: [BuildConfigurationMock]]
         
         let expected: [String: [BuildConfigurationMock]] = [

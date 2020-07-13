@@ -8,8 +8,12 @@
 import XcodeProjWrapper
 
 final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
-    var targets: [Target] = []
+    var targets: [Target]
     var saveChangesCalled = false
+    
+    init(targets: [Target] = []) {
+        self.targets = targets
+    }
     
     func saveChanges() {
         saveChangesCalled = true

@@ -21,6 +21,6 @@ final class BuildConfigurationMock: BuildConfiguration, Equatable {
 
 func == (lhs: BuildConfigurationMock, rhs: BuildConfigurationMock) -> Bool {
     lhs.bundleIdentifier == rhs.bundleIdentifier
-    && lhs.buildNumber == rhs.buildNumber
-    && lhs.version == rhs.version
+        && lhs.buildNumber == rhs.buildNumber
+        && lhs.version == rhs.version
 }
