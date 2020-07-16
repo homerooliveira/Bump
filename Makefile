@@ -1,5 +1,16 @@
-install:
+prefix ?= /usr/local
+bindir = $(prefix)/bin
+
+build:
 	swift build -c release --disable-sandbox
-	install .build/release/bump /usr/local/bin/bump
+	
+install: build
+	install ".build/release/bump" "$(bindir)"
+	
 uninstall:
-	rm -rf /usr/local/bin/bump
+	rm -rf "$(bindir)/bump"
+	
+clean:
+	rm -rf .build
+
+.PHONY: build install uninstall clean
