@@ -15,5 +15,4 @@ final class TargetMock: Target {
         self.name = name
         self.buildConfigurations = buildConfigurations
     }
-    
 }

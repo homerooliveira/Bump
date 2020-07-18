@@ -13,7 +13,7 @@ import XcodeProjWrapper
 final class BumpTests: XCTestCase {
     
     func testBumpBuild() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"])
+        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
         
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .build)
@@ -24,7 +24,7 @@ final class BumpTests: XCTestCase {
     }
     
     func testBumpPatch() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"])
+        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
         
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .patch)
@@ -35,7 +35,7 @@ final class BumpTests: XCTestCase {
     }
     
     func testBumpMinor() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"])
+        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
         
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .minor)
@@ -46,7 +46,7 @@ final class BumpTests: XCTestCase {
     }
     
     func testBumpMajor() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"])
+        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
         
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .major)
@@ -57,32 +57,9 @@ final class BumpTests: XCTestCase {
     }
     
     func testGetConfigurationsByTargetName() throws {
-        let xcodeProj = XcodeProjWrapperMock(
-            targets: [
-                TargetMock(
-                    name: "Test1",
-                    buildConfigurations: [
-                        BuildConfigurationMock(
-                            bundleIdentifier: "test",
-                            buildNumber: "1",
-                            version: "1.0"
-                        )
-                    ]
-                ),
-                TargetMock(
-                    name: "Test2",
-                    buildConfigurations: [
-                        BuildConfigurationMock(
-                            bundleIdentifier: "com.test",
-                            buildNumber: "1",
-                            version: "1.0"
-                        )
-                    ]
-                )
-            ]
-        )
+        let xcodeProj = XcodeProjWrapperMock.dummy
+        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"], log: { _ in })
         
-        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"])
         let configByTargetName = bump.getConfigurationsByTargetName(bundleIdentifiers: ["test"]) as? [String: [BuildConfigurationMock]]
         
         let expected: [String: [BuildConfigurationMock]] = [
@@ -97,5 +74,48 @@ final class BumpTests: XCTestCase {
         
         XCTAssertEqual(configByTargetName, expected)
         XCTAssertEqual(configByTargetName?.count, 1)
+    }
+    
+    func testGetConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {
+        let xcodeProj = XcodeProjWrapperMock.dummy
+        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["all"], log: { _ in })
+        
+        let configByTargetName = bump.getConfigurationsByTargetName(bundleIdentifiers: ["all"]) as? [String: [BuildConfigurationMock]]
+        
+        let expected: [String: [BuildConfigurationMock]] = [
+            "Test1": [
+                BuildConfigurationMock(
+                    bundleIdentifier: "test",
+                    buildNumber: "1",
+                    version: "1.0"
+                )
+            ],
+            "Test2": [
+                BuildConfigurationMock(
+                    bundleIdentifier: "com.test",
+                    buildNumber: "1",
+                    version: "1.0"
+                )
+            ]
+        ]
+        
+        XCTAssertEqual(configByTargetName, expected)
+        XCTAssertEqual(configByTargetName?.count, 2)
+    }
+    
+    func testBumpOutput() throws {
+        var logs: [String] = []
+        let xcodeProj = XcodeProjWrapperMock.dummy
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["com.test"],
+            log: { logs.append($0) }
+        )
+        
+        try bump.bump(flag: .minor)
+        
+        XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
+        XCTAssertEqual(logs.count, 1)
+        XCTAssertTrue(xcodeProj.saveChangesCalled)
     }
 }

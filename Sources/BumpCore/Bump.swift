@@ -12,10 +12,12 @@ import SwiftExtensions
 public struct Bump {
     private let xcodeProj: XcodeProjWrapperProtocol
     private let bundleIdentifiers: Set<String>
+    private let log: (String) -> Void
     
-    public init(xcodeProj: XcodeProjWrapperProtocol, bundleIdentifiers: Set<String>) throws {
+    public init(xcodeProj: XcodeProjWrapperProtocol, bundleIdentifiers: Set<String>, log: @escaping (String) -> Void) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
+        self.log = log
     }
     
     public func bump(flag: IncrementMode) throws {
@@ -23,11 +25,11 @@ public struct Bump {
         
         for (targetName, configs) in configsByTargetName {
             guard let config = configs.first else { continue }
-            print("\(targetName) \(config.buildNumber ?? "")", terminator: "")
+            var targetOutput = "\(targetName) \(config.buildNumber ?? "")"
             applyBump(configuration: config, flag: flag)
-            print(" -> \(config.buildNumber ?? "")")
-            configs.dropFirst()
-                .forEach { (config) in
+            targetOutput += " -> \(config.buildNumber ?? "")"
+            log(targetOutput)
+            for config in configs.dropFirst() {
                 applyBump(configuration: config, flag: flag)
             }
         }
@@ -43,7 +45,8 @@ public struct Bump {
             
             for configuration in configurations {
                 let bundleIdentifierOfConfig = configuration.bundleIdentifier
-                if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:)) {
+                if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:))
+                    || bundleIdentifiers.contains("all") {
                     configsByTargetName[target.name, default: []].append(configuration)
                 }
             }

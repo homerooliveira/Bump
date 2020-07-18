@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/tuist/xcodeproj.git",
                  .upToNextMajor(from: "7.10.0")),
         .package(url: "https://github.com/apple/swift-argument-parser",
-                 from: "0.0.6"),
+                 from: "0.1.0"),
     ],
     targets: [
         .target(
