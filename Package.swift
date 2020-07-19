@@ -12,7 +12,6 @@ let package = Package(
         .executable(name: "bump", targets: ["Bump"])
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/tuist/xcodeproj.git",
                  .upToNextMajor(from: "7.10.0")),
         .package(url: "https://github.com/apple/swift-argument-parser",
