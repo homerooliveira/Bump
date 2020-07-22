@@ -16,7 +16,7 @@ struct BumpCommand: ParsableCommand {
     @Argument(help: "Bundle Identifiers to search aplications/frameworks.")
     var bundleIdentifiers: [String]
     
-    @Flag(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    @Option(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
     
     @Option(default: fileManager.currentDirectoryPath, help: "The path of .xcodeproj file or directory.")
@@ -47,6 +47,13 @@ struct BumpCommand: ParsableCommand {
         
         guard let dirURL = URL(string: path) else {
             throw ValidationError("Wrong directory or path.")
+        }
+        
+        if case .versionString(let version) = mode {
+            let dotsCount = version.lazy.filter({ $0 == "." }).count
+            if dotsCount < 3 && dotsCount > 4 {
+                throw ValidationError("Invalid format of the version, the version must have three dots or four dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            }
         }
         
         if dirURL.isXcodeProj {

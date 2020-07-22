@@ -8,4 +8,4 @@
 import ArgumentParser
 import BumpCore
 
-extension IncrementMode: EnumerableFlag {}
+extension IncrementMode: ExpressibleByArgument {}

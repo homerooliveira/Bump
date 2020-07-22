@@ -65,6 +65,8 @@ public struct Bump {
             bumpPatchVersion(configuration: configuration)
         case .build:
             bumpBuildVersion(configuration: configuration)
+        case .versionString(let version):
+            setVersions(version: version, configuration: configuration)
         }
     }
     
@@ -113,13 +115,25 @@ public struct Bump {
     
     private func getVersion(using configuration: BuildConfiguration) -> [Substring] {
         if let version = configuration.version?.split(separator: ".") {
-            if version.count == 3 {
+            if version.count >= 3 {
                 return version
             } else {
                 return version + Array(repeating: "0", count: 3 - version.count)
             }
         } else {
             return ["0", "0", "0"]
+        }
+    }
+    
+    private func setVersions(version: String, configuration: BuildConfiguration) {
+        let versionArray = version.split(separator: ".")
+        
+        if versionArray.count == 3 {
+            configuration.version = version
+            configuration.buildNumber = version + ".1"
+        } else if versionArray.count == 4 {
+            configuration.version = versionArray.dropLast().joined(separator: ".")
+            configuration.buildNumber = version
         }
     }
 }
