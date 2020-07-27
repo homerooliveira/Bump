@@ -1,6 +1,7 @@
 import ArgumentParser
 import BumpCore
 import Foundation
+import SwiftExtensions
 import XcodeProjWrapper
 
 private let fileManager = FileManager.default
@@ -9,22 +10,29 @@ struct BumpCommand: ParsableCommand {
     
     static var configuration = CommandConfiguration(
         commandName: "bump",
-        abstract: "Bump your projects.",
-        discussion: "When no files are specified, it expects the source from standard input."
+        abstract: "Bump your projects."
     )
     
     @Argument(help: "Bundle Identifiers to search aplications/frameworks.")
     var bundleIdentifiers: [String]
     
-    @Option(help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    @Option(name: .shortAndLong, help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
     
-    @Option(default: fileManager.currentDirectoryPath, help: "The path of .xcodeproj file or directory.")
+    @Option(name: .shortAndLong, default: fileManager.currentDirectoryPath, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
     var path: String
     
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifiers cannot be empty.")
+        }
+        
+        if case .versionString(let version) = mode {
+            let hasValidFormat = version.range(of: #"\d+\.\d+\.\d+(\.\d*)?"#, options: .regularExpression) != nil
+            
+            guard hasValidFormat else {
+                throw ValidationError("Invalid format of the version, the version must have three dots or four dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            }
         }
     }
     
@@ -42,18 +50,11 @@ struct BumpCommand: ParsableCommand {
     
     private func findFirstXcodeProj() throws -> String  {
         guard fileManager.fileExists(atPath: path) else {
-            throw ValidationError("The path must exist.")
+            throw ValidationError("Needs exist a path of .xcodeproj file or directory.")
         }
         
         guard let dirURL = URL(string: path) else {
             throw ValidationError("Wrong directory or path.")
-        }
-        
-        if case .versionString(let version) = mode {
-            let dotsCount = version.lazy.filter({ $0 == "." }).count
-            if dotsCount < 3 && dotsCount > 4 {
-                throw ValidationError("Invalid format of the version, the version must have three dots or four dots. Example of versions: `1.0.0` or `1.0.0.1`.")
-            }
         }
         
         if dirURL.isXcodeProj {
@@ -73,11 +74,5 @@ struct BumpCommand: ParsableCommand {
             }
             return url.path
         }
-    }
-}
-
-extension URL {
-    var isXcodeProj: Bool {
-        pathExtension == "xcodeproj"
     }
 }
