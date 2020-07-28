@@ -28,10 +28,10 @@ struct BumpCommand: ParsableCommand {
         }
         
         if case .versionString(let version) = mode {
-            let hasValidFormat = version.range(of: #"\d+\.\d+\.\d+(\.\d*)?"#, options: .regularExpression) != nil
+            let hasValidFormat = version.range(of: #"\d+\.\d+\.\d+(\.\d+)?"#, options: .regularExpression) != nil
             
             guard hasValidFormat else {
-                throw ValidationError("Invalid format of the version, the version must have three dots or four dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+                throw ValidationError("Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
             }
         }
     }
