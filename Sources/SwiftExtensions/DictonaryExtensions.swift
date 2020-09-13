@@ -6,8 +6,8 @@
 
 import Foundation
 
-public extension Dictionary {
-    subscript<T>(_ key: T) -> Value? where T: RawRepresentable, T.RawValue == Key {
+extension Dictionary {
+    public subscript<T>(_ key: T) -> Value? where T: RawRepresentable, T.RawValue == Key {
         get {
             self[key.rawValue]
         }

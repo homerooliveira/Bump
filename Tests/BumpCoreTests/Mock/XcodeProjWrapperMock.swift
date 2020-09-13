@@ -21,7 +21,7 @@ final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
 }
 
 extension XcodeProjWrapperMock {
-    static var dummy: XcodeProjWrapperMock {
+    static var mock: XcodeProjWrapperMock {
         XcodeProjWrapperMock(
             targets: [
                 TargetMock(

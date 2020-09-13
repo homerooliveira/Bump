@@ -21,7 +21,7 @@ public struct Bump {
     }
     
     public func bump(flag: IncrementMode) throws {
-        let configsByTargetName: [String: [BuildConfiguration]] = getConfigurationsByTargetName(bundleIdentifiers: bundleIdentifiers)
+        let configsByTargetName: [String: [BuildConfiguration]] = getConfigurationsByTargetName()
         
         for (targetName, configs) in configsByTargetName {
             guard let config = configs.first else { continue }
@@ -37,7 +37,7 @@ public struct Bump {
         try xcodeProj.saveChanges()
     }
     
-    func getConfigurationsByTargetName(bundleIdentifiers: Set<String>) -> [String : [BuildConfiguration]] {
+    func getConfigurationsByTargetName() -> [String : [BuildConfiguration]] {
         var configsByTargetName: [String: [BuildConfiguration]] = [:]
         
         for target in xcodeProj.targets {

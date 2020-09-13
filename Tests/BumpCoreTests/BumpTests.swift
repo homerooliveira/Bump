@@ -68,10 +68,10 @@ final class BumpTests: XCTestCase {
     }
     
     func testGetConfigurationsByTargetName() throws {
-        let xcodeProj = XcodeProjWrapperMock.dummy
+        let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"], log: { _ in })
         
-        let configByTargetName = bump.getConfigurationsByTargetName(bundleIdentifiers: ["test"]) as? [String: [BuildConfigurationMock]]
+        let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
         
         let expected: [String: [BuildConfigurationMock]] = [
             "Test1": [
@@ -88,10 +88,10 @@ final class BumpTests: XCTestCase {
     }
     
     func testGetConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {
-        let xcodeProj = XcodeProjWrapperMock.dummy
+        let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["all"], log: { _ in })
         
-        let configByTargetName = bump.getConfigurationsByTargetName(bundleIdentifiers: ["all"]) as? [String: [BuildConfigurationMock]]
+        let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
         
         let expected: [String: [BuildConfigurationMock]] = [
             "Test1": [
@@ -116,7 +116,7 @@ final class BumpTests: XCTestCase {
     
     func testBumpOutput() throws {
         var logs: [String] = []
-        let xcodeProj = XcodeProjWrapperMock.dummy
+        let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],

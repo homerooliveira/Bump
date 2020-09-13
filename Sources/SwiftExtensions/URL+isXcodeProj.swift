@@ -7,8 +7,8 @@
 
 import Foundation
 
-public extension URL {
-    var isXcodeProj: Bool {
+extension URL {
+    public var isXcodeProj: Bool {
         pathExtension == "xcodeproj"
     }
 }
