@@ -114,18 +114,36 @@ final class BumpTests: XCTestCase {
         XCTAssertEqual(configByTargetName?.count, 2)
     }
     
+    func testBumpOutputVerbose() throws {
+        var logs: [String] = []
+        let xcodeProj = XcodeProjWrapperMock.mock
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["com.test"],
+            log: { logs.append($0) },
+            isVerbose: true
+        )
+        
+        try bump.bump(flag: .minor)
+        
+        XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
+        XCTAssertEqual(logs.count, 1)
+        XCTAssertTrue(xcodeProj.saveChangesCalled)
+    }
+    
     func testBumpOutput() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) }
+            log: { logs.append($0) },
+            isVerbose: false
         )
         
         try bump.bump(flag: .minor)
         
-        XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
+        XCTAssertEqual(logs, ["1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
         XCTAssertTrue(xcodeProj.saveChangesCalled)
     }

@@ -13,11 +13,18 @@ public struct Bump {
     private let xcodeProj: XcodeProjWrapperProtocol
     private let bundleIdentifiers: Set<String>
     private let log: (String) -> Void
+    private let isVerbose: Bool
     
-    public init(xcodeProj: XcodeProjWrapperProtocol, bundleIdentifiers: Set<String>, log: @escaping (String) -> Void) throws {
+    public init(
+        xcodeProj: XcodeProjWrapperProtocol,
+        bundleIdentifiers: Set<String>,
+        log: @escaping (String) -> Void,
+        isVerbose: Bool = false
+    ) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
         self.log = log
+        self.isVerbose = isVerbose
     }
     
     public func bump(flag: IncrementMode) throws {
@@ -28,7 +35,13 @@ public struct Bump {
             var targetOutput = "\(targetName) \(config.buildNumber ?? "")"
             applyBump(configuration: config, flag: flag)
             targetOutput += " -> \(config.buildNumber ?? "")"
-            log(targetOutput)
+            
+            if isVerbose {
+                log(targetOutput)
+            } else if let buildNumber = config.buildNumber {
+                log(buildNumber)
+            }
+            
             for config in configs.dropFirst() {
                 applyBump(configuration: config, flag: flag)
             }

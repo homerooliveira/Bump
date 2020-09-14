@@ -22,6 +22,9 @@ struct BumpCommand: ParsableCommand {
     @Option(name: .shortAndLong, default: fileManager.currentDirectoryPath, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
     var path: String
     
+    @Flag(name: .shortAndLong, help: "Show all the targets")
+    var verbose: Bool
+    
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifiers cannot be empty.")
@@ -42,7 +45,8 @@ struct BumpCommand: ParsableCommand {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapper(path: path),
             bundleIdentifiers: Set(bundleIdentifiers),
-            log: { print($0) }
+            log: { print($0) },
+            isVerbose: verbose
         )
         
         try bump.bump(flag: mode)
