@@ -14,36 +14,55 @@ public struct Bump {
     private let bundleIdentifiers: Set<String>
     private let log: (String) -> Void
     private let isVerbose: Bool
+    private let useSameVersion: Bool
     
     public init(
         xcodeProj: XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
         log: @escaping (String) -> Void,
-        isVerbose: Bool = false
+        isVerbose: Bool = false,
+        useSameVersion: Bool = false
     ) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
         self.log = log
         self.isVerbose = isVerbose
+        self.useSameVersion = useSameVersion
     }
     
     public func bump(flag: IncrementMode) throws {
         let configsByTargetName: [String: [BuildConfiguration]] = getConfigurationsByTargetName()
+        var modifiedFlag = flag
+        var hasNotPrinted = true
         
         for (targetName, configs) in configsByTargetName {
             guard let config = configs.first else { continue }
-            var targetOutput = "\(targetName) \(config.buildNumber ?? "")"
-            applyBump(configuration: config, flag: flag)
-            targetOutput += " -> \(config.buildNumber ?? "")"
             
-            if isVerbose {
+            let oldBuildNumber = config.buildNumber
+            applyBump(configuration: config, flag: modifiedFlag)
+            
+            if useSameVersion && hasNotPrinted, let buildNumber = config.buildNumber {
+                if isVerbose {
+                    let allTargets = configsByTargetName.keys.joined(separator: ", ")
+                    log(allTargets)
+                    let buildNumberOutput = "\(oldBuildNumber ?? "") -> \(config.buildNumber ?? "")"
+                    log(buildNumberOutput)
+                } else {
+                    log(buildNumber)
+                }
+                modifiedFlag = .versionString(buildNumber)
+                hasNotPrinted = false
+            }
+            
+            if isVerbose && !useSameVersion {
+                let targetOutput = "\(targetName) \(oldBuildNumber ?? "") -> \(config.buildNumber ?? "")"
                 log(targetOutput)
-            } else if let buildNumber = config.buildNumber {
+            } else if !useSameVersion, let buildNumber = config.buildNumber {
                 log(buildNumber)
             }
             
             for config in configs.dropFirst() {
-                applyBump(configuration: config, flag: flag)
+                applyBump(configuration: config, flag: modifiedFlag)
             }
         }
         

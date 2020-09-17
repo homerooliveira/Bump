@@ -147,4 +147,40 @@ final class BumpTests: XCTestCase {
         XCTAssertEqual(logs.count, 1)
         XCTAssertTrue(xcodeProj.saveChangesCalled)
     }
+    
+    func testBumpOutputSameVersionEnabled() throws {
+        var logs: [String] = []
+        let xcodeProj = XcodeProjWrapperMock.mockWithThreeConfigs
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["com.test"],
+            log: { logs.append($0) },
+            isVerbose: false,
+            useSameVersion: true
+        )
+        
+        try bump.bump(flag: .minor)
+        
+        XCTAssertEqual(logs, ["1.1.0.1"])
+        XCTAssertEqual(logs.count, 1)
+        XCTAssertTrue(xcodeProj.saveChangesCalled)
+    }
+    
+    func testBumpOutputSameVersionEnabledAndVerbose() throws {
+        var logs: [String] = []
+        let xcodeProj = XcodeProjWrapperMock.mock
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["com.test"],
+            log: { logs.append($0) },
+            isVerbose: true,
+            useSameVersion: true
+        )
+        
+        try bump.bump(flag: .minor)
+        
+        XCTAssertEqual(logs, ["Test2", "1 -> 1.1.0.1"])
+        XCTAssertEqual(logs.count, 2)
+        XCTAssertTrue(xcodeProj.saveChangesCalled)
+    }
 }
