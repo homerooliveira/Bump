@@ -26,7 +26,7 @@ make install
 
 First you need set  the `Bundle versions string, short` to `$(MARKETING_VERSION)` and `Bundle version` to `$(CURRENT_PROJECT_VERSION)` in every info.plist in `target` that you want to incrementable in your project.
 
-![Info plist sample](assets/infoplist-sample.gif)
+![Info plist sample](assets/infoplist-sample.png)
 
 Now you can use bump to increment you versions, must execute the command line tool in root directory or pass the path as argument.
 ```bash
