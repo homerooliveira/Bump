@@ -31,38 +31,49 @@ public struct Bump {
     }
     
     public func bump(flag: IncrementMode) throws {
-        let configsByTargetName: [String: [BuildConfiguration]] = getConfigurationsByTargetName()
-        var modifiedFlag = flag
-        var hasNotPrinted = true
+        let configsByTargetName = getConfigurationsByTargetName()
         
-        for (targetName, configs) in configsByTargetName {
-            guard let config = configs.first else { continue }
+        if useSameVersion {
+            let configs = configsByTargetName.values
+                .lazy
+                .flatMap { $0 }
             
-            let oldBuildNumber = config.buildNumber
-            applyBump(configuration: config, flag: modifiedFlag)
+            guard let config = configs.first else { return }
             
-            if useSameVersion && hasNotPrinted, let buildNumber = config.buildNumber {
-                if isVerbose {
-                    let allTargets = configsByTargetName.keys.joined(separator: ", ")
-                    log(allTargets)
-                    let buildNumberOutput = "\(oldBuildNumber ?? "") -> \(config.buildNumber ?? "")"
-                    log(buildNumberOutput)
-                } else {
-                    log(buildNumber)
-                }
-                modifiedFlag = .versionString(buildNumber)
-                hasNotPrinted = false
-            }
+            let oldBuildNumber = config.buildNumber ?? ""
+            applyBump(configuration: config, flag: flag)
+            let buildNumber = config.buildNumber ?? ""
             
-            if isVerbose && !useSameVersion {
-                let targetOutput = "\(targetName) \(oldBuildNumber ?? "") -> \(config.buildNumber ?? "")"
-                log(targetOutput)
-            } else if !useSameVersion, let buildNumber = config.buildNumber {
+            if isVerbose {
+                let allTargets = configsByTargetName.keys.joined(separator: ", ")
+                log(allTargets)
+                log("\(oldBuildNumber) -> \(buildNumber)")
+            } else {
                 log(buildNumber)
             }
             
+            let versionFlag: IncrementMode = .versionString(buildNumber)
+            
             for config in configs.dropFirst() {
-                applyBump(configuration: config, flag: modifiedFlag)
+                applyBump(configuration: config, flag: versionFlag)
+            }
+        } else {
+            for (targetName, configs) in configsByTargetName {
+                guard let config = configs.first else { continue }
+                
+                let oldBuildNumber = config.buildNumber
+                applyBump(configuration: config, flag: flag)
+                
+                if isVerbose {
+                    let targetOutput = "\(targetName) \(oldBuildNumber ?? "") -> \(config.buildNumber ?? "")"
+                    log(targetOutput)
+                } else if let buildNumber = config.buildNumber {
+                    log(buildNumber)
+                }
+                
+                for config in configs.dropFirst() {
+                    applyBump(configuration: config, flag: flag)
+                }
             }
         }
         
