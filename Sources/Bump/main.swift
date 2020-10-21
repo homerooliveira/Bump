@@ -1,1 +1,3 @@
-BumpCommand.main()
+import BumpCommandLine
+
+BumpMain.main()

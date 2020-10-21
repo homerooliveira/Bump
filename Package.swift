@@ -17,10 +17,13 @@ let package = Package(
                  .upToNextMajor(from: "7.10.0")),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  .upToNextMajor(from: "0.3.1")),
+        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2"),
     ],
     targets: [
+        .target(name: "Bump",
+            dependencies: ["BumpCommandLine"]),
         .target(
-            name: "Bump",
+            name: "BumpCommandLine",
             dependencies: ["BumpCore",
                            .product(name: "ArgumentParser", package: "swift-argument-parser"),
                            "XcodeProjWrapper"]),
@@ -37,5 +40,8 @@ let package = Package(
         .testTarget(
             name: "BumpCoreTests",
             dependencies: ["BumpCore", "XcodeProjWrapperMock"]),
+        .testTarget(
+            name: "BumpCommandLineTests",
+            dependencies: ["BumpCommandLine", "SnapshotTesting"]),
     ]
 )

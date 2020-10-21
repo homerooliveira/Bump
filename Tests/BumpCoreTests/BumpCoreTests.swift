@@ -10,7 +10,7 @@ import XcodeProjWrapperMock
 
 @testable import BumpCore
 
-final class BumpTests: XCTestCase {
+final class BumpCoreTests: XCTestCase {
     
     func testBumpBuild() throws {
         let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })

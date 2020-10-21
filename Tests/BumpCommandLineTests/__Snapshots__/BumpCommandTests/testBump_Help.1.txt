@@ -1,0 +1,16 @@
+OVERVIEW: Bump your projects.
+
+USAGE: bump [<bundle-identifiers> ...] --mode <mode> [--path <path>] [--verbose] [--use-same-version]
+
+ARGUMENTS:
+  <bundle-identifiers>    Bundle Identifiers to search aplications/frameworks. 
+
+OPTIONS:
+  -m, --mode <mode>       Increment mode to bump version or build number.
+                          Either 'major', 'minor', 'patch', or 'build'. 
+  -p, --path <path>       The path of .xcodeproj file or directory. Default
+                          value is the current directory. (default:)
+  -v, --verbose           Show all the targets 
+  -u, --use-same-version  Get the version of the first target and set it to the
+                          rest of the targets. 
+  -h, --help              Show help information.
