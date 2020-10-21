@@ -6,7 +6,7 @@
 //
 
 import XCTest
-import XcodeProjWrapper
+import XcodeProjWrapperMock
 
 @testable import BumpCore
 

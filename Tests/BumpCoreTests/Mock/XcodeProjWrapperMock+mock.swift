@@ -2,23 +2,10 @@
 //  File.swift
 //  
 //
-//  Created by Homero Oliveira on 11/07/20.
+//  Created by Homero Oliveira on 20/10/20.
 //
 
-import XcodeProjWrapper
-
-final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
-    var targets: [Target]
-    var saveChangesCalled = false
-    
-    init(targets: [Target] = []) {
-        self.targets = targets
-    }
-    
-    func saveChanges() {
-        saveChangesCalled = true
-    }
-}
+import XcodeProjWrapperMock
 
 extension XcodeProjWrapperMock {
     static var mock: XcodeProjWrapperMock {
