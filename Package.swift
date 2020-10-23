@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v10_11)
     ],
     products: [
-        .executable(name: "bump", targets: ["Bump"])
+        .executable(name: "bump", targets: ["bump"])
     ],
     dependencies: [
         .package(name: "XcodeProj",
@@ -19,7 +19,7 @@ let package = Package(
                  .upToNextMajor(from: "0.3.1")),
     ],
     targets: [
-        .target(name: "Bump",
+        .target(name: "bump",
             dependencies: ["BumpCommandLine"]),
         .target(
             name: "BumpCommandLine",
