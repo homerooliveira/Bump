@@ -42,5 +42,8 @@ let package = Package(
         .testTarget(
             name: "BumpCommandLineTests",
             dependencies: ["BumpCommandLine"]),
+        .testTarget(
+            name: "SwiftExtensionsTests",
+            dependencies: ["SwiftExtensions"]),
     ]
 )
