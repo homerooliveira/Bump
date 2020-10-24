@@ -1,10 +1,8 @@
 import ArgumentParser
 import BumpCore
+import Environment
 import Foundation
 import SwiftExtensions
-import XcodeProjWrapper
-
-private let fileManager = FileManager.default
 
 struct BumpCommand: ParsableCommand {
     
@@ -20,7 +18,7 @@ struct BumpCommand: ParsableCommand {
     var mode: IncrementMode
     
     @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
-    var path = fileManager.currentDirectoryPath
+    var path = Current.fileManagerWrapper.currentDirectoryPath
     
     @Flag(name: .shortAndLong, help: "Show all the targets")
     var verbose = false
@@ -34,7 +32,7 @@ struct BumpCommand: ParsableCommand {
         }
         
         if case .versionString(let version) = mode {
-            let versionPattern = #"\d+\.\d+\.\d+(\.\d+)?"#
+            let versionPattern = #"/^\d+\.\d+\.\d+(\.\d+)?$/"#
             let hasValidFormat = version.range(of: versionPattern, options: .regularExpression) != nil
             
             guard hasValidFormat else {
@@ -47,9 +45,9 @@ struct BumpCommand: ParsableCommand {
         let path = try findFirstXcodeProj()
         
         let bump = try Bump(
-            xcodeProj: XcodeProjWrapper(path: path),
+            xcodeProj: Current.xcodeProjWrapper(path),
             bundleIdentifiers: Set(bundleIdentifiers),
-            log: { print($0) },
+            log: Current.logger,
             isVerbose: verbose,
             useSameVersion: useSameVersion
         )
@@ -58,7 +56,7 @@ struct BumpCommand: ParsableCommand {
     }
     
     private func findFirstXcodeProj() throws -> String  {
-        guard fileManager.fileExists(atPath: path) else {
+        guard Current.fileManagerWrapper.fileExists(atPath: path) else {
             throw ValidationError("Needs exist a path of .xcodeproj file or directory.")
         }
         
@@ -73,9 +71,8 @@ struct BumpCommand: ParsableCommand {
                 throw ValidationError("The path must be .xcodeproj file or directory.")
             }
             
-            let directoryContents = try fileManager.contentsOfDirectory(
-                at: dirURL,
-                includingPropertiesForKeys: nil
+            let directoryContents = try Current.fileManagerWrapper.contentsOfDirectory(
+                at: dirURL
             )
             
             guard let url = directoryContents.first(where: { $0.isXcodeProj }) else {

@@ -25,10 +25,16 @@ let package = Package(
             name: "BumpCommandLine",
             dependencies: ["BumpCore",
                            .product(name: "ArgumentParser", package: "swift-argument-parser"),
-                           "XcodeProjWrapper"]),
+                           "Environment"]),
         .target(
             name: "BumpCore",
             dependencies: ["XcodeProjWrapper", "SwiftExtensions"]),
+        .target(name: "Environment",
+                dependencies: ["FileManagerWrapper", "XcodeProjWrapper"]),
+        .target(name: "FileManagerWrapper"),
+        .target(
+            name: "FileManagerWrapperMock",
+            dependencies: ["FileManagerWrapper"]),
         .target(name: "SwiftExtensions"),
         .target(
             name: "XcodeProjWrapper",
@@ -41,7 +47,7 @@ let package = Package(
             dependencies: ["BumpCore", "XcodeProjWrapperMock"]),
         .testTarget(
             name: "BumpCommandLineTests",
-            dependencies: ["BumpCommandLine"]),
+            dependencies: ["BumpCommandLine", "Environment", "FileManagerWrapperMock", "XcodeProjWrapperMock"]),
         .testTarget(
             name: "SwiftExtensionsTests",
             dependencies: ["SwiftExtensions"]),
