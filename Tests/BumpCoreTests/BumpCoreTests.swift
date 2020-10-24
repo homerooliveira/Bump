@@ -183,4 +183,37 @@ final class BumpCoreTests: XCTestCase {
         XCTAssertEqual(logs.count, 2)
         XCTAssertTrue(xcodeProj.saveChangesCalled)
     }
+    
+    func testBumpOutputVersionUnsureVersionHasThreeElements() throws {
+        let xcodeProj = XcodeProjWrapperMock(
+            targets: [
+                TargetMock(
+                    name: "Test1",
+                    buildConfigurations: [
+                        BuildConfigurationMock(
+                            bundleIdentifier: "test",
+                            buildNumber: "1",
+                            version: "1.0.0.1.1"
+                        )
+                    ]
+                )
+            ]
+        )
+        var logs: [String] = []
+        
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["test"],
+            log: { string in
+                logs.append(string)
+            },
+            isVerbose: true
+        )
+        
+        try bump.bump(flag: .build)
+        
+        XCTAssertEqual(logs, ["Test1 1 -> 1.0.0.2"])
+        XCTAssertEqual(logs.count, 1)
+        XCTAssertTrue(xcodeProj.saveChangesCalled)
+    }
 }

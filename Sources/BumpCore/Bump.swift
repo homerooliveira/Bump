@@ -160,7 +160,7 @@ public struct Bump {
     private func getVersion(from configuration: BuildConfiguration) -> [Substring] {
         if let version = configuration.version?.split(separator: ".") {
             if version.count >= 3 {
-                return version
+                return Array(version.prefix(3))
             } else {
                 return version + Array(repeating: "0", count: 3 - version.count)
             }

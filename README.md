@@ -30,7 +30,7 @@ First you need set  the `Bundle versions string, short` to `$(MARKETING_VERSION)
 
 Now you can use bump to increment you versions, must execute the command line tool in root directory or pass the path as argument.
 ```bash
-bump com.test.Test1 -m build -p SampleProject
+bump com.test.Test1 -m build -p Tests/Resources/
 ```
 Will show to you: 
 ```bash
