@@ -16,4 +16,4 @@ sed -i '' -e 's/\(tag => "\)[^"]*/\1'"$TAG"'/' \
 echo "Add changes and push to git"
 git add Formula/bump.rb
 git commit -m "Bump Formula to $TAG"
-git push
+git push origin HEAD:master
