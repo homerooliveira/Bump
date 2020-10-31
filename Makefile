@@ -20,3 +20,6 @@ uninstall:
 
 clean:
 	rm -rf .build
+
+bump_formula:
+	@./.scripts/bump_formula.sh
