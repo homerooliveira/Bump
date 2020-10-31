@@ -11,8 +11,8 @@ Command line tool for versioning your Xcode projects.
 
 ### Using [Homebrew](http://brew.sh/):
 ```bash
-brew tap homerooliveira/formulae https://github.com/homerooliveira/Bump.git
-brew install homerooliveira/formulae/bump
+brew tap homerooliveira/Bump https://github.com/homerooliveira/Bump.git
+brew install bump
 ```
 
 ### Compiling from source:

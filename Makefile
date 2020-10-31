@@ -1,7 +1,7 @@
 prefix ?= /usr/local
 bindir = $(prefix)/bin
 
-.PHONY: build install uninstall clean
+.PHONY: build build_debug install install_debug uninstall clean
 
 build_debug:
 	swift build -c debug --disable-sandbox
