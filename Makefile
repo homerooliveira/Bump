@@ -4,10 +4,10 @@ bindir = $(prefix)/bin
 .PHONY: build build_debug install install_debug uninstall clean
 
 build_debug:
-	swift build -c debug --disable-sandbox
+	swift swift build --product bump -c debug --disable-sandbox
 	
 build:
-	swift build -c release --disable-sandbox
+	swift swift build --product bump -c release --disable-sandbox
 
 install_debug: build_debug
 		install ".build/debug/bump" "$(bindir)"
@@ -21,5 +21,5 @@ uninstall:
 clean:
 	rm -rf .build
 
-bump_formula:
-	@./.scripts/bump_formula.sh
+update_formula:
+	@./.scripts/update_formula.sh

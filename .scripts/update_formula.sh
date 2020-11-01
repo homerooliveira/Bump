@@ -13,7 +13,6 @@ sed -i '' -e 's/\(tag => "\)[^"]*/\1'"$TAG"'/' \
 -e 's/\(version "\)[^"]*/\1'"$TAG"'/' \
  Formula/bump.rb
 
-echo "Add changes and push to git"
 git add Formula/bump.rb
 git commit -m "Bump Formula to $TAG"
 git push origin HEAD:master
