@@ -104,6 +104,21 @@ final class BumpCommandTests: XCTestCase {
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.txt")
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
     }
+    
+    func testBumpValitionWhenFileIsXcodeProj() throws {
+        fileManagerWrapperMock.fileExistsBeReturned = true
+        
+        command.path = "test.xcodeproj"
+        command.bundleIdentifiers = ["test"]
+        command.mode = .build
+        command.useSameVersion = false
+        command.verbose = false
+        
+        XCTAssertNoThrow(try command.run())
+        
+        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.xcodeproj")
+        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
+    }
 
     func testBumpValitionErrorWhenDirectoryNotHaveXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true

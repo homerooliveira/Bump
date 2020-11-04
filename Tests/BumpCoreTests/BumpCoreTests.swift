@@ -56,6 +56,17 @@ final class BumpCoreTests: XCTestCase {
         XCTAssertEqual(config.buildNumber, "1.0.0.1")
     }
     
+    func testBumpSetVersionWithThreeDots() throws {
+        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
+        
+        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: config, flag: .versionString("1.0.0"))
+        
+        XCTAssertEqual(config.bundleIdentifier, "test")
+        XCTAssertEqual(config.version, "1.0.0")
+        XCTAssertEqual(config.buildNumber, "1.0.0.1")
+    }
+    
     func testBumpSetVersion() throws {
         let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
         
