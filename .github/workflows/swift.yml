@@ -4,8 +4,8 @@ on:
   push:
     branches: [ master ]
     paths:
-      - 'Sources/'
-      - 'Tests/'
+      - 'Sources/**.swift'
+      - 'Tests/**.swift'
       - 'Package.swift'
       - '.github/workflows/swift.yml'
   pull_request:
