@@ -20,6 +20,3 @@ uninstall:
 
 clean:
 	rm -rf .build
-
-update_formula:
-	@./.scripts/update_formula.sh

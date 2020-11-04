@@ -18,7 +18,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - name: Update Formula
-      run: make update_formula
+      run: ./.scripts/update_formula.sh
     - name: Build Release
       run: swift build --product bump -c release --disable-sandbox -v
     - name: Zip build

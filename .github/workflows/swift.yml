@@ -7,6 +7,7 @@ on:
       - 'Sources/'
       - 'Tests/'
       - 'Package.swift'
+      - '.github/workflows/swift.yml'
   pull_request:
     branches: [ master ]
 
@@ -25,4 +26,6 @@ jobs:
     - name: Build
       run: swift build -v
     - name: Run tests
-      run: swift test -v --parallel
+      run: swift test -v --enable-code-coverage --parallel
+    - name: Generate coverage
+      run: ./.scripts/cov.sh
