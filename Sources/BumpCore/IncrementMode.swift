@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum IncrementMode: RawRepresentable {
+public enum IncrementMode: RawRepresentable, Equatable {
     case major
     case minor
     case patch
