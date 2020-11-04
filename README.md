@@ -1,6 +1,7 @@
 # Bump
 
 ![Swift](https://github.com/homerooliveira/Bump/workflows/Swift/badge.svg)
+[![codecov](https://codecov.io/gh/homerooliveira/Bump/branch/master/graph/badge.svg?token=33PIP7NUZO)](https://codecov.io/gh/homerooliveira/Bump)
 
 Command line tool for versioning your Xcode projects.
 
