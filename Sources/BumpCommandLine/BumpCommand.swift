@@ -18,7 +18,7 @@ struct BumpCommand: ParsableCommand {
     var mode: IncrementMode
     
     @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
-    var path = Current.fileManagerWrapper.currentDirectoryPath
+    var path: String?
     
     @Flag(name: .shortAndLong, help: "Show all the targets")
     var verbose = false
@@ -56,6 +56,8 @@ struct BumpCommand: ParsableCommand {
     }
     
     private func findFirstXcodeProj() throws -> String  {
+        let path = self.path ?? Current.fileManagerWrapper.currentDirectoryPath
+        
         guard Current.fileManagerWrapper.fileExists(atPath: path) else {
             throw ValidationError("Needs exist a path of .xcodeproj file or directory.")
         }

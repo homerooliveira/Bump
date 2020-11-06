@@ -71,7 +71,7 @@ final class BumpCommandTests: XCTestCase {
         }
     }
     
-    func testBumpValitionErrorWhenFileNotExist() throws {
+    func testBumpRunErrorWhenFileNotExist() throws {
         command.path = "test"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
@@ -141,7 +141,27 @@ final class BumpCommandTests: XCTestCase {
         XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "test/"))
     }
     
-    func testBumpValitionErrorWhenDirectoryHaveXcodeProj() throws {
+    func testBumpRunWhenDirectoryHaveXcodeProj() throws {
+        fileManagerWrapperMock.currentDirectoryPath = "test/"
+        fileManagerWrapperMock.fileExistsBeReturned = true
+        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [ URL(string: "test.xcodeproj")! ]
+        
+        command.path = nil
+        command.bundleIdentifiers = ["test"]
+        command.mode = .build
+        command.useSameVersion = false
+        command.verbose = false
+        
+        try command.run()
+        
+        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test/")
+        
+        XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "test/"))
+    }
+    
+    func testBumpValitionWhenDirectoryHaveXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
         fileManagerWrapperMock.contentsOfDirectoryBeReturned = [ URL(string: "test.xcodeproj")! ]
         
