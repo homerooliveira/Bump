@@ -15,19 +15,22 @@ public struct Bump {
     private let log: (String) -> Void
     private let isVerbose: Bool
     private let useSameVersion: Bool
+    private let inPlace: Bool
     
     public init(
         xcodeProj: XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
         log: @escaping (String) -> Void,
         isVerbose: Bool = false,
-        useSameVersion: Bool = false
+        useSameVersion: Bool = false,
+        inPlace: Bool = true
     ) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
         self.log = log
         self.isVerbose = isVerbose
         self.useSameVersion = useSameVersion
+        self.inPlace = inPlace
     }
     
     public func bump(flag: IncrementMode) throws {
@@ -78,7 +81,9 @@ public struct Bump {
             }
         }
         
-        try xcodeProj.saveChanges()
+        if inPlace {
+            try xcodeProj.saveChanges()
+        }
     }
     
     func getConfigurationsByTargetName() -> [String : [BuildConfiguration]] {

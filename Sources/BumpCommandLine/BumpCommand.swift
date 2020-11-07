@@ -26,6 +26,9 @@ struct BumpCommand: ParsableCommand {
     @Flag(name: .shortAndLong, help: "Get the version of the first target and set it to the rest of the targets.")
     var useSameVersion = false
     
+    @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
+    var inPlace: Bool = true
+    
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifiers cannot be empty.")
