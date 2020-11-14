@@ -52,7 +52,8 @@ struct BumpCommand: ParsableCommand {
             bundleIdentifiers: Set(bundleIdentifiers),
             log: Current.logger,
             isVerbose: verbose,
-            useSameVersion: useSameVersion
+            useSameVersion: useSameVersion,
+            inPlace: inPlace
         )
 
         try bump.bump(flag: mode)

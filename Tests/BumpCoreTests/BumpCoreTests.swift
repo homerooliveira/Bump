@@ -13,8 +13,15 @@ import XcodeProjWrapperMock
 final class BumpCoreTests: XCTestCase {
 
     func testBumpBuild() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .build)
 
@@ -24,8 +31,15 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpPatch() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .patch)
 
@@ -35,8 +49,15 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpMinor() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .minor)
 
@@ -46,8 +67,15 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpMajor() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .major)
 
@@ -57,8 +85,15 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpSetVersionWithThreeDots() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .versionString("1.0.0"))
 
@@ -68,8 +103,15 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpSetVersion() throws {
-        let bump = try Bump(xcodeProj: XcodeProjWrapperMock(), bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock(),
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .versionString("1.0.0.3"))
 
@@ -80,8 +122,15 @@ final class BumpCoreTests: XCTestCase {
 
     func testGetConfigurationsByTargetName() throws {
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["test"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["test"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
 
         let expected: [String: [BuildConfigurationMock]] = [
@@ -100,8 +149,15 @@ final class BumpCoreTests: XCTestCase {
 
     func testGetConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(xcodeProj: xcodeProj, bundleIdentifiers: ["all"], log: { _ in })
-
+        let bump = try Bump(
+            xcodeProj: xcodeProj,
+            bundleIdentifiers: ["all"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: false
+        )
+        
         let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
 
         let expected: [String: [BuildConfigurationMock]] = [
@@ -132,7 +188,9 @@ final class BumpCoreTests: XCTestCase {
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
-            isVerbose: true
+            isVerbose: true,
+            useSameVersion: false,
+            inPlace: true
         )
 
         try bump.bump(flag: .minor)
@@ -149,7 +207,9 @@ final class BumpCoreTests: XCTestCase {
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
-            isVerbose: false
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: true
         )
 
         try bump.bump(flag: .minor)
@@ -167,7 +227,8 @@ final class BumpCoreTests: XCTestCase {
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
             isVerbose: false,
-            useSameVersion: true
+            useSameVersion: true,
+            inPlace: true
         )
 
         try bump.bump(flag: .minor)
@@ -185,7 +246,8 @@ final class BumpCoreTests: XCTestCase {
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
             isVerbose: true,
-            useSameVersion: true
+            useSameVersion: true,
+            inPlace: true
         )
 
         try bump.bump(flag: .minor)
@@ -215,10 +277,10 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
-            log: { string in
-                logs.append(string)
-            },
-            isVerbose: true
+            log: { logs.append($0) },
+            isVerbose: true,
+            useSameVersion: false,
+            inPlace: true
         )
 
         try bump.bump(flag: .build)
@@ -236,6 +298,7 @@ final class BumpCoreTests: XCTestCase {
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
             isVerbose: true,
+            useSameVersion: false,
             inPlace: false
         )
         
@@ -274,7 +337,9 @@ final class BumpCoreTests: XCTestCase {
             log: { string in
                 logs.append(string)
             },
-            isVerbose: true
+            isVerbose: true,
+            useSameVersion: false,
+            inPlace: false
         )
         
         try bump.bump(flag: .build)
@@ -284,6 +349,6 @@ final class BumpCoreTests: XCTestCase {
             ["Test1 1 -> 1.0.0.2"]
         )
         XCTAssertEqual(logs.count, 1)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        XCTAssertFalse(xcodeProj.saveChangesCalled)
     }
 }

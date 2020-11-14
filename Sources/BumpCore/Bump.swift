@@ -21,9 +21,9 @@ public struct Bump {
         xcodeProj: XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
         log: @escaping (String) -> Void,
-        isVerbose: Bool = false,
-        useSameVersion: Bool = false,
-        inPlace: Bool = true
+        isVerbose: Bool,
+        useSameVersion: Bool,
+        inPlace: Bool
     ) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
