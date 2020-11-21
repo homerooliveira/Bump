@@ -1,4 +1,4 @@
-name: Swift
+name: Build and Test
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
-      - '.github/workflows/swift.yml'
+      - '.github/workflows/build.yml'
   pull_request:
     paths: 
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
-      - '.github/workflows/swift.yml'
+      - '.github/workflows/build.yml'
 
 jobs:
   build:
@@ -33,9 +33,3 @@ jobs:
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
       run: ./.scripts/cov.sh
-  lint:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run Swiftlint
-        run: swiftlint --reporter github-actions-logging
