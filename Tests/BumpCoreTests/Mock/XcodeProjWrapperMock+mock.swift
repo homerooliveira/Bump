@@ -34,7 +34,7 @@ extension XcodeProjWrapperMock {
             ]
         )
     }
-    
+
     static var mockWithThreeConfigs: XcodeProjWrapperMock {
         XcodeProjWrapperMock(
             targets: [

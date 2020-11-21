@@ -9,7 +9,7 @@ import Foundation
 
 public protocol FileManagerWrapperProtocol {
     var currentDirectoryPath: String { get }
-    
+
     func fileExists(atPath: String) -> Bool
     func contentsOfDirectory(at url: URL) throws -> [URL]
 }

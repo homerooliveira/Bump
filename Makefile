@@ -1,7 +1,7 @@
 prefix ?= /usr/local
 bindir = $(prefix)/bin
 
-.PHONY: build build_debug install install_debug uninstall clean
+.PHONY: build build_debug install install_debug uninstall clean format
 
 build_debug:
 	swift build --product bump -c debug --disable-sandbox
@@ -17,6 +17,12 @@ install: build
 
 uninstall:
 	rm -rf "$(bindir)/bump"
+
+format:
+	swiftlint autocorrect
+
+lint:
+	swiftlint lint --quiet
 
 clean:
 	rm -rf .build

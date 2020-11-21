@@ -1,4 +1,4 @@
-name: Swift
+name: Build and Test
 
 on:
   push:
@@ -7,13 +7,13 @@ on:
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
-      - '.github/workflows/swift.yml'
+      - '.github/workflows/build.yml'
   pull_request:
     paths: 
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
-      - '.github/workflows/swift.yml'
+      - '.github/workflows/build.yml'
 
 jobs:
   build:

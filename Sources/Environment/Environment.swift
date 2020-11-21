@@ -13,7 +13,7 @@ public struct Environment {
     public let fileManagerWrapper: FileManagerWrapperProtocol
     public let xcodeProjWrapper: (String) throws -> XcodeProjWrapperProtocol
     public let logger: (String) -> Void
-    
+
     public init(
         fileManagerWrapper: FileManagerWrapperProtocol = FileManagerWrapper(),
         xcodeProjWrapper: @escaping (String) throws -> XcodeProjWrapperProtocol = { try XcodeProjWrapper(path: $0) },
