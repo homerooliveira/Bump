@@ -3,6 +3,9 @@ opt_in_rules:
 
 included:
   - Sources
+
+line_length: 170
+
 identifier_name:
   excluded:
     - Current
