@@ -11,9 +11,10 @@ on:
       - 'Sources/**.swift'
       - '.github/workflows/lint.yml'
 
-lint:
+jobs:
+  lint:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run Swiftlint
-        run: swiftlint --strict --reporter github-actions-logging
+    - uses: actions/checkout@v2
+    - name: Run Swiftlint
+      run: swiftlint --strict --reporter github-actions-logging
