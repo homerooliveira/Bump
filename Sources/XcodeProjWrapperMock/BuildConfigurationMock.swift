@@ -12,7 +12,7 @@ public final class BuildConfigurationMock: BuildConfiguration {
     public var bundleIdentifier: String
     public var buildNumber: String?
     public var version: String?
-    
+
     public init(bundleIdentifier: String, buildNumber: String?, version: String?) {
         self.bundleIdentifier = bundleIdentifier
         self.buildNumber = buildNumber
@@ -27,5 +27,3 @@ extension BuildConfigurationMock: Equatable {
             && lhs.version == rhs.version
     }
 }
-
-

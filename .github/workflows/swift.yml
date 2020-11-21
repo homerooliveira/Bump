@@ -33,3 +33,10 @@ jobs:
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
       run: ./.scripts/cov.sh
+  lint:
+    runs-on: macos-latest
+    steps:
+      - name: Install Swiftlint
+        run: brew install swiftlint
+      - name: Run Swiftlint
+        run: swiftlint 

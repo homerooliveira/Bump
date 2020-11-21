@@ -11,7 +11,7 @@ final class BumpCommandTests: XCTestCase {
     var xcodeProjWrapperMock = XcodeProjWrapperMock()
     var logs: [String] = []
     var command = BumpCommand()
-    
+
     override func setUpWithError() throws {
         fileManagerWrapperMock.reset()
         xcodeProjWrapperMock.reset()
@@ -23,11 +23,11 @@ final class BumpCommandTests: XCTestCase {
         )
         command = BumpCommand()
     }
-    
+
     func testBumpValitionErrorWhenBundleIdentifiersIsEmpty() throws {
         command.bundleIdentifiers = []
         command.mode = .build
-        
+
         XCTAssertThrowsError(try command.validate()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -36,11 +36,11 @@ final class BumpCommandTests: XCTestCase {
             XCTAssertEqual(validationError.description, "Bundle Identifiers cannot be empty.")
         }
     }
-    
+
     func testBumpValitionErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.")
-        
+
         XCTAssertThrowsError(try command.validate()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -49,11 +49,11 @@ final class BumpCommandTests: XCTestCase {
             XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
         }
     }
-    
+
     func testBumpValitionErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.0.0.1")
-        
+
         XCTAssertThrowsError(try command.validate()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -62,12 +62,12 @@ final class BumpCommandTests: XCTestCase {
             XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
         }
     }
-    
+
     func testBumpRunErrorWhenFileNotExist() throws {
         command.path = "test"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
-        
+
         XCTAssertThrowsError(try command.run()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -81,11 +81,11 @@ final class BumpCommandTests: XCTestCase {
 
     func testBumpValitionErrorWhenFileIsNotXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
-        
+
         command.path = "test.txt"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
-        
+
         XCTAssertThrowsError(try command.run()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -96,29 +96,29 @@ final class BumpCommandTests: XCTestCase {
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.txt")
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
     }
-    
+
     func testBumpValitionWhenFileIsXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
-        
+
         command.path = "test.xcodeproj"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-        
+
         XCTAssertNoThrow(try command.run())
-        
+
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.xcodeproj")
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
     }
 
     func testBumpValitionErrorWhenDirectoryNotHaveXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
-        
+
         command.path = "test/"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
-        
+
         XCTAssertThrowsError(try command.run()) { error in
             guard let validationError = error as? ValidationError else {
                 XCTFail("Validation error cannot be nil.")
@@ -128,46 +128,46 @@ final class BumpCommandTests: XCTestCase {
         }
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test/")
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        
+
         XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
         XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "test/"))
     }
-    
+
     func testBumpRunWhenDirectoryHaveXcodeProj() throws {
         fileManagerWrapperMock.currentDirectoryPath = "test/"
         fileManagerWrapperMock.fileExistsBeReturned = true
         fileManagerWrapperMock.contentsOfDirectoryBeReturned = [ URL(string: "test.xcodeproj")! ]
-        
+
         command.path = nil
         command.bundleIdentifiers = ["test"]
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-        
+
         try command.run()
-        
+
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test/")
-        
+
         XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
         XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "test/"))
     }
-    
+
     func testBumpValitionWhenDirectoryHaveXcodeProj() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
         fileManagerWrapperMock.contentsOfDirectoryBeReturned = [ URL(string: "test.xcodeproj")! ]
-        
+
         command.path = "test/"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-        
+
         try command.run()
-        
+
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test/")
-        
+
         XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
         XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "test/"))
     }

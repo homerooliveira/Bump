@@ -16,7 +16,7 @@ public struct Bump {
     private let isVerbose: Bool
     private let useSameVersion: Bool
     private let inPlace: Bool
-    
+
     public init(
         xcodeProj: XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
@@ -32,21 +32,21 @@ public struct Bump {
         self.useSameVersion = useSameVersion
         self.inPlace = inPlace
     }
-    
+
     public func bump(flag: IncrementMode) throws {
         let configsByTargetName = getConfigurationsByTargetName()
-        
+
         if useSameVersion {
             let configs = configsByTargetName.values
                 .lazy
                 .flatMap { $0 }
-            
+
             guard let config = configs.first else { return }
-            
+
             let oldBuildNumber = config.buildNumber ?? ""
             applyBump(configuration: config, flag: flag)
             let buildNumber = config.buildNumber ?? ""
-            
+
             if isVerbose {
                 let allTargets = configsByTargetName.keys.joined(separator: ", ")
                 log(allTargets)
@@ -54,44 +54,44 @@ public struct Bump {
             } else {
                 log(buildNumber)
             }
-            
+
             let versionFlag: IncrementMode = .versionString(buildNumber)
-            
+
             for config in configs.dropFirst() {
                 applyBump(configuration: config, flag: versionFlag)
             }
         } else {
             for (targetName, configs) in configsByTargetName {
                 guard let config = configs.first else { continue }
-                
+
                 let oldBuildNumber = config.buildNumber ?? ""
                 applyBump(configuration: config, flag: flag)
                 let buildNumber = config.buildNumber ?? ""
-                
+
                 if isVerbose {
                     let targetOutput = "\(targetName) \(oldBuildNumber) -> \(buildNumber)"
                     log(targetOutput)
                 } else {
                     log(buildNumber)
                 }
-                
+
                 for config in configs.dropFirst() {
                     applyBump(configuration: config, flag: flag)
                 }
             }
         }
-        
+
         if inPlace {
             try xcodeProj.saveChanges()
         }
     }
-    
-    func getConfigurationsByTargetName() -> [String : [BuildConfiguration]] {
+
+    func getConfigurationsByTargetName() -> [String: [BuildConfiguration]] {
         var configsByTargetName: [String: [BuildConfiguration]] = [:]
-        
+
         for target in xcodeProj.targets {
             let configurations = target.buildConfigurations ?? []
-            
+
             for configuration in configurations {
                 let bundleIdentifierOfConfig = configuration.bundleIdentifier
                 if bundleIdentifiers.contains(where: bundleIdentifierOfConfig.starts(with:))
@@ -100,10 +100,10 @@ public struct Bump {
                 }
             }
         }
-        
+
         return configsByTargetName
     }
-    
+
     func applyBump(configuration: BuildConfiguration, flag: IncrementMode) {
         switch flag {
         case .major:
@@ -118,7 +118,7 @@ public struct Bump {
             setVersion(version, from: configuration)
         }
     }
-    
+
     private func bumpMajorVersion(from configuration: BuildConfiguration) {
         changeVersionsNumbers(from: configuration) { (versionNumbers) in
             let major = Int(versionNumbers[VersionIndex.major]) ?? 0
@@ -127,7 +127,7 @@ public struct Bump {
             versionNumbers[VersionIndex.patch] = "0"
         }
     }
-    
+
     private func bumpMinorVersion(from configuration: BuildConfiguration) {
         changeVersionsNumbers(from: configuration) { (versionNumbers) in
             let minor = Int(versionNumbers[VersionIndex.minor]) ?? 0
@@ -135,14 +135,14 @@ public struct Bump {
             versionNumbers[VersionIndex.patch] = "0"
         }
     }
-    
+
     private func bumpPatchVersion(from configuration: BuildConfiguration) {
         changeVersionsNumbers(from: configuration) { (versionNumbers) in
             let patch = Int(versionNumbers[VersionIndex.patch]) ?? 0
             versionNumbers[VersionIndex.patch] = "\(patch + 1)"
         }
     }
-    
+
     private func changeVersionsNumbers(from configuration: BuildConfiguration, transform: (inout [Substring]) -> Void) {
         var versionArray: [Substring] = getVersion(from: configuration)
         transform(&versionArray)
@@ -150,7 +150,7 @@ public struct Bump {
         configuration.version = version
         configuration.buildNumber = "\(version).1"
     }
-    
+
     private func bumpBuildVersion(from configuration: BuildConfiguration) {
         let version = getVersion(from: configuration).joined(separator: ".")
         let buildNumber = configuration.buildNumber?
@@ -161,7 +161,7 @@ public struct Bump {
         configuration.version = version
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
-    
+
     private func getVersion(from configuration: BuildConfiguration) -> [Substring] {
         if let version = configuration.version?.split(separator: ".") {
             if version.count >= 3 {
@@ -173,10 +173,10 @@ public struct Bump {
             return ["0", "0", "0"]
         }
     }
-    
+
     private func setVersion(_ version: String, from configuration: BuildConfiguration) {
         let versionArray = version.split(separator: ".")
-        
+
         if versionArray.count == 3 {
             configuration.version = version
             configuration.buildNumber = version + ".1"

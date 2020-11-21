@@ -8,7 +8,7 @@ final class URLTests: XCTestCase {
         let url = try XCTUnwrap(URL(string: "test.xcodeproj"))
         XCTAssertTrue(url.isXcodeProj)
     }
-    
+
     func testIsXcodeProjFalse() throws {
         let url = try XCTUnwrap(URL(string: "test.txt"))
         XCTAssertFalse(url.isXcodeProj)

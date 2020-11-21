@@ -13,7 +13,7 @@ public enum IncrementMode: RawRepresentable, Equatable {
     case patch
     case build
     case versionString(String)
-    
+
     public var rawValue: String {
         switch self {
         case .major:
