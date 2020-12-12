@@ -105,7 +105,8 @@ final class BumpCommandTests: XCTestCase {
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-
+        command.inPlace = false
+        
         XCTAssertNoThrow(try command.run())
 
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.xcodeproj")
@@ -143,7 +144,8 @@ final class BumpCommandTests: XCTestCase {
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-
+        command.inPlace = false
+        
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
@@ -162,7 +164,8 @@ final class BumpCommandTests: XCTestCase {
         command.mode = .build
         command.useSameVersion = false
         command.verbose = false
-
+        command.inPlace = false
+        
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)

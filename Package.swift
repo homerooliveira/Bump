@@ -49,6 +49,9 @@ let package = Package(
             name: "BumpCommandLineTests",
             dependencies: ["BumpCommandLine", "Environment", "FileManagerWrapperMock", "XcodeProjWrapperMock"]),
         .testTarget(
+            name: "BumpCommandLineIntegrationTests",
+            dependencies: ["BumpCommandLine", "Environment"]),
+        .testTarget(
             name: "SwiftExtensionsTests",
             dependencies: ["SwiftExtensions"]),
     ]
