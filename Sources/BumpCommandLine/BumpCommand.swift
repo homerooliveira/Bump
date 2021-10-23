@@ -4,9 +4,11 @@ import Environment
 import Foundation
 import SwiftExtensions
 
-struct BumpCommand: ParsableCommand {
+var Current = Environment()
 
-    static var configuration = CommandConfiguration(
+public struct BumpCommand: ParsableCommand {
+
+    public static var configuration = CommandConfiguration(
         commandName: "bump",
         abstract: "Bump your projects."
     )
@@ -28,8 +30,11 @@ struct BumpCommand: ParsableCommand {
 
     @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
+    
+    public init() {
+    }
 
-    mutating func validate() throws {
+    public mutating  func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
             throw ValidationError("Bundle Identifiers cannot be empty.")
         }
@@ -44,7 +49,7 @@ struct BumpCommand: ParsableCommand {
         }
     }
 
-    func run() throws {
+    public func run() throws {
         let path = try findFirstXcodeProj()
 
         let bump = try Bump(
