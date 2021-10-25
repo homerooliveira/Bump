@@ -13,7 +13,7 @@ public final class FileManagerWrapperMock: FileManagerWrapperProtocol {
 
     public init() {}
 
-    public var atPathPassed: String?
+    public private(set) var atPathPassed: String?
     public private(set) var fileExistsCalled = false
     public var fileExistsBeReturned = false
     public func fileExists(atPath: String) -> Bool {
@@ -22,7 +22,7 @@ public final class FileManagerWrapperMock: FileManagerWrapperProtocol {
         return fileExistsBeReturned
     }
 
-    public var atURLPassed: URL?
+    public private(set) var atURLPassed: URL?
     public private(set) var contentsOfDirectoryCalled = false
     public var contentsOfDirectoryBeReturned: [URL] = []
     public func contentsOfDirectory(at url: URL) throws -> [URL] {
