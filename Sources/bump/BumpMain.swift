@@ -1,7 +1,7 @@
 import BumpCommandLine
 
-@main public enum BumpMain {
-    public static func main() {
+@main enum BumpMain {
+    static func main() {
         BumpCommand.main()
     }
 }

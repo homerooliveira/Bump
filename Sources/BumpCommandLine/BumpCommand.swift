@@ -30,7 +30,7 @@ public struct BumpCommand: ParsableCommand {
 
     @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
-    
+
     public init() {
     }
 
