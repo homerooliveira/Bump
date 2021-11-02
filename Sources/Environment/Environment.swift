@@ -14,13 +14,21 @@ public struct Environment {
     public let xcodeProjWrapper: (String) throws -> XcodeProjWrapperProtocol
     public let logger: (String) -> Void
 
-    public init(
-        fileManagerWrapper: FileManagerWrapperProtocol = FileManagerWrapper(),
-        xcodeProjWrapper: @escaping (String) throws -> XcodeProjWrapperProtocol = { try XcodeProjWrapper(path: $0) },
-        logger: @escaping (String) -> Void = { print($0) }
+    init(
+        fileManagerWrapper: FileManagerWrapperProtocol,
+        xcodeProjWrapper: @escaping (String) throws -> XcodeProjWrapperProtocol,
+        logger: @escaping (String) -> Void
     ) {
         self.fileManagerWrapper = fileManagerWrapper
         self.xcodeProjWrapper = xcodeProjWrapper
         self.logger = logger
     }
+}
+
+extension Environment {
+    public static let live: Self = .init(
+        fileManagerWrapper: FileManagerWrapper(), 
+        xcodeProjWrapper: { try XcodeProjWrapper(path: $0) }, 
+        logger: { print($0) }
+    )
 }

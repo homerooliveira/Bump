@@ -4,7 +4,7 @@ import Environment
 import Foundation
 import SwiftExtensions
 
-var Current = Environment()
+var Current = Environment.live
 
 public struct BumpCommand: ParsableCommand {
 
