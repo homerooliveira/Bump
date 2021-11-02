@@ -1,6 +1,7 @@
 import ArgumentParser
 import Foundation
 import FileManagerWrapperMock
+import LoggerWrapperMock
 import XCTest
 import XcodeProjWrapperMock
 
@@ -10,17 +11,18 @@ import XcodeProjWrapperMock
 final class BumpCommandTests: XCTestCase {
     var fileManagerWrapperMock = FileManagerWrapperMock()
     var xcodeProjWrapperMock = XcodeProjWrapperMock()
-    var logs: [String] = []
+    var loggerWrapperMock = LoggerWrapperMock()
     var command = BumpCommand()
 
     override func setUpWithError() throws {
         fileManagerWrapperMock.reset()
         xcodeProjWrapperMock.reset()
-        logs = []
+        loggerWrapperMock.reset()
+        
         Current = .init(
             fileManagerWrapper: fileManagerWrapperMock,
             xcodeProjWrapper: { _ in  self.xcodeProjWrapperMock },
-            logger: { self.logs.append($0) }
+            logger: loggerWrapperMock
         )
         command = BumpCommand()
     }

@@ -1,20 +1,24 @@
 import ArgumentParser
 import Foundation
-import FileManagerWrapperMock
+import FileManagerWrapper
+import LoggerWrapperMock
 import XCTest
-import XcodeProjWrapperMock
+import XcodeProjWrapper
 
 @testable import BumpCommandLine
 @testable import Environment
 
 final class BumpCommandTests: XCTestCase {
-    var logs: [String] = []
-    var command = BumpCommand()
+    private let logger = LoggerWrapperMock()
+    private var command = BumpCommand()
     
     override func setUpWithError() throws {
-        logs = []
+        logger.reset()
+        
         Current = .init(
-            logger: { self.logs.append($0) }
+            fileManagerWrapper: FileManagerWrapper(),
+            xcodeProjWrapper: { try XcodeProjWrapper(path: $0) }, 
+            logger: logger
         )
         command = BumpCommand()
     }
@@ -31,7 +35,7 @@ final class BumpCommandTests: XCTestCase {
         
         try command.run()
         
-        logs.sort()
+        let logs = logger.messages.sorted()
         
         XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
     }
@@ -49,7 +53,7 @@ final class BumpCommandTests: XCTestCase {
         
         try command.run()
         
-        logs.sort()
+        let logs = logger.messages.sorted()
         
         XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
     }
@@ -66,7 +70,7 @@ final class BumpCommandTests: XCTestCase {
         
         try command.run()
         
-        logs.sort()
+        let logs = logger.messages.sorted()
         
         XCTAssertEqual(
             logs,
@@ -91,7 +95,7 @@ final class BumpCommandTests: XCTestCase {
         
         try command.run()
         
-        logs.sort()
+        let logs = logger.messages.sorted()
         
         XCTAssertEqual(
             logs,

@@ -5,18 +5,25 @@
 //  Created by Homero Oliveira on 08/07/20.
 //
 
+import LoggerWrapperMock
 import XCTest
 import XcodeProjWrapperMock
 
 @testable import BumpCore
 
+
 final class BumpCoreTests: XCTestCase {
+    private let loggerMock = LoggerWrapperMock()
+    
+    override func setUp() {
+        loggerMock.reset()
+    }
 
     func testBumpBuild() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -34,7 +41,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -52,7 +59,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -70,7 +77,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -88,7 +95,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -106,7 +113,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -125,7 +132,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -152,7 +159,7 @@ final class BumpCoreTests: XCTestCase {
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["all"],
-            log: { _ in },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: false
@@ -182,18 +189,19 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpOutputVerbose() throws {
-        var logs: [String] = []
+        
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: true,
             useSameVersion: false,
             inPlace: true
         )
 
         try bump.bump(flag: .minor)
+        let logs = loggerMock.messages
 
         XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
@@ -201,18 +209,18 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpOutput() throws {
-        var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: false,
             inPlace: true
         )
 
         try bump.bump(flag: .minor)
+        let logs = loggerMock.messages
 
         XCTAssertEqual(logs, ["1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
@@ -220,18 +228,18 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpOutputSameVersionEnabled() throws {
-        var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mockWithThreeConfigs
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: false,
             useSameVersion: true,
             inPlace: true
         )
 
         try bump.bump(flag: .minor)
+        let logs = loggerMock.messages
 
         XCTAssertEqual(logs, ["1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
@@ -239,18 +247,18 @@ final class BumpCoreTests: XCTestCase {
     }
 
     func testBumpOutputSameVersionEnabledAndVerbose() throws {
-        var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: true,
             useSameVersion: true,
             inPlace: true
         )
 
         try bump.bump(flag: .minor)
+        let logs = loggerMock.messages
 
         XCTAssertEqual(logs, ["Test2", "1 -> 1.1.0.1"])
         XCTAssertEqual(logs.count, 2)
@@ -272,18 +280,18 @@ final class BumpCoreTests: XCTestCase {
                 )
             ]
         )
-        var logs: [String] = []
-
+        
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: true,
             useSameVersion: false,
             inPlace: true
         )
 
         try bump.bump(flag: .build)
+        let logs = loggerMock.messages
 
         XCTAssertEqual(logs, ["Test1 1 -> 1.0.0.2"])
         XCTAssertEqual(logs.count, 1)
@@ -291,18 +299,18 @@ final class BumpCoreTests: XCTestCase {
     }
     
     func testBumpOutputVerboseWhenInPlaceIsTrue() throws {
-        var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
-            log: { logs.append($0) },
+            logger: loggerMock,
             isVerbose: true,
             useSameVersion: false,
             inPlace: false
         )
         
         try bump.bump(flag: .minor)
+        let logs = loggerMock.messages
         
         XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
@@ -329,20 +337,18 @@ final class BumpCoreTests: XCTestCase {
                 )
             ]
         )
-        var logs: [String] = []
         
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
-            log: { string in
-                logs.append(string)
-            },
+            logger: loggerMock,
             isVerbose: true,
             useSameVersion: false,
             inPlace: false
         )
         
         try bump.bump(flag: .build)
+        let logs = loggerMock.messages
         
         XCTAssertEqual(
             logs,

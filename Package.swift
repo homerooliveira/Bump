@@ -17,10 +17,11 @@ let package = Package(
                  .upToNextMajor(from: "8.5.0")),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  .upToNextMajor(from: "1.0.1")),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.4.2"),
     ],
     targets: [
         .executableTarget(name: "bump",
-            dependencies: ["BumpCommandLine"]),
+                          dependencies: ["BumpCommandLine"]),
         .target(
             name: "BumpCommandLine",
             dependencies: ["BumpCore",
@@ -28,14 +29,18 @@ let package = Package(
                            "Environment"]),
         .target(
             name: "BumpCore",
-            dependencies: ["XcodeProjWrapper", "SwiftExtensions"]),
+            dependencies: ["SwiftExtensions", "LoggerWrapper", "XcodeProjWrapper",]),
         .target(name: "Environment",
-                dependencies: ["FileManagerWrapper", "XcodeProjWrapper"]),
+                dependencies: ["FileManagerWrapper", "LoggerWrapper", "XcodeProjWrapper"]),
         .target(name: "FileManagerWrapper"),
         .target(
             name: "FileManagerWrapperMock",
             dependencies: ["FileManagerWrapper"]),
         .target(name: "SwiftExtensions"),
+        .target(name: "LoggerWrapper",
+                dependencies: [
+                    .product(name: "Logging", package: "swift-log")]),
+        .target(name: "LoggerWrapperMock", dependencies: ["LoggerWrapper"]),
         .target(
             name: "XcodeProjWrapper",
             dependencies: ["SwiftExtensions", "XcodeProj"]),
@@ -44,13 +49,13 @@ let package = Package(
             dependencies: ["XcodeProjWrapper"]),
         .testTarget(
             name: "BumpCoreTests",
-            dependencies: ["BumpCore", "XcodeProjWrapperMock"]),
+            dependencies: ["BumpCore", "LoggerWrapperMock", "XcodeProjWrapperMock"]),
         .testTarget(
             name: "BumpCommandLineTests",
-            dependencies: ["BumpCommandLine", "Environment", "FileManagerWrapperMock", "XcodeProjWrapperMock"]),
+            dependencies: ["BumpCommandLine", "Environment", "FileManagerWrapperMock", "LoggerWrapperMock", "XcodeProjWrapperMock"]),
         .testTarget(
             name: "BumpCommandLineIntegrationTests",
-            dependencies: ["BumpCommandLine", "Environment"]),
+            dependencies: ["BumpCommandLine", "Environment", "LoggerWrapperMock",]),
         .testTarget(
             name: "SwiftExtensionsTests",
             dependencies: ["SwiftExtensions"]),

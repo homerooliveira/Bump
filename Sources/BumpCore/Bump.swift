@@ -8,11 +8,12 @@
 import Foundation
 import XcodeProjWrapper
 import SwiftExtensions
+import LoggerWrapper
 
 public struct Bump {
     private let xcodeProj: XcodeProjWrapperProtocol
     private let bundleIdentifiers: Set<String>
-    private let log: (String) -> Void
+    private let logger: LoggerWrapperProtocol
     private let isVerbose: Bool
     private let useSameVersion: Bool
     private let inPlace: Bool
@@ -20,14 +21,14 @@ public struct Bump {
     public init(
         xcodeProj: XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
-        log: @escaping (String) -> Void,
+        logger: LoggerWrapperProtocol,
         isVerbose: Bool,
         useSameVersion: Bool,
         inPlace: Bool
     ) throws {
         self.xcodeProj = xcodeProj
         self.bundleIdentifiers = bundleIdentifiers
-        self.log = log
+        self.logger = logger
         self.isVerbose = isVerbose
         self.useSameVersion = useSameVersion
         self.inPlace = inPlace
@@ -49,10 +50,10 @@ public struct Bump {
 
             if isVerbose {
                 let allTargets = configsByTargetName.keys.joined(separator: ", ")
-                log(allTargets)
-                log("\(oldBuildNumber) -> \(buildNumber)")
+                logger.log(message: allTargets)
+                logger.log(message: "\(oldBuildNumber) -> \(buildNumber)")
             } else {
-                log(buildNumber)
+                logger.log(message: buildNumber)
             }
 
             let versionFlag: IncrementMode = .versionString(buildNumber)
@@ -70,9 +71,9 @@ public struct Bump {
 
                 if isVerbose {
                     let targetOutput = "\(targetName) \(oldBuildNumber) -> \(buildNumber)"
-                    log(targetOutput)
+                    logger.log(message: targetOutput)
                 } else {
-                    log(buildNumber)
+                    logger.log(message: buildNumber)
                 }
 
                 for config in configs.dropFirst() {

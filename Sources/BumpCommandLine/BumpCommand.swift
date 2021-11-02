@@ -55,7 +55,7 @@ public struct BumpCommand: ParsableCommand {
         let bump = try Bump(
             xcodeProj: Current.xcodeProjWrapper(path),
             bundleIdentifiers: Set(bundleIdentifiers),
-            log: Current.logger,
+            logger: Current.logger,
             isVerbose: verbose,
             useSameVersion: useSameVersion,
             inPlace: inPlace
