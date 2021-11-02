@@ -5,6 +5,7 @@ import XCTest
 import XcodeProjWrapperMock
 
 @testable import BumpCommandLine
+@testable import Environment
 
 final class BumpCommandTests: XCTestCase {
     var logs: [String] = []
