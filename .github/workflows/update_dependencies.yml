@@ -1,8 +1,8 @@
 name: Swift Package Dependencies
 
 on: 
-  schedule:
-    - cron: '0 8 * * 1' # every monday AM 8:00
+  workflow_dispatch
+  
 jobs:
   spm-dep-check:
     runs-on: ubuntu-20.04
