@@ -7,7 +7,7 @@ jobs:
   spm-dep-check:
     runs-on: ubuntu-20.04
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Check Swift package dependencies
       id: spm-dep-check
       uses: MarcoEidinger/swift-package-dependencies-check@2.1.0
