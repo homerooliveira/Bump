@@ -9,6 +9,6 @@ import Foundation
 
 extension URL {
     public var isXcodeProj: Bool {
-        pathExtension == "xcodeproj"
+        pathExtension.lowercased() == "xcodeproj"
     }
 }
