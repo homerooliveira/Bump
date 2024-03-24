@@ -16,4 +16,24 @@ extension Array {
             self[index.rawValue] = newValue
         }
     }
+
+    public subscript<T>(_ range: Range<T>) -> ArraySlice<Element> where T: RawRepresentable, T: Comparable, T.RawValue == Index {
+        self[range.lowerBound.rawValue..<range.upperBound.rawValue]
+    }
+    
+    public subscript<T>(_ range: ClosedRange<T>) -> ArraySlice<Element> where T: RawRepresentable, T.RawValue == Index, T: Comparable {
+        self[range.lowerBound.rawValue...range.upperBound.rawValue]
+    }
+
+    public subscript<T>(_ range: PartialRangeFrom<T>) -> ArraySlice<Element> where T: RawRepresentable, T.RawValue == Index, T: Comparable {
+        self[range.lowerBound.rawValue...]
+    }
+
+    public subscript<T>(_ range: PartialRangeUpTo<T>) -> ArraySlice<Element> where T: RawRepresentable, T.RawValue == Index, T: Comparable {
+        self[..<range.upperBound.rawValue]
+    }
+
+    public subscript<T>(_ range: PartialRangeThrough<T>) -> ArraySlice<Element> where T: RawRepresentable, T.RawValue == Index, T: Comparable {
+        self[...range.upperBound.rawValue]
+    }
 }

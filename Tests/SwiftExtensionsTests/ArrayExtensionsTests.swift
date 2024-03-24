@@ -29,4 +29,22 @@ final class ArrayExtensionsTests: XCTestCase {
 
         XCTAssertEqual(numbers, [12, 13])
     }
+
+    func testSubscriptGetWithRange() throws {
+        enum Index: Int, Comparable {
+            case zero
+            case one
+
+            static func < (lhs: Index, rhs: Index) -> Bool {
+                lhs.rawValue < rhs.rawValue
+            }
+        }
+
+        let numbers = [0, 1, 2, 3, 4, 5]
+
+        XCTAssertEqual(numbers[Index.zero...Index.one], [0, 1])
+        XCTAssertEqual(numbers[Index.zero...], [0, 1, 2, 3, 4, 5])
+        XCTAssertEqual(numbers[...Index.one], [0, 1])
+        XCTAssertEqual(numbers[..<Index.one], [0])
+    }
 }
