@@ -1,5 +1,15 @@
 opt_in_rules:
-  - empty_count 
+  - all
+
+disabled_rules:
+  - prefer_nimble
+  - anyobject_protocol
+  - inert_defer
+  - unused_capture_list
+  - missing_docs
+  - explicit_acl
+  - explicit_top_level_acl
+  - required_deinit
 
 included:
   - Sources

@@ -19,7 +19,7 @@ uninstall:
 	rm -rf "$(bindir)/bump"
 
 format:
-	swift package plugin swiftlint autocorrect
+	swift package plugin swiftlint --autocorrect
 
 lint:
 	swift package plugin swiftlint --strict
