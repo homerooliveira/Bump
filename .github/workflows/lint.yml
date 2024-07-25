@@ -5,11 +5,17 @@ on:
     branches: [ main ]
     paths:
       - 'Sources/**.swift'
-      - '.github/workflows/lint.yml'
+      - 'Tests/**.swift'
+      - 'Package.swift'
+      - 'Package.resolved'
+      - '.github/workflows/build.yml'
   pull_request:
     paths: 
       - 'Sources/**.swift'
-      - '.github/workflows/lint.yml'
+      - 'Tests/**.swift'
+      - 'Package.swift'
+      - 'Package.resolved'
+      - '.github/workflows/build.yml'
 
 jobs:
   lint:
@@ -17,4 +23,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Run Swiftlint
-      run: swiftlint --strict --reporter github-actions-logging
+      run: swift package plugin swiftlint --strict --reporter github-actions-logging
