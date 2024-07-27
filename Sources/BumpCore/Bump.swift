@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import XcodeProjWrapper
 import SwiftExtensions
+import XcodeProjWrapper
 
 public struct Bump {
     private let xcodeProj: XcodeProjWrapperProtocol
@@ -108,19 +108,23 @@ public struct Bump {
         switch flag {
         case .major:
             bumpMajorVersion(from: configuration)
+
         case .minor:
             bumpMinorVersion(from: configuration)
+
         case .patch:
             bumpPatchVersion(from: configuration)
+
         case .build:
             bumpBuildVersion(from: configuration)
+
         case .versionString(let version):
             setVersion(version, from: configuration)
         }
     }
 
     private func bumpMajorVersion(from configuration: BuildConfiguration) {
-        changeVersionsNumbers(from: configuration) { (versionNumbers) in
+        changeVersionsNumbers(from: configuration) { versionNumbers in
             let major = Int(versionNumbers[VersionIndex.major]) ?? 0
             versionNumbers[VersionIndex.major] = "\(major + 1)"
             versionNumbers[VersionIndex.minor] = "0"
@@ -129,7 +133,7 @@ public struct Bump {
     }
 
     private func bumpMinorVersion(from configuration: BuildConfiguration) {
-        changeVersionsNumbers(from: configuration) { (versionNumbers) in
+        changeVersionsNumbers(from: configuration) { versionNumbers in
             let minor = Int(versionNumbers[VersionIndex.minor]) ?? 0
             versionNumbers[VersionIndex.minor] = "\(minor + 1)"
             versionNumbers[VersionIndex.patch] = "0"
@@ -137,7 +141,7 @@ public struct Bump {
     }
 
     private func bumpPatchVersion(from configuration: BuildConfiguration) {
-        changeVersionsNumbers(from: configuration) { (versionNumbers) in
+        changeVersionsNumbers(from: configuration) { versionNumbers in
             let patch = Int(versionNumbers[VersionIndex.patch]) ?? 0
             versionNumbers[VersionIndex.patch] = "\(patch + 1)"
         }
@@ -163,15 +167,15 @@ public struct Bump {
     }
 
     private func getVersion(from configuration: BuildConfiguration) -> [Substring] {
-        if let version = configuration.version?.split(separator: ".") {
-            if version.count >= 3 {
-                return Array(version.prefix(3))
-            } else {
-                return version + Array(repeating: "0", count: 3 - version.count)
-            }
-        } else {
+        guard let version = configuration.version?.split(separator: ".") else {
             return ["0", "0", "0"]
         }
+
+        if version.count >= 3 {
+            return Array(version.prefix(3))
+        }
+
+        return version + Array(repeating: "0", count: 3 - version.count)
     }
 
     private func setVersion(_ version: String, from configuration: BuildConfiguration) {
