@@ -90,7 +90,7 @@ public struct Bump {
         var configsByTargetName: [String: [BuildConfiguration]] = [:]
 
         for target in xcodeProj.targets {
-            let configurations = target.buildConfigurations ?? []
+            let configurations = target.buildConfigurations
 
             for configuration in configurations {
                 let bundleIdentifierOfConfig = configuration.bundleIdentifier
