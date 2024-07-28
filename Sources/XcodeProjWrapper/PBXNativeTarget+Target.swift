@@ -8,7 +8,7 @@
 import XcodeProj
 
 extension PBXNativeTarget: Target {
-    public var buildConfigurations: [BuildConfiguration]? {
-        buildConfigurationList?.buildConfigurations
+    public var buildConfigurations: [BuildConfiguration] {
+        buildConfigurationList?.buildConfigurations ?? []
     }
 }

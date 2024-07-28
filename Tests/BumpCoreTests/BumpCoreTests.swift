@@ -5,13 +5,12 @@
 //  Created by Homero Oliveira on 08/07/20.
 //
 
-import XCTest
 import XcodeProjWrapperMock
+import XCTest
 
 @testable import BumpCore
 
 final class BumpCoreTests: XCTestCase {
-
     func testBumpBuild() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
@@ -21,7 +20,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .build)
 
@@ -39,7 +38,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .patch)
 
@@ -57,7 +56,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .minor)
 
@@ -75,7 +74,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .major)
 
@@ -93,7 +92,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .versionString("1.0.0"))
 
@@ -111,7 +110,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: config, flag: .versionString("1.0.0.3"))
 
@@ -130,7 +129,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
 
         let expected: [String: [BuildConfigurationMock]] = [
@@ -157,7 +156,7 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
 
         let expected: [String: [BuildConfigurationMock]] = [
@@ -289,7 +288,7 @@ final class BumpCoreTests: XCTestCase {
         XCTAssertEqual(logs.count, 1)
         XCTAssertTrue(xcodeProj.saveChangesCalled)
     }
-    
+
     func testBumpOutputVerboseWhenInPlaceIsTrue() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
@@ -301,14 +300,14 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         try bump.bump(flag: .minor)
-        
+
         XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
         XCTAssertEqual(logs.count, 1)
         XCTAssertFalse(xcodeProj.saveChangesCalled)
     }
-    
+
     func testBumpOutputVersionWithTwoBuildConfigs() throws {
         let xcodeProj = XcodeProjWrapperMock(
             targets: [
@@ -330,7 +329,7 @@ final class BumpCoreTests: XCTestCase {
             ]
         )
         var logs: [String] = []
-        
+
         let bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
@@ -341,9 +340,9 @@ final class BumpCoreTests: XCTestCase {
             useSameVersion: false,
             inPlace: false
         )
-        
+
         try bump.bump(flag: .build)
-        
+
         XCTAssertEqual(
             logs,
             ["Test1 1 -> 1.0.0.2"]

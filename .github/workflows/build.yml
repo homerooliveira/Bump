@@ -7,12 +7,14 @@ on:
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
+      - 'Package.resolved'
       - '.github/workflows/build.yml'
   pull_request:
     paths: 
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
+      - 'Package.resolved'
       - '.github/workflows/build.yml'
 
 jobs:

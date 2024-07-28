@@ -11,7 +11,6 @@ import XCTest
 @testable import BumpCore
 
 final class IncrementModeTests: XCTestCase {
-
     func testRawValue() throws {
         let expectedValues = ["major", "minor", "patch", "build", "1.0.0"]
 

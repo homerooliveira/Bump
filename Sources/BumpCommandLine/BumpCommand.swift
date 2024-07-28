@@ -5,7 +5,6 @@ import Foundation
 import SwiftExtensions
 
 struct BumpCommand: ParsableCommand {
-
     static var configuration = CommandConfiguration(
         commandName: "bump",
         abstract: "Bump your projects."
@@ -72,19 +71,18 @@ struct BumpCommand: ParsableCommand {
 
         if dirURL.isXcodeProj {
             return dirURL.path
-        } else {
-            guard dirURL.pathExtension.isEmpty else {
-                throw ValidationError("The path must be .xcodeproj file or directory.")
-            }
-
-            let directoryContents = try Current.fileManagerWrapper.contentsOfDirectory(
-                at: dirURL
-            )
-
-            guard let url = directoryContents.first(where: { $0.isXcodeProj }) else {
-                throw ValidationError("Needs exist a .xcodeproj file in this directory.")
-            }
-            return url.path
         }
+        guard dirURL.pathExtension.isEmpty else {
+            throw ValidationError("The path must be .xcodeproj file or directory.")
+        }
+
+        let directoryContents = try Current.fileManagerWrapper.contentsOfDirectory(
+            at: dirURL
+        )
+
+        guard let url = directoryContents.first(where: { $0.isXcodeProj }) else {
+            throw ValidationError("Needs exist a .xcodeproj file in this directory.")
+        }
+        return url.path
     }
 }

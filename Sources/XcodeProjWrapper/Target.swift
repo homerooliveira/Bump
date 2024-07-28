@@ -9,5 +9,5 @@ import Foundation
 
 public protocol Target {
     var name: String { get }
-    var buildConfigurations: [BuildConfiguration]? { get }
+    var buildConfigurations: [BuildConfiguration] { get }
 }
