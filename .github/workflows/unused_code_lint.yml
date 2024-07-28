@@ -1,4 +1,4 @@
-name: Lint
+name: Unusuded Code Lint
 
 on:
   push:
@@ -27,5 +27,7 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
-    - name: Run Swiftlint
-      run: swift package plugin swiftlint --strict --reporter github-actions-logging
+    - name: Installing Periphery
+      run: brew install periphery
+    - name: Run Periphery
+      run: periphery scan --format github-actions --relative-results --strict
