@@ -34,4 +34,8 @@ jobs:
     - name: Run tests
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
+      run: xcrun llvm-cov export -instr-profile .build/debug/codecov/default.profdata -format=lcov > .build/debug/codecov/default.lcov
+    - name: Send coverage
       uses: codecov/codecov-action@v3
+      with:
+        files: .build/debug/codecov/default.lcov
