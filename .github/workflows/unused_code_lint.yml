@@ -1,4 +1,4 @@
-name: Build and Test
+name: Unusuded Code Lint
 
 on:
   push:
@@ -8,21 +8,19 @@ on:
       - 'Tests/**.swift'
       - 'Package.swift'
       - 'Package.resolved'
-      - '.github/workflows/build.yml'
   pull_request:
     paths: 
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
       - 'Package.resolved'
-      - '.github/workflows/build.yml'
-  
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  lint:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
@@ -33,16 +31,7 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
-    - name: Build
-      run: swift build --build-tests --verbose
-    - name: Run tests
-      run: swift test --verbose --enable-code-coverage --parallel | xcpretty
-    - name: Generate coverage
-      run: ./.scripts/generate_coverage.sh
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        files: info.lcov
-        fail_ci_if_error: true
-        token: ${{ secrets.CODECOV_TOKEN }}
-        verbose: true
+    - name: Installing Periphery
+      run: brew install peripheryapp/periphery/periphery
+    - name: Run Periphery
+      run: periphery scan --format github-actions --relative-results --strict

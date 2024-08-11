@@ -9,6 +9,9 @@ build_debug:
 build:
 	swift build --product bump -c release --disable-sandbox
 
+test:
+	swift test --parallel
+
 install_debug: build_debug
 	install ".build/debug/bump" "$(bindir)"
 		
@@ -19,10 +22,13 @@ uninstall:
 	rm -rf "$(bindir)/bump"
 
 format:
-	swiftlint autocorrect
+	swift package plugin swiftlint --autocorrect
 
 lint:
-	swiftlint lint --quiet
+	swift package plugin swiftlint --strict
+
+lint_unused_code:
+	periphery scan --relative-results --strict
 
 clean:
 	rm -rf .build

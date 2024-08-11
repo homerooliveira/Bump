@@ -1,8 +1,6 @@
-opt_in_rules:
-  - empty_count 
-
 included:
   - Sources
+  - Tests
 
 line_length: 170
 

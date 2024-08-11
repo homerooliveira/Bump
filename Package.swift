@@ -1,4 +1,4 @@
-// swift-tools-version:5.2
+// swift-tools-version:5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,22 +6,21 @@ import PackageDescription
 let package = Package(
     name: "Bump",
     platforms: [
-        .macOS(.v10_11)
+        .macOS(.v10_13)
     ],
     products: [
-        .executable(name: "bump", targets: ["bump"])
+        .executable(name: "bump", targets: ["BumpCommandLine"])
     ],
     dependencies: [
-        .package(name: "XcodeProj",
-                 url: "https://github.com/tuist/xcodeproj.git",
+        .package(url: "https://github.com/tuist/xcodeproj.git",
                  .upToNextMajor(from: "8.17.0")),
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  .upToNextMajor(from: "1.3.0")),
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", 
+                 exact: "0.55.1")
     ],
     targets: [
-        .target(name: "bump",
-            dependencies: ["BumpCommandLine"]),
-        .target(
+        .executableTarget(
             name: "BumpCommandLine",
             dependencies: ["BumpCore",
                            .product(name: "ArgumentParser", package: "swift-argument-parser"),
@@ -38,7 +37,7 @@ let package = Package(
         .target(name: "SwiftExtensions"),
         .target(
             name: "XcodeProjWrapper",
-            dependencies: ["SwiftExtensions", "XcodeProj"]),
+            dependencies: ["SwiftExtensions", .product(name: "XcodeProj", package: "xcodeproj"),]),
         .target(
             name: "XcodeProjWrapperMock",
             dependencies: ["XcodeProjWrapper"]),

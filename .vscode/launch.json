@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:Bump}",
+            "name": "Debug bump",
+            "program": "${workspaceFolder:Bump}/.build/debug/bump",
+            "preLaunchTask": "swift: Build Debug bump"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "sourceLanguages": [
+                "swift"
+            ],
+            "args": [],
+            "cwd": "${workspaceFolder:Bump}",
+            "name": "Release bump",
+            "program": "${workspaceFolder:Bump}/.build/release/bump",
+            "preLaunchTask": "swift: Build Release bump"
+        }
+    ]
+}

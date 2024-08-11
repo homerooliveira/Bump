@@ -39,6 +39,7 @@ public enum IncrementMode: RawRepresentable, Equatable {
             self = .patch
         case "build":
             self = .build
+
         default:
             self = .versionString(rawValue)
         }

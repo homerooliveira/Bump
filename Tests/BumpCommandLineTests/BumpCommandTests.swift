@@ -1,16 +1,16 @@
 import ArgumentParser
-import Foundation
 import FileManagerWrapperMock
-import XCTest
+import Foundation
 import XcodeProjWrapperMock
+import XCTest
 
 @testable import BumpCommandLine
 
 final class BumpCommandTests: XCTestCase {
-    var fileManagerWrapperMock = FileManagerWrapperMock()
-    var xcodeProjWrapperMock = XcodeProjWrapperMock()
-    var logs: [String] = []
-    var command = BumpCommand()
+    private var fileManagerWrapperMock = FileManagerWrapperMock()
+    private var xcodeProjWrapperMock = XcodeProjWrapperMock()
+    private var logs: [String] = []
+    private var command = BumpCommand()
 
     override func setUpWithError() throws {
         fileManagerWrapperMock.reset()
@@ -46,7 +46,8 @@ final class BumpCommandTests: XCTestCase {
                 XCTFail("Validation error cannot be nil.")
                 return
             }
-            XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            XCTAssertEqual(validationError.description, expectedError)
         }
     }
 
@@ -59,7 +60,8 @@ final class BumpCommandTests: XCTestCase {
                 XCTFail("Validation error cannot be nil.")
                 return
             }
-            XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            XCTAssertEqual(validationError.description, expectedError)
         }
     }
 
@@ -106,7 +108,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         XCTAssertNoThrow(try command.run())
 
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.xcodeproj")
@@ -145,7 +147,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
@@ -165,7 +167,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)

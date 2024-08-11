@@ -5,16 +5,31 @@ on:
     branches: [ main ]
     paths:
       - 'Sources/**.swift'
-      - '.github/workflows/lint.yml'
+      - 'Tests/**.swift'
+      - 'Package.swift'
+      - 'Package.resolved'
   pull_request:
     paths: 
       - 'Sources/**.swift'
-      - '.github/workflows/lint.yml'
+      - 'Tests/**.swift'
+      - 'Package.swift'
+      - 'Package.resolved'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
+    - name: Cache .build 
+      uses: actions/cache@v4.0.2
+      with:
+        path: .build
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
     - name: Run Swiftlint
-      run: swiftlint --strict --reporter github-actions-logging
+      run: swift package plugin swiftlint --strict --reporter github-actions-logging

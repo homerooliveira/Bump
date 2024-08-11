@@ -10,7 +10,6 @@ import PathKit
 import XcodeProj
 
 public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
-
     private let path: Path
     private let xcodeProj: XcodeProj
 
@@ -26,5 +25,4 @@ public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
     public func saveChanges() throws {
         try xcodeProj.writePBXProj(path: path, outputSettings: PBXOutputSettings())
     }
-
 }

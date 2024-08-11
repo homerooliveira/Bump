@@ -14,5 +14,3 @@ xcrun llvm-cov export -format="lcov" \
     "${COV_BIN}" \
     -instr-profile=.build/debug/codecov/default.profdata \
     -ignore-filename-regex=".build|Tests" > info.lcov
-    
-bash <(curl -s https://codecov.io/bash)
