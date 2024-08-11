@@ -26,7 +26,7 @@ public final class FileManagerWrapperMock: FileManagerWrapperProtocol {
     public var atURLPassed: URL?
     public private(set) var contentsOfDirectoryCalled = false
     public var contentsOfDirectoryBeReturned: [URL] = []
-    
+
     public func contentsOfDirectory(at url: URL) throws -> [URL] {
         atURLPassed = url
         contentsOfDirectoryCalled = true

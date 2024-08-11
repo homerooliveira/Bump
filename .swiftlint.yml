@@ -17,6 +17,7 @@ disabled_rules:
   - file_name
   - no_grouping_extension
   - balanced_xctest_lifecycle
+  - contrasted_opening_brace
 
 included:
   - Sources
