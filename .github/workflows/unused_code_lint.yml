@@ -15,6 +15,10 @@ on:
       - 'Package.swift'
       - 'Package.resolved'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: macos-latest

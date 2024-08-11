@@ -16,6 +16,10 @@ on:
       - 'Package.swift'
       - 'Package.resolved'
       - '.github/workflows/build.yml'
+  
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -35,12 +39,6 @@ jobs:
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
       run: ./.scripts/generate_coverage.sh
-    - name: Upload test results to Codecov
-      if: ${{ !cancelled() }}
-      uses: codecov/test-results-action@v1
-      with:
-        files: info.lcov
-        token: ${{ secrets.CODECOV_TOKEN }}
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
       with:
