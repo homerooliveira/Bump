@@ -34,7 +34,7 @@ jobs:
     - name: Run tests
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
-      run: ./generate_coverage.sh
+      run: ./.scripts/generate_coverage.sh
     - name: Send coverage
       uses: codecov/codecov-action@v3
       with:
