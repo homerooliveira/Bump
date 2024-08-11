@@ -35,8 +35,14 @@ jobs:
       run: swift test --verbose --enable-code-coverage --parallel | xcpretty
     - name: Generate coverage
       run: ./.scripts/generate_coverage.sh
-    - name: Send coverage
-      uses: codecov/codecov-action@v3
+    - name: Upload test results to Codecov
+      if: ${{ !cancelled() }}
+      uses: codecov/test-results-action@v1
+      with:
+        files: info.lcov
+        token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
       with:
         files: info.lcov
         fail_ci_if_error: true
