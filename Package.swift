@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
-        .executable(name: "bump", targets: ["bump"])
+        .executable(name: "bump", targets: ["BumpCommandLine"])
     ],
     dependencies: [
         .package(url: "https://github.com/tuist/xcodeproj.git",
@@ -20,9 +20,7 @@ let package = Package(
                  exact: "0.55.1")
     ],
     targets: [
-        .executableTarget(name: "bump",
-            dependencies: ["BumpCommandLine"]),
-        .target(
+        .executableTarget(
             name: "BumpCommandLine",
             dependencies: ["BumpCore",
                            .product(name: "ArgumentParser", package: "swift-argument-parser"),

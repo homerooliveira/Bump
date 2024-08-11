@@ -1,3 +1,0 @@
-import BumpCommandLine
-
-BumpMain.main()

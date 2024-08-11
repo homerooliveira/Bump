@@ -1,8 +1,6 @@
 import ArgumentParser
 import Foundation
-import FileManagerWrapperMock
 import XCTest
-import XcodeProjWrapperMock
 
 @testable import BumpCommandLine
 

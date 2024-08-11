@@ -1,16 +1,16 @@
 import ArgumentParser
-import Foundation
 import FileManagerWrapperMock
-import XCTest
+import Foundation
 import XcodeProjWrapperMock
+import XCTest
 
 @testable import BumpCommandLine
 
 final class BumpCommandTests: XCTestCase {
-    var fileManagerWrapperMock = FileManagerWrapperMock()
-    var xcodeProjWrapperMock = XcodeProjWrapperMock()
-    var logs: [String] = []
-    var command = BumpCommand()
+    private var fileManagerWrapperMock = FileManagerWrapperMock()
+    private var xcodeProjWrapperMock = XcodeProjWrapperMock()
+    private var logs: [String] = []
+    private var command = BumpCommand()
 
     override func setUpWithError() throws {
         fileManagerWrapperMock.reset()
@@ -106,7 +106,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         XCTAssertNoThrow(try command.run())
 
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "test.xcodeproj")
@@ -145,7 +145,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
@@ -165,7 +165,7 @@ final class BumpCommandTests: XCTestCase {
         command.useSameVersion = false
         command.verbose = false
         command.inPlace = false
-        
+
         try command.run()
 
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)

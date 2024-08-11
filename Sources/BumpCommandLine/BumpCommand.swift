@@ -4,6 +4,9 @@ import Environment
 import Foundation
 import SwiftExtensions
 
+var Current = Environment()
+
+@main
 struct BumpCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
         commandName: "bump",

@@ -16,10 +16,11 @@ disabled_rules:
   - extension_access_modifier
   - file_name
   - no_grouping_extension
-
+  - balanced_xctest_lifecycle
 
 included:
   - Sources
+  - Tests
 
 line_length: 170
 
