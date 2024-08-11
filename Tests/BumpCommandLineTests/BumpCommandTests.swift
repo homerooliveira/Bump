@@ -46,7 +46,8 @@ final class BumpCommandTests: XCTestCase {
                 XCTFail("Validation error cannot be nil.")
                 return
             }
-            XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            XCTAssertEqual(validationError.description, expectedError)
         }
     }
 
@@ -59,7 +60,8 @@ final class BumpCommandTests: XCTestCase {
                 XCTFail("Validation error cannot be nil.")
                 return
             }
-            XCTAssertEqual(validationError.description, "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            XCTAssertEqual(validationError.description, expectedError)
         }
     }
 
