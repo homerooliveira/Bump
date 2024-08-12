@@ -1,7 +1,6 @@
 import Foundation
+import XCTest
 
-func fixturesPath() -> URL {
-    Bundle.module.resourceURL ?? URL(fileURLWithPath: #file)
-        .deletingLastPathComponent()
-        .appendingPathComponent("Resources")
+func fixturesPath() throws -> URL {
+    try XCTUnwrap(Bundle.module.resourceURL)
 }

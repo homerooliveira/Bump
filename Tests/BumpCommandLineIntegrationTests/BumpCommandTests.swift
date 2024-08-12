@@ -15,7 +15,7 @@ final class BumpCommandTests: XCTestCase {
     }
 
     func testBumpWithDirectory() throws {
-        let resourcesPath = fixturesPath()
+        let resourcesPath = try fixturesPath()
 
         command.path = resourcesPath.path
         command.bundleIdentifiers = ["com.test.Test1"]
@@ -32,7 +32,7 @@ final class BumpCommandTests: XCTestCase {
     }
 
     func testBumpWithXcodeproj() throws {
-        let resourcesPath = fixturesPath()
+        let resourcesPath = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
         command.path = resourcesPath.path
@@ -50,7 +50,7 @@ final class BumpCommandTests: XCTestCase {
     }
 
     func testBumpWithDirectoryWhenVerboseIsTrue() throws {
-        let resourcesPath = fixturesPath()
+        let resourcesPath = try fixturesPath()
 
         command.path = resourcesPath.path
         command.bundleIdentifiers = ["com.test.Test1"]
@@ -74,7 +74,7 @@ final class BumpCommandTests: XCTestCase {
     }
 
     func testBumpWithXcodeprojWhenVerboseIsTrue() throws {
-        let resourcesPath = fixturesPath()
+        let resourcesPath = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
         command.path = resourcesPath.path
