@@ -10,7 +10,7 @@ final class BumpCommandTests: XCTestCase {
 
     override func setUpWithError() throws {
         logs = []
-        Current = .init { self.logs.append($0) }
+        Current = .init(logger: { self.logs.append($0) })
         command = BumpCommand()
     }
 
