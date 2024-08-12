@@ -1,8 +1,7 @@
 import Foundation
 
 func fixturesPath() -> URL {
-    URL(fileURLWithPath: #file)
-        .deletingLastPathComponent()
+    Bundle.module.resourceURL ?? URL(fileURLWithPath: #file)
         .deletingLastPathComponent()
         .appendingPathComponent("Resources")
 }
