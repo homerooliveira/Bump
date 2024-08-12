@@ -33,8 +33,6 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
-    - name: Install Xcbeautify
-      run: brew install xcbeautify
     - name: Build
       run: swift build --build-tests --verbose
     - name: Run tests
