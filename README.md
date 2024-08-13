@@ -1,7 +1,7 @@
 
 # Bump
 
-![Swift](https://github.com/homerooliveira/Bump/workflows/Swift/badge.svg)
+![Swift](https://github.com/homerooliveira/Bump/actions/workflows/build.yml/badge.svg)
 [![codecov](https://codecov.io/gh/homerooliveira/Bump/branch/master/graph/badge.svg?token=33PIP7NUZO)](https://codecov.io/gh/homerooliveira/Bump)
 
 **Bump** is a command-line tool designed to automate the versioning process in Xcode projects. It simplifies managing your project versions by automatically updating the version numbers in your `Info.plist` files, saving you from manual editing and potential errors.
