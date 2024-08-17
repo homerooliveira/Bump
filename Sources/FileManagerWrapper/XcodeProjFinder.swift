@@ -1,10 +1,10 @@
 import Foundation
 
 public protocol XcodeProjFinderProtocol {
-    func findXcodeProj(path: String) throws -> String
+    func findXcodeProj(path: String?) throws -> String
 }
 
-struct XcodeProjFinder: XcodeProjFinderProtocol {
+public struct XcodeProjFinder: XcodeProjFinderProtocol {
     struct FindError: Error {
         let message: String
 
@@ -17,9 +17,15 @@ struct XcodeProjFinder: XcodeProjFinderProtocol {
         }
     }
 
-    let fileManagerWrapper: FileManagerWrapperProtocol
+    private let fileManagerWrapper: FileManagerWrapperProtocol
 
-    func findXcodeProj(path: String) throws -> String {
+    public init(fileManagerWrapper: FileManagerWrapperProtocol = FileManagerWrapper()) {
+        self.fileManagerWrapper = fileManagerWrapper
+    }
+
+    public func findXcodeProj(path: String?) throws -> String {
+        let path = path ?? fileManagerWrapper.currentDirectoryPath
+
         guard fileManagerWrapper.fileExists(atPath: path) else {
             throw FindError("Needs exist a path of .xcodeproj file or directory.")
         }
@@ -39,7 +45,7 @@ struct XcodeProjFinder: XcodeProjFinderProtocol {
             at: dirURL
         )
 
-        guard let url = directoryContents.first(where: { $0.isXcodeProj }) else {
+        guard let url = directoryContents.first(where: \.isXcodeProj) else {
             throw FindError("Needs exist a .xcodeproj file in this directory.")
         }
         return url.path

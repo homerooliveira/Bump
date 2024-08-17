@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable import SwiftExtensions
+@testable import FileManagerWrapper
 
 final class URLTests: XCTestCase {
     func testIsXcodeProjTrue() throws {

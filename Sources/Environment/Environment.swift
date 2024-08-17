@@ -10,16 +10,16 @@ import Foundation
 import XcodeProjWrapper
 
 public struct Environment {
-    public let fileManagerWrapper: FileManagerWrapperProtocol
+    public let xcodeProjFinder: XcodeProjFinderProtocol
     public let xcodeProjWrapper: (String) throws -> XcodeProjWrapperProtocol
     public let logger: (String) -> Void
 
     public init(
-        fileManagerWrapper: FileManagerWrapperProtocol = FileManagerWrapper(),
+        xcodeProjFinder: XcodeProjFinderProtocol = XcodeProjFinder(),
         xcodeProjWrapper: @escaping (String) throws -> XcodeProjWrapperProtocol = { try XcodeProjWrapper(path: $0) },
         logger: @escaping (String) -> Void = { print($0) }
     ) {
-        self.fileManagerWrapper = fileManagerWrapper
+        self.xcodeProjFinder = xcodeProjFinder
         self.xcodeProjWrapper = xcodeProjWrapper
         self.logger = logger
     }
@@ -27,7 +27,7 @@ public struct Environment {
 
 extension Environment {
     public static let live = Self (
-        fileManagerWrapper: FileManagerWrapper(),
+        xcodeProjFinder: XcodeProjFinder(),
         xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
         logger: { print($0) }
     )
