@@ -57,5 +57,8 @@ let package = Package(
         .testTarget(
             name: "FileManagerWrapperTests",
             dependencies: ["FileManagerWrapper", "FileManagerWrapperMock"]),
+        .testTarget(
+            name: "EnvironmentTests",
+            dependencies: ["Environment"]),
     ]
 )

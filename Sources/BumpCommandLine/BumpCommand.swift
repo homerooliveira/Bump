@@ -2,7 +2,6 @@ import ArgumentParser
 import BumpCore
 import Environment
 import Foundation
-import SwiftExtensions
 
 @main
 struct BumpCommand: ParsableCommand {
@@ -29,7 +28,7 @@ struct BumpCommand: ParsableCommand {
     @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
 
-    var environment = Environment()
+    var environment = Environment.live
 
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
@@ -47,7 +46,7 @@ struct BumpCommand: ParsableCommand {
     }
 
     func run() throws {
-        let path = try environment.xcodeProjFinder.findXcodeProj(path: self.path)
+        let path = try environment.xcodeProjFinder.findXcodeProj(path: path)
 
         let bump = try Bump(
             xcodeProj: environment.xcodeProjWrapper(path),

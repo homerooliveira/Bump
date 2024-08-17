@@ -9,10 +9,11 @@ import FileManagerWrapper
 import Foundation
 import XcodeProjWrapper
 
-public struct Environment {
+public struct Environment: Equatable {
     public let xcodeProjFinder: XcodeProjFinderProtocol
     public let xcodeProjWrapper: (String) throws -> XcodeProjWrapperProtocol
     public let logger: (String) -> Void
+    private let identifier: String
 
     public init(
         xcodeProjFinder: XcodeProjFinderProtocol = XcodeProjFinder(),
@@ -22,6 +23,11 @@ public struct Environment {
         self.xcodeProjFinder = xcodeProjFinder
         self.xcodeProjWrapper = xcodeProjWrapper
         self.logger = logger
+        self.identifier = UUID().uuidString
+    }
+
+    public static func == (lhs: Environment, rhs: Environment) -> Bool {
+        lhs.identifier == rhs.identifier
     }
 }
 
