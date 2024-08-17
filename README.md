@@ -38,3 +38,46 @@ Will show to you:
 Test1 0.0.1.1 -> 0.0.1.2
 ```
 
+```mermaid
+flowchart TD
+    subgraph External_Packages
+        XcodeProj["XcodeProj\n(xcodeproj)"]
+        ArgumentParser["ArgumentParser\n(swift-argument-parser)"]
+        SwiftLintPlugins["SwiftLintPlugins\n(0.55.1)"]
+    end
+
+    subgraph BumpPackage
+        BumpCommandLine --> BumpCore
+        BumpCommandLine --> Environment
+        BumpCommandLine --> ArgumentParser
+
+        BumpCore --> XcodeProjWrapper
+        BumpCore --> SwiftExtensions
+
+        Environment --> FileManagerWrapper
+        Environment --> XcodeProjWrapper
+
+        XcodeProjWrapper --> XcodeProj
+        XcodeProjWrapper --> SwiftExtensions
+
+        FileManagerWrapperMock --> FileManagerWrapper
+
+        XcodeProjWrapperMock --> XcodeProjWrapper
+    end
+
+    subgraph Test_Targets
+        BumpCoreTests --> BumpCore
+        BumpCoreTests --> XcodeProjWrapperMock
+
+        BumpCommandLineTests --> BumpCommandLine
+        BumpCommandLineTests --> Environment
+        BumpCommandLineTests --> FileManagerWrapperMock
+        BumpCommandLineTests --> XcodeProjWrapperMock
+
+        BumpCommandLineIntegrationTests --> BumpCommandLine
+        BumpCommandLineIntegrationTests --> Environment
+
+        SwiftExtensionsTests --> SwiftExtensions
+    end
+
+```

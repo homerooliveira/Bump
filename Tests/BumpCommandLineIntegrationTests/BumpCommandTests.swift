@@ -1,4 +1,5 @@
 import ArgumentParser
+import Environment
 import Foundation
 import XCTest
 
@@ -10,8 +11,7 @@ final class BumpCommandTests: XCTestCase {
 
     override func setUpWithError() throws {
         logs = []
-        Current = .init(logger: { self.logs.append($0) })
-        command = BumpCommand()
+        command = BumpCommand(environment: Environment(logger: { self.logs.append($0) }))
     }
 
     func testBumpWithDirectory() throws {

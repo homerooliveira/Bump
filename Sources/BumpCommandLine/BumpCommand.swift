@@ -4,8 +4,6 @@ import Environment
 import Foundation
 import SwiftExtensions
 
-var Current = Environment()
-
 @main
 struct BumpCommand: ParsableCommand {
     static var configuration = CommandConfiguration(
@@ -19,7 +17,7 @@ struct BumpCommand: ParsableCommand {
     @Option(name: .shortAndLong, help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
     var mode: IncrementMode
 
-    @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
+    @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the environment directory.")
     var path: String?
 
     @Flag(name: .shortAndLong, help: "Show all the targets")
@@ -30,6 +28,8 @@ struct BumpCommand: ParsableCommand {
 
     @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
+
+    var environment = Environment()
 
     mutating func validate() throws {
         guard !bundleIdentifiers.isEmpty else {
@@ -50,9 +50,9 @@ struct BumpCommand: ParsableCommand {
         let path = try findFirstXcodeProj()
 
         let bump = try Bump(
-            xcodeProj: Current.xcodeProjWrapper(path),
+            xcodeProj: environment.xcodeProjWrapper(path),
             bundleIdentifiers: Set(bundleIdentifiers),
-            log: Current.logger,
+            log: environment.logger,
             isVerbose: verbose,
             useSameVersion: useSameVersion,
             inPlace: inPlace
@@ -62,9 +62,9 @@ struct BumpCommand: ParsableCommand {
     }
 
     private func findFirstXcodeProj() throws -> String {
-        let path = self.path ?? Current.fileManagerWrapper.currentDirectoryPath
+        let path = path ?? environment.fileManagerWrapper.currentDirectoryPath
 
-        guard Current.fileManagerWrapper.fileExists(atPath: path) else {
+        guard environment.fileManagerWrapper.fileExists(atPath: path) else {
             throw ValidationError("Needs exist a path of .xcodeproj file or directory.")
         }
 
@@ -79,7 +79,55 @@ struct BumpCommand: ParsableCommand {
             throw ValidationError("The path must be .xcodeproj file or directory.")
         }
 
-        let directoryContents = try Current.fileManagerWrapper.contentsOfDirectory(
+        let directoryContents = try environment.fileManagerWrapper.contentsOfDirectory(
+            at: dirURL
+        )
+
+        guard let url = directoryContents.first(where: { $0.isXcodeProj }) else {
+            throw ValidationError("Needs exist a .xcodeproj file in this directory.")
+        }
+        return url.path
+    }
+}
+
+import FileManagerWrapper
+
+protocol XcodeProjFinderProtocol {
+    func findXcodeProj(path: String) throws -> String
+}
+
+struct XcodeProjFinder: XcodeProjFinderProtocol {
+    struct FindError: Error {
+        let message: String
+
+        init(_ message: String) {
+            self.message = message
+        }
+
+        var description: String {
+            message
+        }
+    }
+
+    let fileManagerWrapper: FileManagerWrapperProtocol
+
+    func findXcodeProj(path: String) throws -> String {
+        guard fileManagerWrapper.fileExists(atPath: path) else {
+            throw ValidationError("Needs exist a path of .xcodeproj file or directory.")
+        }
+
+        guard let dirURL = URL(string: path) else {
+            throw ValidationError("Wrong directory or path.")
+        }
+
+        if dirURL.isXcodeProj {
+            return dirURL.path
+        }
+        guard dirURL.pathExtension.isEmpty else {
+            throw ValidationError("The path must be .xcodeproj file or directory.")
+        }
+
+        let directoryContents = try fileManagerWrapper.contentsOfDirectory(
             at: dirURL
         )
 

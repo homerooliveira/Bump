@@ -1,4 +1,5 @@
 import ArgumentParser
+import Environment
 import FileManagerWrapperMock
 import Foundation
 import XcodeProjWrapperMock
@@ -16,12 +17,12 @@ final class BumpCommandTests: XCTestCase {
         fileManagerWrapperMock.reset()
         xcodeProjWrapperMock.reset()
         logs = []
-        Current = .init(
+        let environment = Environment(
             fileManagerWrapper: fileManagerWrapperMock,
             xcodeProjWrapper: { _ in  self.xcodeProjWrapperMock },
             logger: { self.logs.append($0) }
         )
-        command = BumpCommand()
+        command = BumpCommand(environment: environment)
     }
 
     func testBumpValitionErrorWhenBundleIdentifiersIsEmpty() throws {
