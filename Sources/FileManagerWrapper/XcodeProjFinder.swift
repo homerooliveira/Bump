@@ -1,5 +1,4 @@
 import Foundation
-import SwiftExtensions
 
 public protocol XcodeProjFinderProtocol {
     func findXcodeProj(path: String) throws -> String
@@ -44,5 +43,11 @@ struct XcodeProjFinder: XcodeProjFinderProtocol {
             throw FindError("Needs exist a .xcodeproj file in this directory.")
         }
         return url.path
+    }
+}
+
+extension URL {
+    public var isXcodeProj: Bool {
+        pathExtension == "xcodeproj"
     }
 }
