@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class FileManagerWrapper: FileManagerWrapperProtocol {
+public struct FileManagerWrapper: FileManagerWrapperProtocol {
     private let fileManager: FileManager
 
     public var currentDirectoryPath: String {
