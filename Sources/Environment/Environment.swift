@@ -25,11 +25,17 @@ public struct Environment {
     }
 }
 
+extension Environment {
+    public static let live = Self (
+        fileManagerWrapper: FileManagerWrapper(),
+        xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
+        logger: { print($0) }
+    )
+}
+
 // This extension is necessary to make Environment to be used in the BumpCommand as injected dependency.
 extension Environment: Decodable {
     public init(from decoder: Decoder) throws {
-        fileManagerWrapper = FileManagerWrapper()
-        xcodeProjWrapper = { try XcodeProjWrapper(path: $0) }
-        logger = { print($0) }
+        self = Self.live
     }
 }
