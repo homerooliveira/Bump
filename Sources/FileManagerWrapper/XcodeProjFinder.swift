@@ -47,7 +47,7 @@ struct XcodeProjFinder: XcodeProjFinderProtocol {
 }
 
 extension URL {
-    public var isXcodeProj: Bool {
+    var isXcodeProj: Bool {
         pathExtension == "xcodeproj"
     }
 }
