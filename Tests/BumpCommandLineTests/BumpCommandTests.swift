@@ -73,11 +73,11 @@ final class BumpCommandTests: XCTestCase {
         command.mode = .build
 
         XCTAssertThrowsError(try command.run()) { error in
-            guard let validationError = error as? ValidationError else {
+            guard let validationError = error as? CocoaError else {
                 XCTFail("Validation error cannot be nil.")
                 return
             }
-            XCTAssertEqual(validationError.description, "Needs exist a path of .xcodeproj file or directory.")
+            XCTAssertEqual(validationError, CocoaError(.fileNoSuchFile))
         }
         XCTAssertEqual(xcodeProjFinderMock.findXcodeProjPathPassed, "test")
         XCTAssertTrue(xcodeProjFinderMock.findXcodeProjPathCalled)
