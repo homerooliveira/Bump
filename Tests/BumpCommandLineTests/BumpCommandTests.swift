@@ -66,6 +66,23 @@ final class BumpCommandTests: XCTestCase {
         }
     }
 
+    func testBumpRunErrorWhenFileNotExist() throws {
+        xcodeProjFinderMock.findXcodeProjPathBeReturned = .failure(CocoaError(.fileNoSuchFile))
+        command.path = "test"
+        command.bundleIdentifiers = ["test"]
+        command.mode = .build
+
+        XCTAssertThrowsError(try command.run()) { error in
+            guard let validationError = error as? ValidationError else {
+                XCTFail("Validation error cannot be nil.")
+                return
+            }
+            XCTAssertEqual(validationError.description, "Needs exist a path of .xcodeproj file or directory.")
+        }
+        XCTAssertEqual(xcodeProjFinderMock.findXcodeProjPathPassed, "test")
+        XCTAssertTrue(xcodeProjFinderMock.findXcodeProjPathCalled)
+    }
+
     // func testBumpRunErrorWhenFileNotExist() throws {
     //     command.path = "test"
     //     command.bundleIdentifiers = ["test"]

@@ -6,16 +6,16 @@ public final class XcodeProjFinderMock: XcodeProjFinderProtocol {
     
     public private(set) var findXcodeProjPathCalled = false
     public private(set) var findXcodeProjPathPassed: String?
-    public var findXcodeProjPathBeReturned = ""
+    public var findXcodeProjPathBeReturned : Result<String, Error> = .success("")
     
     public func findXcodeProj(path: String?) throws -> String {
         findXcodeProjPathCalled = true
         findXcodeProjPathPassed = path
-        return findXcodeProjPathBeReturned
+        return try findXcodeProjPathBeReturned.get()
     }
     
     public func reset() {
         findXcodeProjPathCalled = false
-        findXcodeProjPathBeReturned = ""
+        findXcodeProjPathBeReturned = .success("")
     }
 }
