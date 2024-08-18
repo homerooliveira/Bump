@@ -52,7 +52,7 @@ final class XcodeProjFinderTests: XCTestCase {
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test")
     }
-    
+
     func testFindXcodeProjPathWhenPathIsInvalid() {
         fileManagerWrapperMock.fileExistsBeReturned = true
         fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
