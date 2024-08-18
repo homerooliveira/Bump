@@ -80,6 +80,6 @@ final class BumpCommandTests: XCTestCase {
             XCTAssertEqual(validationError, CocoaError(.fileNoSuchFile))
         }
         XCTAssertEqual(xcodeProjFinderMock.findXcodeProjPathPassed, "test")
-        XCTAssertTrue(xcodeProjFinderMock.findXcodeProjPathCalled)
+        XCTAssertFalse(xcodeProjFinderMock.findXcodeProjPathCalled)
     }
 }
