@@ -7,6 +7,10 @@ final class XcodeProjFinderTests: XCTestCase {
     private let fileManagerWrapperMock = FileManagerWrapperMock()
     private lazy var finder = XcodeProjFinder(fileManagerWrapper: fileManagerWrapperMock)
 
+    override func setUpWithError() throws {
+        fileManagerWrapperMock.reset()
+    }
+
     func testFindXcodeProjPath() throws {
         let path = "/test"
         fileManagerWrapperMock.fileExistsBeReturned = true
