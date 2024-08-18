@@ -20,7 +20,7 @@ final class XcodeProjFinderTests: XCTestCase {
         XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: path))
         XCTAssertEqual(result, "/test/test.xcodeproj")
     }
-    
+
     func testFindXcodeProjPathWhenPathIsNil() throws {
         fileManagerWrapperMock.fileExistsBeReturned = true
         fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]

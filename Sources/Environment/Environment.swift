@@ -32,7 +32,7 @@ public struct Environment: Equatable {
 }
 
 extension Environment {
-    public static let live = Self (
+    public static let live = Self(
         xcodeProjFinder: XcodeProjFinder(),
         xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
         logger: { print($0) }
