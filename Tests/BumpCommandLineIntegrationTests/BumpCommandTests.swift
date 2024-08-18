@@ -99,4 +99,16 @@ final class BumpCommandTests: XCTestCase {
 
         try command.run()
     }
+
+    func testBumpWithXcodeprojWhenPathIsNil() throws {
+        command.path = nil
+        command.bundleIdentifiers = ["com.test.Test1"]
+        command.mode = .build
+        command.useSameVersion = false
+        command.verbose = false
+        command.inPlace = false
+
+        // This will throw an error because the current directory does not have an xcodeproj file
+        XCTAssertThrowsError(try command.run())
+    }
 }
