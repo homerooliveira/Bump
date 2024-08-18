@@ -52,4 +52,51 @@ final class XcodeProjFinderTests: XCTestCase {
         XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
         XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test")
     }
+    
+    func testFindXcodeProjPathWhenPathIsInvalid() {
+        fileManagerWrapperMock.fileExistsBeReturned = true
+        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+
+        XCTAssertThrowsError(try finder.findXcodeProj(path: "")) { error in
+            guard let findError = error as? XcodeProjFinder.FindError else {
+                XCTFail("Find error cannot be nil.")
+                return
+            }
+            XCTAssertEqual(findError.description, "Wrong directory or path.")
+        }
+        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "")
+    }
+
+    func testFindXcodeProjPathWhenPathIsNotXcodeProj() {
+        fileManagerWrapperMock.fileExistsBeReturned = true
+        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test")!]
+
+        XCTAssertThrowsError(try finder.findXcodeProj(path: "/test.txt")) { error in
+            guard let findError = error as? XcodeProjFinder.FindError else {
+                XCTFail("Find error cannot be nil.")
+                return
+            }
+            XCTAssertEqual(findError.description, "The path must be .xcodeproj file or directory.")
+        }
+        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test.txt")
+    }
+
+    func testFindXcodeProjPathWhenDirectoryIsEmpty() {
+        fileManagerWrapperMock.fileExistsBeReturned = true
+        fileManagerWrapperMock.contentsOfDirectoryBeReturned = []
+
+        XCTAssertThrowsError(try finder.findXcodeProj(path: "/test")) { error in
+            guard let findError = error as? XcodeProjFinder.FindError else {
+                XCTFail("Find error cannot be nil.")
+                return
+            }
+            XCTAssertEqual(findError.description, "Needs exist a .xcodeproj file in this directory.")
+        }
+        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test")
+        XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
+        XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "/test"))
+    }
 }
