@@ -1,3 +1,0 @@
-ignore:
-  - "Sources/Environment/Environment.swift"
-  - "Sources/*Mock/"

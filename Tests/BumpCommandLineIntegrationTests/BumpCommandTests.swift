@@ -111,4 +111,41 @@ final class BumpCommandTests: XCTestCase {
         // This will throw an error because the current directory does not have an xcodeproj file
         XCTAssertThrowsError(try command.run())
     }
+
+    func testBumpWithInPlaceTrue() throws {
+        let resourcesPath = try fixturesPath()
+            .appending(component: "SampleProject.xcodeproj")
+
+        let temporaryFile = try copyFileToTemporaryPath(url: resourcesPath)
+
+        command.path = temporaryFile.path
+        command.bundleIdentifiers = ["com.test.Test1"]
+        command.mode = .build
+        command.useSameVersion = false
+        command.verbose = false
+        command.inPlace = true
+
+        try command.run()
+
+        logs.sort()
+
+        XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
+
+        try FileManager.default.removeItem(at: temporaryFile)
+    }
+
+    private func copyFileToTemporaryPath(url: URL) throws -> URL {
+        let fileManager = FileManager.default
+
+        let tempDirectory = fileManager.temporaryDirectory
+        let tempFileURL = tempDirectory.appendingPathComponent("SampleProject.xcodeproj")
+
+        try fileManager.copyItem(at: url, to: tempFileURL)
+
+        return tempFileURL
+    }
+
+    private func fixturesPath() throws -> URL {
+        try XCTUnwrap(Bundle.module.resourceURL)
+    }
 }
