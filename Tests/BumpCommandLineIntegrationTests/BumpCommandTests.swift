@@ -131,6 +131,7 @@ final class BumpCommandTests: XCTestCase {
 
         XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
 
+        // Remove the temporary file
         try FileManager.default.removeItem(at: temporaryFile)
     }
 
