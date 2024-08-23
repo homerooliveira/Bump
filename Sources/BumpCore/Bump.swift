@@ -163,8 +163,7 @@ public struct Bump {
         let buildNumber = configuration.buildNumber?
             .split(separator: ".")
             .last
-            .map(String.init)
-            .flatMap(Int.init) ?? 0
+            .flatMap { Int($0) } ?? 0
         configuration.version = version
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
