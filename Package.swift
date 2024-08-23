@@ -63,6 +63,7 @@ let package = Package(
 for target in package.targets {
     target.swiftSettings = [
         .unsafeFlags(["-warnings-as-errors"]),
-        .enableExperimentalFeature("AccessLevelOnImport")
+        .enableExperimentalFeature("AccessLevelOnImport"),
+        .enableExperimentalFeature("StrictConcurrency"),
     ]
 }

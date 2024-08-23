@@ -9,7 +9,9 @@ import FileManagerWrapper
 import Foundation
 import XcodeProjWrapper
 
-public struct Environment {
+// This struct is used to inject dependencies in the BumpCommand.
+// It is safe to use @unchecked Sendable because the properties are immutable.
+public struct Environment: @unchecked Sendable {
     public let xcodeProjFinder: XcodeProjFinderProtocol
     public let xcodeProjWrapper: (String) throws -> XcodeProjWrapperProtocol
     public let logger: (String) -> Void

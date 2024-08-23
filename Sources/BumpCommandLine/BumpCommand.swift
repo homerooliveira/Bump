@@ -5,7 +5,7 @@ import Foundation
 
 @main
 struct BumpCommand: ParsableCommand {
-    static var configuration = CommandConfiguration(
+    static let configuration = CommandConfiguration(
         commandName: "bump",
         abstract: "Bump your projects."
     )
