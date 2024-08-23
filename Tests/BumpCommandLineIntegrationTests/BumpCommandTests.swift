@@ -1,5 +1,5 @@
-import ArgumentParser
-import Environment
+internal import ArgumentParser
+internal import Environment
 import Foundation
 import XCTest
 

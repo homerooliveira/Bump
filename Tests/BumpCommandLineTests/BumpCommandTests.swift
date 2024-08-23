@@ -1,8 +1,8 @@
-import ArgumentParser
-import Environment
-import FileManagerWrapperMock
+internal import ArgumentParser
+internal import Environment
+internal import FileManagerWrapperMock
 import Foundation
-import XcodeProjWrapperMock
+internal import XcodeProjWrapperMock
 import XCTest
 
 @testable import BumpCommandLine

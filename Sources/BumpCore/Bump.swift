@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import SwiftExtensions
+internal import SwiftExtensions
 import XcodeProjWrapper
 
 public struct Bump {
@@ -147,7 +147,10 @@ public struct Bump {
         }
     }
 
-    private func changeVersionsNumbers(from configuration: BuildConfiguration, transform: (inout [Substring]) -> Void) {
+    private func changeVersionsNumbers(
+        from configuration: BuildConfiguration,
+        transform: (inout [Substring]) -> Void
+    ) {
         var versionArray: [Substring] = getVersion(from: configuration)
         transform(&versionArray)
         let version = versionArray.joined(separator: ".")

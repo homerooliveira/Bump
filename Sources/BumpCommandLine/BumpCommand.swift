@@ -1,6 +1,6 @@
-import ArgumentParser
-import BumpCore
-import Environment
+internal import ArgumentParser
+internal import BumpCore
+internal import Environment
 import Foundation
 
 @main

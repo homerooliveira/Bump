@@ -59,3 +59,10 @@ let package = Package(
             dependencies: ["FileManagerWrapper", "FileManagerWrapperMock"]),
     ]
 )
+
+for target in package.targets {
+    target.swiftSettings = [
+        .unsafeFlags(["-warnings-as-errors"]),
+        .enableExperimentalFeature("AccessLevelOnImport")
+    ]
+}

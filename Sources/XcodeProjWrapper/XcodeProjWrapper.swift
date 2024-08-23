@@ -6,8 +6,8 @@
 //
 
 import Foundation
-import PathKit
-import XcodeProj
+internal import PathKit
+internal import XcodeProj
 
 public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
     private let path: Path
