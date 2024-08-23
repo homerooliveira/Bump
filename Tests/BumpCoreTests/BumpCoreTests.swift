@@ -5,10 +5,10 @@
 //  Created by Homero Oliveira on 08/07/20.
 //
 
-import XcodeProjWrapperMock
+internal import XcodeProjWrapperMock
 import XCTest
 
-@testable import BumpCore
+@testable internal import BumpCore
 
 final class BumpCoreTests: XCTestCase {
     func testBumpBuild() throws {

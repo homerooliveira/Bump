@@ -1,7 +1,7 @@
-import XcodeProjWrapperMock
+internal import XcodeProjWrapperMock
 import XCTest
 
-@testable import BumpCore
+@testable internal import BumpCore
 
 final class BumpCoreTests2: XCTestCase {
     func testGetConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {

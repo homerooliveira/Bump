@@ -8,7 +8,7 @@
 import Foundation
 import XCTest
 
-@testable import BumpCore
+@testable internal import BumpCore
 
 final class IncrementModeTests: XCTestCase {
     func testRawValue() throws {

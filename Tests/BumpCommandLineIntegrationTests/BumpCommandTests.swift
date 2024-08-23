@@ -3,7 +3,7 @@ internal import Environment
 import Foundation
 import XCTest
 
-@testable import BumpCommandLine
+@testable internal import BumpCommandLine
 
 final class BumpCommandTests: XCTestCase {
     private var logs: [String] = []
