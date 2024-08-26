@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-argument-parser.git",
                  .upToNextMajor(from: "1.3.0")),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", 
-                 exact: "0.55.1")
+                 exact: "0.56.2")
     ],
     targets: [
         .executableTarget(
