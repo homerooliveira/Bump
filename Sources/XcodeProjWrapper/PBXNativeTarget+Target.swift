@@ -5,10 +5,10 @@
 //  Created by Homero Oliveira on 11/07/20.
 //
 
-internal import XcodeProj
+private import XcodeProj
 
 extension PBXNativeTarget: Target {
-    public var buildConfigurations: [BuildConfiguration] {
+    public var buildConfigurations: [any BuildConfiguration] {
         buildConfigurationList?.buildConfigurations ?? []
     }
 }

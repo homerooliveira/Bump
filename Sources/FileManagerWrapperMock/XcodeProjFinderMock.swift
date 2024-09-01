@@ -6,7 +6,7 @@ public final class XcodeProjFinderMock: XcodeProjFinderProtocol {
 
     public private(set) var findXcodeProjPathCalled = false
     public private(set) var findXcodeProjPathPassed: String?
-    public var findXcodeProjPathBeReturned: Result<String, Error> = .success("")
+    public var findXcodeProjPathBeReturned: Result<String, any Error> = .success("")
 
     public func findXcodeProj(path: String?) throws -> String {
         findXcodeProjPathCalled = true

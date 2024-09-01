@@ -8,10 +8,10 @@
 import XcodeProjWrapper
 
 public final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
-    public var targets: [Target]
+    public var targets: [any Target]
     public private(set) var saveChangesCalled = false
 
-    public init(targets: [Target] = []) {
+    public init(targets: [any Target] = []) {
         self.targets = targets
     }
 

@@ -9,9 +9,9 @@ import XcodeProjWrapper
 
 public final class TargetMock: Target {
     public let name: String
-    public let buildConfigurations: [BuildConfiguration]
+    public let buildConfigurations: [any BuildConfiguration]
 
-    public init(name: String, buildConfigurations: [BuildConfiguration]) {
+    public init(name: String, buildConfigurations: [any BuildConfiguration]) {
         self.name = name
         self.buildConfigurations = buildConfigurations
     }

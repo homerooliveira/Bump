@@ -5,15 +5,15 @@
 //  Created by Homero Oliveira on 11/07/20.
 //
 
+private import PathKit
+private import XcodeProj
 import Foundation
-internal import PathKit
-internal import XcodeProj
 
 public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
     private let path: Path
     private let xcodeProj: XcodeProj
 
-    public var targets: [Target] {
+    public var targets: [any Target] {
         xcodeProj.pbxproj.nativeTargets
     }
 

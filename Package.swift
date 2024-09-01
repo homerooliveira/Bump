@@ -65,5 +65,7 @@ for target in package.targets {
         .unsafeFlags(["-warnings-as-errors"]),
         .enableExperimentalFeature("AccessLevelOnImport"),
         .enableExperimentalFeature("StrictConcurrency"),
+        .enableUpcomingFeature("ExistentialAny"),
+        // .enableUpcomingFeature("InternalImportsByDefault"), // Uncomment this line to enable the feature in Swift 6.0
     ]
 }

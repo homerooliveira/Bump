@@ -5,9 +5,9 @@
 //  Created by Homero Oliveira on 20/02/20.
 //
 
+private import SwiftExtensions
+private import XcodeProj
 import Foundation
-internal import SwiftExtensions
-internal import XcodeProj
 
 private enum BuildSettingKey: String {
     case version = "MARKETING_VERSION"
