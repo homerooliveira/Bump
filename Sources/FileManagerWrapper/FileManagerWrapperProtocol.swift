@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 23/10/20.
-//
-
 import Foundation
 
 public protocol FileManagerProtocol {

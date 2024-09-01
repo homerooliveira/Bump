@@ -1,10 +1,3 @@
-//
-//  XCBuildConfigurationExtension.swift
-//  
-//
-//  Created by Homero Oliveira on 20/02/20.
-//
-
 private import SwiftExtensions
 private import XcodeProj
 import Foundation

@@ -1,10 +1,3 @@
-//
-//  Bumper.swift
-//  
-//
-//  Created by Homero Oliveira on 20/02/20.
-//
-
 internal import Foundation
 internal import SwiftExtensions
 import XcodeProjWrapper

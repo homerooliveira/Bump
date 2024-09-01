@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 27/02/20.
-//
-
 internal import Foundation
 
 public enum IncrementMode: RawRepresentable, Equatable {

@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 20/10/20.
-//
-
 internal import XcodeProjWrapperMock
 
 extension XcodeProjWrapperMock {

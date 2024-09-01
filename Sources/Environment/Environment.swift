@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 24/10/20.
-//
-
 import FileManagerWrapper
 import Foundation
 import XcodeProjWrapper

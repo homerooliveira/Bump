@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 08/07/20.
-//
-
 internal import XcodeProjWrapperMock
 import XCTest
 

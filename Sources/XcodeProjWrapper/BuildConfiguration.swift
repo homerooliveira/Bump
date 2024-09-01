@@ -1,10 +1,3 @@
-//
-//  File 2.swift
-//  
-//
-//  Created by Homero Oliveira on 08/07/20.
-//
-
 import Foundation
 
 public protocol BuildConfiguration: AnyObject {
