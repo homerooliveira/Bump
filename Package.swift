@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Bump",
     platforms: [
-        .macOS(.v10_13)
+        .macOS(.v13)
     ],
     products: [
         .executable(name: "bump", targets: ["BumpCommandLine"])
@@ -66,6 +66,7 @@ for target in package.targets {
         .enableExperimentalFeature("AccessLevelOnImport"),
         .enableExperimentalFeature("StrictConcurrency"),
         .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("BareSlashRegexLiterals")
         // .enableUpcomingFeature("InternalImportsByDefault"), // Uncomment this line to enable the feature in Swift 6.0
     ]
 }

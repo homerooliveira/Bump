@@ -36,8 +36,8 @@ struct BumpCommand: ParsableCommand {
         }
 
         if case .versionString(let version) = mode {
-            let versionPattern = #"/^\d+\.\d+\.\d+(\.\d+)?$/"#
-            let hasValidFormat = version.range(of: versionPattern, options: .regularExpression) != nil
+            let versionPattern = /^\d+\.\d+\.\d+(\.\d+)?$/
+            let hasValidFormat = try versionPattern.wholeMatch(in: version) != nil
 
             guard hasValidFormat else {
                 throw ValidationError("Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
