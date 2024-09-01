@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol FileManagerWrapperProtocol {
+public protocol FileManagerProtocol {
     var currentDirectoryPath: String { get }
 
     func fileExists(atPath: String) -> Bool

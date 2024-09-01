@@ -8,7 +8,7 @@
 import FileManagerWrapper
 import Foundation
 
-public final class FileManagerWrapperMock: FileManagerWrapperProtocol {
+public final class FileManagerWrapperMock: FileManagerProtocol {
     public var currentDirectoryPath: String = ""
 
     public init() {}
