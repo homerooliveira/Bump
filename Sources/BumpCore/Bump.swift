@@ -5,7 +5,7 @@
 //  Created by Homero Oliveira on 20/02/20.
 //
 
-import Foundation
+internal import Foundation
 internal import SwiftExtensions
 import XcodeProjWrapper
 
