@@ -36,7 +36,7 @@ struct BumpCommand: ParsableCommand {
         }
 
         if case .versionString(let version) = mode {
-            let versionPattern = /^\d+\.\d+\.\d+(\.\d+)?$/
+            let versionPattern = /^\d+\.\d+\.\d+(?:\.\d+)?$/
             let hasValidFormat = try versionPattern.wholeMatch(in: version) != nil
 
             guard hasValidFormat else {
