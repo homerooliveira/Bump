@@ -2,7 +2,7 @@ private import PathKit
 private import XcodeProj
 import Foundation
 
-public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
+public struct XcodeProjWrapper: XcodeProjWrapperProtocol {
     private let path: Path
     private let xcodeProj: XcodeProj
 

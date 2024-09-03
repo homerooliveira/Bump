@@ -41,7 +41,7 @@ final class BumpCoreTests2: XCTestCase {
     func testBumpOutputVerbose() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
@@ -60,7 +60,7 @@ final class BumpCoreTests2: XCTestCase {
     func testBumpOutput() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
@@ -79,7 +79,7 @@ final class BumpCoreTests2: XCTestCase {
     func testBumpOutputSameVersionEnabled() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mockWithThreeConfigs
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
@@ -98,7 +98,7 @@ final class BumpCoreTests2: XCTestCase {
     func testBumpOutputSameVersionEnabledAndVerbose() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
@@ -131,7 +131,7 @@ final class BumpCoreTests2: XCTestCase {
         )
         var logs: [String] = []
 
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
             log: { logs.append($0) },
@@ -150,7 +150,7 @@ final class BumpCoreTests2: XCTestCase {
     func testBumpOutputVerboseWhenInPlaceIsTrue() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["com.test"],
             log: { logs.append($0) },
@@ -188,7 +188,7 @@ final class BumpCoreTests2: XCTestCase {
         )
         var logs: [String] = []
 
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: xcodeProj,
             bundleIdentifiers: ["test"],
             log: { string in

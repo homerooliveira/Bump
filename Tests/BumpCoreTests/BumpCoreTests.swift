@@ -14,8 +14,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .build)
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .build)
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "0.0.0")
@@ -32,8 +32,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .patch)
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .patch)
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "0.0.1")
@@ -50,8 +50,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .minor)
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .minor)
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "0.1.0")
@@ -68,8 +68,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .major)
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .major)
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "1.0.0")
@@ -86,8 +86,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .versionString("1.0.0"))
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .versionString("1.0.0"))
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "1.0.0")
@@ -104,8 +104,8 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: config, flag: .versionString("1.0.0.3"))
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        bump.applyBump(configuration: &config, flag: .versionString("1.0.0.3"))
 
         XCTAssertEqual(config.bundleIdentifier, "test")
         XCTAssertEqual(config.version, "1.0.0")

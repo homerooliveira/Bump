@@ -48,7 +48,7 @@ struct BumpCommand: ParsableCommand {
     func run() throws {
         let path = try environment.xcodeProjFinder.findXcodeProj(path: path)
 
-        let bump = try Bump(
+        var bump = try Bump(
             xcodeProj: environment.xcodeProjWrapper(path),
             bundleIdentifiers: Set(bundleIdentifiers),
             log: environment.logger,

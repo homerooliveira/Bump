@@ -1,6 +1,6 @@
 import XcodeProjWrapper
 
-public final class TargetMock: Target {
+public struct TargetMock: Target {
     public let name: String
     public let buildConfigurations: [any BuildConfiguration]
 

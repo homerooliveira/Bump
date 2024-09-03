@@ -1,7 +1,7 @@
 import Foundation
 import XcodeProjWrapper
 
-public final class BuildConfigurationMock: BuildConfiguration {
+public struct BuildConfigurationMock: BuildConfiguration {
     public var bundleIdentifier: String
     public var buildNumber: String?
     public var version: String?
@@ -13,10 +13,4 @@ public final class BuildConfigurationMock: BuildConfiguration {
     }
 }
 
-extension BuildConfigurationMock: Equatable {
-    public static func == (lhs: BuildConfigurationMock, rhs: BuildConfigurationMock) -> Bool {
-        lhs.bundleIdentifier == rhs.bundleIdentifier
-            && lhs.buildNumber == rhs.buildNumber
-            && lhs.version == rhs.version
-    }
-}
+extension BuildConfigurationMock: Equatable {}
