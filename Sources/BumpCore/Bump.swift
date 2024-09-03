@@ -70,7 +70,7 @@ public struct Bump {
     }
 
     func applyBumpInFirstConfig(
-        _ config: inout some BuildConfiguration, 
+        _ config: inout some BuildConfiguration,
         flag: IncrementMode
     ) -> (oldBuildNumber: String, buildNumber: String) {
         let oldBuildNumber = config.buildNumber ?? ""
@@ -81,7 +81,7 @@ public struct Bump {
     }
 
     func applyBumpToRemainingConfigs(
-        _ configs: some Collection<any BuildConfiguration>, 
+        _ configs: some Collection<any BuildConfiguration>,
         flag: IncrementMode
     ) {
         for var config in configs {
@@ -110,8 +110,8 @@ public struct Bump {
     }
 
     func isValidBundleIdentifier(_ bundleIdentifier: String) -> Bool {
-        bundleIdentifiers.contains(where: bundleIdentifier.starts(with:)) 
-        || bundleIdentifiers.contains("all")
+        bundleIdentifiers.contains(where: bundleIdentifier.starts(with:))
+            || bundleIdentifiers.contains("all")
     }
 
     func applyBump(configuration: inout some BuildConfiguration, flag: IncrementMode) {
@@ -161,7 +161,7 @@ public struct Bump {
         from configuration: inout some BuildConfiguration,
         transform: (inout [Substring]) -> Void
     ) {
-        var versionArray: [Substring] = getVersion(from: configuration)
+        var versionArray: [Substring] = getVersion(configuration.version)
         transform(&versionArray)
         let version = versionArray.joined(separator: ".")
         configuration.version = version
@@ -169,7 +169,7 @@ public struct Bump {
     }
 
     private func bumpBuildVersion(from configuration: inout some BuildConfiguration) {
-        let version = getVersion(from: configuration).joined(separator: ".")
+        let version = getVersion(configuration.version).joined(separator: ".")
         let buildNumber = configuration.buildNumber?
             .split(separator: ".")
             .last
@@ -178,8 +178,8 @@ public struct Bump {
         configuration.buildNumber = "\(version).\(buildNumber + 1)"
     }
 
-    private func getVersion(from configuration: some BuildConfiguration) -> [Substring] {
-        guard let version = configuration.version?.split(separator: ".") else {
+    private func getVersion(_ version: String?) -> [Substring] {
+        guard let version = version?.split(separator: ".") else {
             return ["0", "0", "0"]
         }
 
@@ -193,10 +193,12 @@ public struct Bump {
     private func setVersion(_ version: String, from configuration: inout some BuildConfiguration) {
         let versionArray = version.split(separator: ".")
 
-        if versionArray.count == 3 {
+        if versionArray.count <= 3 {
+            let missingNumbers: [Substring] = Array(repeating: "0", count: 3 - versionArray.count)
+            let version = (versionArray + missingNumbers).joined(separator: ".")
             configuration.version = version
-            configuration.buildNumber = version + ".1"
-        } else if versionArray.count == 4 {
+            configuration.buildNumber = "\(version).1"
+        } else {
             configuration.version = versionArray.dropLast().joined(separator: ".")
             configuration.buildNumber = version
         }
