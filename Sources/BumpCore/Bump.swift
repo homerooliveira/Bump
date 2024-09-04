@@ -30,7 +30,8 @@ public struct Bump {
         let configsByTargetName = getConfigurationsByTargetName()
 
         if useSameVersion {
-            let configs = configsByTargetName.values
+            let configs = configsByTargetName
+                .values
                 .lazy
                 .flatMap { $0 }
 
@@ -193,12 +194,11 @@ public struct Bump {
     private func setVersion(_ version: String, from configuration: inout some BuildConfiguration) {
         let versionArray = version.split(separator: ".")
 
-        if versionArray.count <= 3 {
-            let missingNumbers: [Substring] = Array(repeating: "0", count: 3 - versionArray.count)
-            let version = (versionArray + missingNumbers).joined(separator: ".")
+        if versionArray.count == 3 {
+            let version = versionArray.joined(separator: ".")
             configuration.version = version
             configuration.buildNumber = "\(version).1"
-        } else {
+        } else if versionArray.count == 4 {
             configuration.version = versionArray.dropLast().joined(separator: ".")
             configuration.buildNumber = version
         }

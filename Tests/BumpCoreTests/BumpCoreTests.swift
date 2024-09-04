@@ -122,12 +122,12 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
         bump.applyBump(configuration: &config, flag: .versionString("1.0"))
 
         XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "1.0.0")
-        XCTAssertEqual(config.buildNumber, "1.0.0.1")
+        XCTAssertEqual(config.version, "1.0")
+        XCTAssertEqual(config.buildNumber, "1.0")
     }
 
     func testGetConfigurationsByTargetName() throws {
