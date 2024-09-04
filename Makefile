@@ -10,7 +10,7 @@ build:
 	swift build --product bump -c release --disable-sandbox
 
 test:
-	swift test --parallel
+	swift test | xcbeautify 
 
 install_debug: build_debug
 	install ".build/debug/bump" "$(bindir)"

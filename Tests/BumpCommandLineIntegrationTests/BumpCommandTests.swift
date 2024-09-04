@@ -1,5 +1,7 @@
 internal import ArgumentParser
 internal import Environment
+internal import FileManagerWrapper
+internal import XcodeProjWrapper
 import Foundation
 import XCTest
 
@@ -11,7 +13,7 @@ final class BumpCommandTests: XCTestCase {
 
     override func setUpWithError() throws {
         logs = []
-        command = BumpCommand(environment: Environment(logger: { self.logs.append($0) }))
+        command = BumpCommand(environment: makeEnvironment())
     }
 
     func testBumpWithDirectory() throws {
@@ -116,7 +118,7 @@ final class BumpCommandTests: XCTestCase {
         let resourcesPath = try fixturesPath()
             .appending(component: "SampleProject.xcodeproj")
 
-        let temporaryFile = try copyFileToTemporaryPath(url: resourcesPath)
+        let temporaryFile = try copyFileToTemporaryPath(fileURL: resourcesPath)
 
         command.path = temporaryFile.path
         command.bundleIdentifiers = ["com.test.Test1"]
@@ -135,18 +137,25 @@ final class BumpCommandTests: XCTestCase {
         try FileManager.default.removeItem(at: temporaryFile)
     }
 
-    private func copyFileToTemporaryPath(url: URL) throws -> URL {
+    private func copyFileToTemporaryPath(fileURL: URL) throws -> URL {
         let fileManager = FileManager.default
-
         let tempDirectory = fileManager.temporaryDirectory
         let tempFileURL = tempDirectory.appendingPathComponent("SampleProject.xcodeproj")
 
-        try fileManager.copyItem(at: url, to: tempFileURL)
+        try fileManager.copyItem(at: fileURL, to: tempFileURL)
 
         return tempFileURL
     }
 
     private func fixturesPath() throws -> URL {
         try XCTUnwrap(Bundle.module.resourceURL)
+    }
+
+    private func makeEnvironment() -> Environment {
+        Environment(
+            xcodeProjFinder: XcodeProjFinder(),
+            xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
+            logger: { self.logs.append($0) }
+        )
     }
 }

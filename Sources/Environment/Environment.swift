@@ -10,9 +10,9 @@ public struct Environment: @unchecked Sendable {
     public let logger: (String) -> Void
 
     public init(
-        xcodeProjFinder: any XcodeProjFinderProtocol = XcodeProjFinder(),
-        xcodeProjWrapper: @escaping (String) throws -> any XcodeProjWrapperProtocol = { try XcodeProjWrapper(path: $0) },
-        logger: @escaping (String) -> Void = { print($0) }
+        xcodeProjFinder: any XcodeProjFinderProtocol,
+        xcodeProjWrapper: @escaping (String) throws -> any XcodeProjWrapperProtocol,
+        logger: @escaping (String) -> Void
     ) {
         self.xcodeProjFinder = xcodeProjFinder
         self.xcodeProjWrapper = xcodeProjWrapper
