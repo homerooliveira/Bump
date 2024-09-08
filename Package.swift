@@ -78,7 +78,7 @@ let package = Package(
 )
 
 for target in package.targets {
-	target.swiftSettings = [
+	target.swiftSettings = (target.swiftSettings ?? []) + [
 		.unsafeFlags(["-warnings-as-errors"]),
 		.enableExperimentalFeature("AccessLevelOnImport"),
 		.enableExperimentalFeature("StrictConcurrency"),

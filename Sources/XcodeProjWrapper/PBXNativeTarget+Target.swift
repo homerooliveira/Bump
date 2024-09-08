@@ -1,4 +1,4 @@
-private import XcodeProj
+internal import XcodeProj
 
 extension PBXNativeTarget: Target {
     public var buildConfigurations: [any BuildConfiguration] {

@@ -7,7 +7,7 @@ import XCTest
 
 @testable internal import BumpCommandLine
 
-final class BumpCommandTests: XCTestCase {
+final class BumpCommandIntegrationTests: XCTestCase {
     private var logs: [String] = []
     private var command = BumpCommand()
 

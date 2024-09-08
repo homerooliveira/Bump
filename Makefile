@@ -32,3 +32,8 @@ lint_unused_code:
 
 clean:
 	rm -rf .build
+
+setup:
+	brew install swiftlint
+	brew install periphery
+	brew install xcbeautify
