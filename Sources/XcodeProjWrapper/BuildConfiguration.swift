@@ -14,24 +14,24 @@ public struct BuildConfiguration: Equatable {
     let getBuildSettings: () -> [String: Any]
 
     public var bundleIdentifier: String {
-        getBuildSettings()[BuildSettingKey.identifier.rawValue] as? String ?? ""
+        getBuildSettings()[BuildSettingKey.identifier] as? String ?? ""
     }
 
     public var buildNumber: String? {
         get {
-            getBuildSettings()[BuildSettingKey.buildNumber.rawValue] as? String
+            getBuildSettings()[BuildSettingKey.buildNumber] as? String
         }
         set {
-            setBuildSettings { $0[BuildSettingKey.buildNumber.rawValue] = newValue }
+            setBuildSettings { $0[BuildSettingKey.buildNumber] = newValue }
         }
     }
 
     public var version: String? {
         get {
-            getBuildSettings()[BuildSettingKey.version.rawValue] as? String
+            getBuildSettings()[BuildSettingKey.version] as? String
         }
         set {
-            setBuildSettings { $0[BuildSettingKey.version.rawValue] = newValue }
+            setBuildSettings { $0[BuildSettingKey.version] = newValue }
         }
     }
 
@@ -46,9 +46,9 @@ public struct BuildConfiguration: Equatable {
 
     public init(bundleIdentifier: String, buildNumber: String?, version: String?) {
         var buildSettings = [String: Any]()
-        buildSettings[BuildSettingKey.identifier.rawValue] = bundleIdentifier
-        buildSettings[BuildSettingKey.buildNumber.rawValue] = buildNumber
-        buildSettings[BuildSettingKey.version.rawValue] = version
+        buildSettings[BuildSettingKey.identifier] = bundleIdentifier
+        buildSettings[BuildSettingKey.buildNumber] = buildNumber
+        buildSettings[BuildSettingKey.version] = version
 
         self.setBuildSettings = { closure in
             closure(&buildSettings)
