@@ -44,8 +44,8 @@ public struct BuildConfiguration: Equatable {
         buildSettings[BuildSettingKey.buildNumber.rawValue] = buildNumber
         buildSettings[BuildSettingKey.version.rawValue] = version
         self.buildConfiguration = XCBuildConfiguration(
-            name: "name", 
-            baseConfiguration: PBXFileReference(), 
+            name: "name",
+            baseConfiguration: PBXFileReference(),
             buildSettings: buildSettings
         )
     }
