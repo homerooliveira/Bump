@@ -28,7 +28,7 @@ public struct BuildConfiguration: Equatable {
 
     public var version: String? {
         get {
-            getBuildSettings()[BuildSettingKey.version.rawValue] as? String            
+            getBuildSettings()[BuildSettingKey.version.rawValue] as? String
         }
         set {
             setBuildSettings { $0[BuildSettingKey.version.rawValue] = newValue }
@@ -50,8 +50,8 @@ public struct BuildConfiguration: Equatable {
         buildSettings[BuildSettingKey.buildNumber.rawValue] = buildNumber
         buildSettings[BuildSettingKey.version.rawValue] = version
 
-        self.setBuildSettings = { closure in    
-            closure(&buildSettings)            
+        self.setBuildSettings = { closure in
+            closure(&buildSettings)
         }
         self.getBuildSettings = {
             buildSettings
