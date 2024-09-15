@@ -18,7 +18,7 @@ on:
     - cron: '34 3 * * 4'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: codeql_${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:

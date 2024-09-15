@@ -18,7 +18,7 @@ on:
       - '.github/workflows/build.yml'
   
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: test_${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
