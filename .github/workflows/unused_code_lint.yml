@@ -20,7 +20,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint:
+  unused_code_lint:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
