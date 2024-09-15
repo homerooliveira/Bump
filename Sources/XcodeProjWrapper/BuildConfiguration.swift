@@ -9,45 +9,53 @@ private enum BuildSettingKey: String {
 }
 
 public struct BuildConfiguration: Equatable {
-    let buildConfiguration: XCBuildConfiguration
+    // These properties are used to avoid dependency on XCBuildConfiguration
+    let setBuildSettings: ((inout [String: Any]) -> Void) -> Void
+    let getBuildSettings: () -> [String: Any]
 
     public var bundleIdentifier: String {
-        (buildConfiguration.buildSettings[BuildSettingKey.identifier] as? String) ?? ""
+        getBuildSettings()[BuildSettingKey.identifier.rawValue] as? String ?? ""
     }
 
     public var buildNumber: String? {
         get {
-            buildConfiguration.buildSettings[BuildSettingKey.buildNumber] as? String
+            getBuildSettings()[BuildSettingKey.buildNumber.rawValue] as? String
         }
         set {
-            buildConfiguration.buildSettings[BuildSettingKey.buildNumber] = newValue
+            setBuildSettings { $0[BuildSettingKey.buildNumber.rawValue] = newValue }
         }
     }
 
     public var version: String? {
         get {
-            buildConfiguration.buildSettings[BuildSettingKey.version] as? String
+            getBuildSettings()[BuildSettingKey.version.rawValue] as? String            
         }
         set {
-            buildConfiguration.buildSettings[BuildSettingKey.version] = newValue
+            setBuildSettings { $0[BuildSettingKey.version.rawValue] = newValue }
         }
     }
 
     init(buildConfiguration: XCBuildConfiguration) {
-        self.buildConfiguration = buildConfiguration
+        self.setBuildSettings = { closure in
+            closure(&buildConfiguration.buildSettings)
+        }
+        self.getBuildSettings = {
+            buildConfiguration.buildSettings
+        }
     }
 
     public init(bundleIdentifier: String, buildNumber: String?, version: String?) {
-        var buildSettings: BuildSettings = [
-            BuildSettingKey.identifier.rawValue: bundleIdentifier
-        ]
+        var buildSettings = [String: Any]()
+        buildSettings[BuildSettingKey.identifier.rawValue] = bundleIdentifier
         buildSettings[BuildSettingKey.buildNumber.rawValue] = buildNumber
         buildSettings[BuildSettingKey.version.rawValue] = version
-        self.buildConfiguration = XCBuildConfiguration(
-            name: "name",
-            baseConfiguration: PBXFileReference(),
-            buildSettings: buildSettings
-        )
+
+        self.setBuildSettings = { closure in    
+            closure(&buildSettings)            
+        }
+        self.getBuildSettings = {
+            buildSettings
+        }
     }
 
     public static func == (lhs: BuildConfiguration, rhs: BuildConfiguration) -> Bool {
