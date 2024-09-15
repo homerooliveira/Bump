@@ -1,4 +1,4 @@
-internal import ArgumentParser
+import ArgumentParser
 internal import BumpCore
 
 extension IncrementMode: ExpressibleByArgument {}
