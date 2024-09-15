@@ -15,9 +15,9 @@ final class BumpCoreTests2: XCTestCase {
             inPlace: false
         )
 
-        let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
+        let configByTargetName = bump.getConfigurationsByTargetName()
 
-        let expected: [String: [BuildConfigurationMock]] = [
+        let expected = [
             "Test1": [
                 BuildConfigurationMock(
                     bundleIdentifier: "test",
@@ -35,7 +35,7 @@ final class BumpCoreTests2: XCTestCase {
         ]
 
         XCTAssertEqual(configByTargetName, expected)
-        XCTAssertEqual(configByTargetName?.count, 2)
+        XCTAssertEqual(configByTargetName.count, 2)
     }
 
     func testBumpOutputVerbose() throws {

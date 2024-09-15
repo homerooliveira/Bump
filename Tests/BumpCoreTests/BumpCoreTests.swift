@@ -141,7 +141,7 @@ final class BumpCoreTests: XCTestCase {
             inPlace: false
         )
 
-        let configByTargetName = bump.getConfigurationsByTargetName() as? [String: [BuildConfigurationMock]]
+        let configByTargetName = bump.getConfigurationsByTargetName()
 
         let expected: [String: [BuildConfigurationMock]] = [
             "Test1": [

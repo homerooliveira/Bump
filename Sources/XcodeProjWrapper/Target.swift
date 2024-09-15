@@ -2,9 +2,9 @@ internal import XcodeProj
 
 public struct Target {
     public let name: String
-    public var buildConfigurations: [any BuildConfiguration] = []
+    public var buildConfigurations: [BuildConfiguration] = []
 
-    public init(name: String, buildConfigurations: [any BuildConfiguration]) {
+    public init(name: String, buildConfigurations: [BuildConfiguration]) {
         self.name = name
         self.buildConfigurations = buildConfigurations
     }
@@ -13,6 +13,6 @@ public struct Target {
         self.name = target.name
         self.buildConfigurations = target.buildConfigurationList?
             .buildConfigurations
-            .map { BuildConfigurationWrapper(buildConfiguration: $0) } ?? []
+            .map { BuildConfiguration(buildConfiguration: $0) } ?? []
     }
 }
