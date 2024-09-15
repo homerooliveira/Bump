@@ -22,10 +22,13 @@ uninstall:
 	rm -rf "$(bindir)/bump"
 
 format:
-	swift package plugin swiftlint --autocorrect
+	swiftlint . --autocorrect
 
 lint:
-	swift package plugin swiftlint --strict
+	swiftlint . --strict
+
+lint_ci:
+	swiftlint . --strict --reporter github-actions-logging
 
 lint_unused_code:
 	periphery scan --relative-results --strict

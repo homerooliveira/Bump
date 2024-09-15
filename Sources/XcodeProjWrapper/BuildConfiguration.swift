@@ -49,4 +49,10 @@ public struct BuildConfiguration: Equatable {
             buildSettings: buildSettings
         )
     }
+
+    public static func == (lhs: BuildConfiguration, rhs: BuildConfiguration) -> Bool {
+        lhs.bundleIdentifier == rhs.bundleIdentifier
+            && lhs.buildNumber == rhs.buildNumber
+            && lhs.version == rhs.version
+    }
 }
