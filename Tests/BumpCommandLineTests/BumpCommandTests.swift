@@ -9,7 +9,7 @@ import XCTest
 
 final class BumpCommandTests: XCTestCase {
     private var xcodeProjFinderMock = XcodeProjFinderMock()
-    private var xcodeProjWrapperMock = XcodeProjWrapperMock()
+    private let xcodeProjWrapperMock = XcodeProjWrapperMock()
     private var logs: [String] = []
     private var command = BumpCommand()
 
