@@ -1,13 +1,6 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 23/10/20.
-//
-
 import Foundation
 
-public protocol FileManagerWrapperProtocol {
+public protocol FileManagerProtocol {
     var currentDirectoryPath: String { get }
 
     func fileExists(atPath: String) -> Bool

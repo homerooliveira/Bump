@@ -10,7 +10,7 @@ build:
 	swift build --product bump -c release --disable-sandbox
 
 test:
-	swift test --parallel
+	swift test | xcbeautify 
 
 install_debug: build_debug
 	install ".build/debug/bump" "$(bindir)"
@@ -22,13 +22,21 @@ uninstall:
 	rm -rf "$(bindir)/bump"
 
 format:
-	swift package plugin swiftlint --autocorrect
+	swiftlint . --autocorrect
 
 lint:
-	swift package plugin swiftlint --strict
+	swiftlint . --strict
+
+lint_ci:
+	swiftlint . --strict --reporter github-actions-logging
 
 lint_unused_code:
 	periphery scan --relative-results --strict
 
 clean:
 	rm -rf .build
+
+setup:
+	brew install swiftlint
+	brew install periphery
+	brew install xcbeautify

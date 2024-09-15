@@ -1,14 +1,7 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 24/10/20.
-//
-
 import FileManagerWrapper
 import Foundation
 
-public final class FileManagerWrapperMock: FileManagerWrapperProtocol {
+public final class FileManagerWrapperMock: FileManagerProtocol {
     public var currentDirectoryPath: String = ""
 
     public init() {}

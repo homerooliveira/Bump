@@ -1,13 +1,18 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 11/07/20.
-//
+internal import XcodeProj
 
-import Foundation
+public struct Target {
+    public let name: String
+    public var buildConfigurations: [BuildConfiguration] = []
 
-public protocol Target {
-    var name: String { get }
-    var buildConfigurations: [BuildConfiguration] { get }
+    public init(name: String, buildConfigurations: [BuildConfiguration]) {
+        self.name = name
+        self.buildConfigurations = buildConfigurations
+    }
+
+    init(target: PBXNativeTarget) {
+        self.name = target.name
+        self.buildConfigurations = target.buildConfigurationList?
+            .buildConfigurations
+            .map { BuildConfiguration(buildConfiguration: $0) } ?? []
+    }
 }

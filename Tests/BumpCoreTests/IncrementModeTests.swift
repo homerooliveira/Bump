@@ -1,14 +1,7 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 04/11/20.
-//
-
 import Foundation
 import XCTest
 
-@testable import BumpCore
+@testable internal import BumpCore
 
 final class IncrementModeTests: XCTestCase {
     func testRawValue() throws {

@@ -1,4 +1,4 @@
-name: Unusuded Code Lint
+name: Unused Code Lint
 
 on:
   push:
@@ -16,11 +16,11 @@ on:
       - 'Package.resolved'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  group: unused_code_lint_${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  lint:
+  unused_code_lint:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4

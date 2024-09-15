@@ -1,25 +1,19 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 11/07/20.
-//
-
+private import PathKit
+internal import XcodeProj
 import Foundation
-import PathKit
-import XcodeProj
 
-public final class XcodeProjWrapper: XcodeProjWrapperProtocol {
+public struct XcodeProjWrapper: XcodeProjWrapperProtocol {
     private let path: Path
     private let xcodeProj: XcodeProj
 
-    public var targets: [Target] {
-        xcodeProj.pbxproj.nativeTargets
-    }
+    public var targets: [Target]
 
     public init(path: String) throws {
         self.path = Path(path)
         self.xcodeProj = try XcodeProj(path: self.path)
+        self.targets = xcodeProj.pbxproj.nativeTargets.map { target in
+            Target(target: target)
+        }
     }
 
     public func saveChanges() throws {

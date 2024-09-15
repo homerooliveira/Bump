@@ -1,12 +1,7 @@
-//
-//  
-//
-//  Created by Homero Oliveira on 08/07/20.
-//
-
 import Foundation
 
 extension Dictionary {
+    @inlinable
     public subscript<T>(_ key: T) -> Value? where T: RawRepresentable, T.RawValue == Key {
         get {
             self[key.rawValue]

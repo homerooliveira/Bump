@@ -1,11 +1,4 @@
-//
-//  File.swift
-//  
-//
-//  Created by Homero Oliveira on 27/02/20.
-//
-
-import Foundation
+internal import Foundation
 
 public enum IncrementMode: RawRepresentable, Equatable {
     case major
