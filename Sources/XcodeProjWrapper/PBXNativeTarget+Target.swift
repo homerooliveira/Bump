@@ -1,7 +1,15 @@
 internal import XcodeProj
 
-extension PBXNativeTarget: Target {
+struct TargetWrapper: Target {
+    let target: PBXNativeTarget
+
+    var name: String {
+        target.name
+    }
+
     var buildConfigurations: [any BuildConfiguration] {
-        buildConfigurationList?.buildConfigurations ?? []
+        (target.buildConfigurationList?.buildConfigurations ?? []).map { buildConfiguration in
+            BuildConfigurationWrapper(buildConfiguration: buildConfiguration)
+        }
     }
 }

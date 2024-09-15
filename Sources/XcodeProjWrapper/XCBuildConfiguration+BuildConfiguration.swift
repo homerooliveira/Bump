@@ -8,26 +8,28 @@ private enum BuildSettingKey: String {
     case identifier = "PRODUCT_BUNDLE_IDENTIFIER"
 }
 
-extension XCBuildConfiguration: BuildConfiguration {
+struct BuildConfigurationWrapper: BuildConfiguration {
+    let buildConfiguration: XCBuildConfiguration
+
     var bundleIdentifier: String {
-        (buildSettings[BuildSettingKey.identifier] as? String) ?? ""
+        (buildConfiguration.buildSettings[BuildSettingKey.identifier] as? String) ?? ""
     }
 
     var buildNumber: String? {
         get {
-            buildSettings[BuildSettingKey.buildNumber] as? String
+            buildConfiguration.buildSettings[BuildSettingKey.buildNumber] as? String
         }
         set {
-            buildSettings[BuildSettingKey.buildNumber] = newValue
+            buildConfiguration.buildSettings[BuildSettingKey.buildNumber] = newValue
         }
     }
 
     var version: String? {
         get {
-            buildSettings[BuildSettingKey.version] as? String
+            buildConfiguration.buildSettings[BuildSettingKey.version] as? String
         }
         set {
-            buildSettings[BuildSettingKey.version] = newValue
+            buildConfiguration.buildSettings[BuildSettingKey.version] = newValue
         }
     }
 }
