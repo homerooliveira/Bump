@@ -1,25 +1,24 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import BumpCore
 
-final class IncrementModeTests: XCTestCase {
-    func testRawValue() throws {
+struct IncrementModeTests {
+    @Test func rawValue() throws {
         let expectedValues = ["major", "minor", "patch", "build", "1.0.0"]
 
         let modes: [IncrementMode] = [.major, .minor, .patch, .build, .versionString("1.0.0")]
 
-        XCTAssertEqual(modes.map(\.rawValue), expectedValues)
+        #expect(modes.map(\.rawValue) == expectedValues)
     }
 
-    func testInit() throws {
+    @Test func initFromRawValue() throws {
         let expectedModes: [IncrementMode] = [.major, .minor, .patch, .build, .versionString("1.0.0")]
 
         let values = ["major", "minor", "patch", "build", "1.0.0"]
 
-        XCTAssertEqual(
-            values.compactMap(IncrementMode.init(rawValue:)),
-            expectedModes
+        #expect(
+            values.compactMap(IncrementMode.init(rawValue:)) == expectedModes
         )
     }
 }

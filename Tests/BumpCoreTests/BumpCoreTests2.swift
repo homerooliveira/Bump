@@ -3,8 +3,8 @@ import XCTest
 
 @testable import BumpCore
 
-final class BumpCoreTests2: XCTestCase {
-    func testGetConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {
+struct BumpCoreTests2 {
+    @Test func getConfigurationsByTargetNameWithAllAsBundleIdentifier() throws {
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
@@ -34,11 +34,11 @@ final class BumpCoreTests2: XCTestCase {
             ]
         ]
 
-        XCTAssertEqual(configByTargetName, expected)
-        XCTAssertEqual(configByTargetName.count, 2)
+        #expect(configByTargetName == expected)
+        #expect(configByTargetName.count == 2)
     }
 
-    func testBumpOutputVerbose() throws {
+    @Test func bumpOutputVerbose() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         var bump = try Bump(
@@ -52,12 +52,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .minor)
 
-        XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        #expect(logs == ["Test2 1 -> 1.1.0.1"])
+        #expect(logs.count == 1)
+        #expect(xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutput() throws {
+    @Test func bumpOutput() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         var bump = try Bump(
@@ -71,12 +71,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .minor)
 
-        XCTAssertEqual(logs, ["1.1.0.1"])
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        #expect(logs == ["1.1.0.1"])
+        #expect(logs.count == 1)
+        #expect(xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutputSameVersionEnabled() throws {
+    @Test func bumpOutputSameVersionEnabled() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mockWithThreeConfigs
         var bump = try Bump(
@@ -90,12 +90,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .minor)
 
-        XCTAssertEqual(logs, ["1.1.0.1"])
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        #expect(logs == ["1.1.0.1"])
+        #expect(logs.count == 1)
+        #expect(xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutputSameVersionEnabledAndVerbose() throws {
+    @Test func bumpOutputSameVersionEnabledAndVerbose() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         var bump = try Bump(
@@ -109,12 +109,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .minor)
 
-        XCTAssertEqual(logs, ["Test2", "1 -> 1.1.0.1"])
-        XCTAssertEqual(logs.count, 2)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        #expect(logs == ["Test2", "1 -> 1.1.0.1"])
+        #expect(logs.count == 2)
+        #expect(xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutputVersionUnsureVersionHasThreeElements() throws {
+    @Test func bumpOutputVersionUnsureVersionHasThreeElements() throws {
         let xcodeProj = XcodeProjWrapperMock(
             targets: [
                 TargetMock(
@@ -142,12 +142,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .build)
 
-        XCTAssertEqual(logs, ["Test1 1 -> 1.0.0.2"])
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertTrue(xcodeProj.saveChangesCalled)
+        #expect(logs == ["Test1 1 -> 1.0.0.2"])
+        #expect(logs.count == 1)
+        #expect(xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutputVerboseWhenInPlaceIsTrue() throws {
+    @Test func bumpOutputVerboseWhenInPlaceIsTrue() throws {
         var logs: [String] = []
         let xcodeProj = XcodeProjWrapperMock.mock
         var bump = try Bump(
@@ -161,12 +161,12 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .minor)
 
-        XCTAssertEqual(logs, ["Test2 1 -> 1.1.0.1"])
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertFalse(xcodeProj.saveChangesCalled)
+        #expect(logs == ["Test2 1 -> 1.1.0.1"])
+        #expect(logs.count == 1)
+        #expect(!xcodeProj.saveChangesCalled)
     }
 
-    func testBumpOutputVersionWithTwoBuildConfigs() throws {
+    @Test func bumpOutputVersionWithTwoBuildConfigs() throws {
         let xcodeProj = XcodeProjWrapperMock(
             targets: [
                 TargetMock(
@@ -201,11 +201,8 @@ final class BumpCoreTests2: XCTestCase {
 
         try bump.bump(flag: .build)
 
-        XCTAssertEqual(
-            logs,
-            ["Test1 1 -> 1.0.0.2"]
-        )
-        XCTAssertEqual(logs.count, 1)
-        XCTAssertFalse(xcodeProj.saveChangesCalled)
+        #expect(logs == ["Test1 1 -> 1.0.0.2"])
+        #expect(logs.count == 1)
+        #expect(!xcodeProj.saveChangesCalled)
     }
 }

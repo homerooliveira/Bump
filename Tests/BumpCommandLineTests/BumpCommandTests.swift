@@ -3,83 +3,88 @@ import Environment
 import FileManagerWrapperMock
 import XcodeProjWrapperMock
 import Foundation
-import XCTest
+import Testing
+import XcodeProjWrapperMock
 
 @testable import BumpCommandLine
 
-final class BumpCommandTests: XCTestCase {
-    private var xcodeProjFinderMock = XcodeProjFinderMock()
-    private let xcodeProjWrapperMock = XcodeProjWrapperMock()
-    private var logs: [String] = []
-    private var command = BumpCommand()
+final class BumpCommandTests {
+    private let xcodeProjFinderMock: XcodeProjFinderMock
+    private let xcodeProjWrapperMock: XcodeProjWrapperMock
+    private var command: BumpCommand
 
-    override func setUpWithError() throws {
-        xcodeProjFinderMock.reset()
-        xcodeProjWrapperMock.reset()
-        logs = []
+    init() {
+        let xcodeProjFinderMock = XcodeProjFinderMock()
+        let xcodeProjWrapperMock = XcodeProjWrapperMock()
+        self.xcodeProjFinderMock = xcodeProjFinderMock
+        self.xcodeProjWrapperMock = xcodeProjWrapperMock
         let environment = Environment(
             xcodeProjFinder: xcodeProjFinderMock,
-            xcodeProjWrapper: { _ in  self.xcodeProjWrapperMock },
-            logger: { self.logs.append($0) }
+            xcodeProjWrapper: { _ in xcodeProjWrapperMock },
+            logger: { _ in }
         )
         command = BumpCommand(environment: environment)
     }
 
-    func testBumpValitionErrorWhenBundleIdentifiersIsEmpty() throws {
+    deinit {
+        xcodeProjFinderMock.reset()
+        xcodeProjWrapperMock.reset()
+    }
+
+    @Test func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
         command.bundleIdentifiers = []
         command.mode = .build
-
-        XCTAssertThrowsError(try command.validate()) { error in
-            guard let validationError = error as? ValidationError else {
-                XCTFail("Validation error cannot be nil.")
-                return
+        
+        #expect { 
+            try command.validate() 
+        } throws: { error in 
+            guard let error = error as? ValidationError else {
+                throw error
             }
-            XCTAssertEqual(validationError.description, "Bundle Identifiers cannot be empty.")
+            return error.message == "Bundle Identifiers cannot be empty."
         }
     }
 
-    func testBumpValitionErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
+    @Test func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.")
 
-        XCTAssertThrowsError(try command.validate()) { error in
-            guard let validationError = error as? ValidationError else {
-                XCTFail("Validation error cannot be nil.")
-                return
+        #expect {
+            try command.validate()
+        } throws: { error in
+            guard let error = error as? ValidationError else {
+                throw error
             }
-            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
-            XCTAssertEqual(validationError.description, expectedError)
+            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
     }
 
-    func testBumpValitionErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
+    @Test func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.0.0.1")
 
-        XCTAssertThrowsError(try command.validate()) { error in
-            guard let validationError = error as? ValidationError else {
-                XCTFail("Validation error cannot be nil.")
-                return
+        #expect {
+            try command.validate()
+        } throws: { error in
+            guard let error = error as? ValidationError else {
+                throw error
             }
-            let expectedError = "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
-            XCTAssertEqual(validationError.description, expectedError)
+            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
     }
 
-    func testBumpRunErrorWhenFileNotExist() throws {
+    @Test func testBumpRunErrorWhenFileNotExist() throws {
         xcodeProjFinderMock.findXcodeProjPathBeReturned = .failure(CocoaError(.fileNoSuchFile))
         command.path = "test"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
 
-        XCTAssertThrowsError(try command.run()) { error in
-            guard let validationError = error as? CocoaError else {
-                XCTFail("Validation error cannot be nil.")
-                return
-            }
-            XCTAssertEqual(validationError, CocoaError(.fileNoSuchFile))
+        #expect(
+            throws: CocoaError(.fileNoSuchFile)
+        ) {
+            try command.run()
         }
-        XCTAssertEqual(xcodeProjFinderMock.findXcodeProjPathPassed, "test")
-        XCTAssertTrue(xcodeProjFinderMock.findXcodeProjPathCalled)
+        #expect(xcodeProjFinderMock.findXcodeProjPathPassed == "test")
+        #expect(xcodeProjFinderMock.findXcodeProjPathCalled)
     }
 }

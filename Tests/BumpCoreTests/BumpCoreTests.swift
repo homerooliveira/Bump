@@ -1,10 +1,12 @@
 import XcodeProjWrapperMock
 import XCTest
+import Testing
+import XcodeProjWrapperMock
 
 @testable import BumpCore
 
-final class BumpCoreTests: XCTestCase {
-    func testBumpBuild() throws {
+struct BumpCoreTests {
+    @Test func bumpBuild() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -17,12 +19,12 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .build)
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "0.0.0")
-        XCTAssertEqual(config.buildNumber, "0.0.0.1")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "0.0.0")
+        #expect(config.buildNumber == "0.0.0.1")
     }
 
-    func testBumpPatch() throws {
+    @Test func bumpPatch() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -35,12 +37,12 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .patch)
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "0.0.1")
-        XCTAssertEqual(config.buildNumber, "0.0.1.1")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "0.0.1")
+        #expect(config.buildNumber == "0.0.1.1")
     }
 
-    func testBumpMinor() throws {
+    @Test func bumpMinor() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -53,12 +55,12 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .minor)
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "0.1.0")
-        XCTAssertEqual(config.buildNumber, "0.1.0.1")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "0.1.0")
+        #expect(config.buildNumber == "0.1.0.1")
     }
 
-    func testBumpMajor() throws {
+    @Test func bumpMajor() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -71,12 +73,12 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .major)
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "1.0.0")
-        XCTAssertEqual(config.buildNumber, "1.0.0.1")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "1.0.0")
+        #expect(config.buildNumber == "1.0.0.1")
     }
 
-    func testBumpSetVersionWithTwoDots() throws {
+    @Test func bumpVersionString() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -89,30 +91,30 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .versionString("1.0.0"))
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "1.0.0")
-        XCTAssertEqual(config.buildNumber, "1.0.0.1")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "1.0.0")
+        #expect(config.buildNumber == "1.0.0.1")
     }
 
-    func testBumpSetVersionWithThreeDots() throws {
+    @Test func bumpVersionStringWithSameVersion() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
             log: { _ in },
             isVerbose: false,
-            useSameVersion: false,
+            useSameVersion: true,
             inPlace: false
         )
 
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
-        bump.applyBump(configuration: &config, flag: .versionString("1.0.0.3"))
+        bump.applyBump(configuration: &config, flag: .versionString("1.0.0"))
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "1.0.0")
-        XCTAssertEqual(config.buildNumber, "1.0.0.3")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "1.0.0")
+        #expect(config.buildNumber == "1.0.0.1")
     }
 
-    func testBumpSetVersionWithOneDotAndIncrement() throws {
+    @Test func bumpSetVersionWithOneDotAndIncrement() throws {
         let bump = try Bump(
             xcodeProj: XcodeProjWrapperMock(),
             bundleIdentifiers: ["test"],
@@ -125,12 +127,12 @@ final class BumpCoreTests: XCTestCase {
         var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
         bump.applyBump(configuration: &config, flag: .versionString("1.0"))
 
-        XCTAssertEqual(config.bundleIdentifier, "test")
-        XCTAssertEqual(config.version, "1.0")
-        XCTAssertEqual(config.buildNumber, "1.0")
+        #expect(config.bundleIdentifier == "test")
+        #expect(config.version == "1.0")
+        #expect(config.buildNumber == "1.0")
     }
 
-    func testGetConfigurationsByTargetName() throws {
+    @Test func getConfigurationsByTargetName() throws {
         let xcodeProj = XcodeProjWrapperMock.mock
         let bump = try Bump(
             xcodeProj: xcodeProj,
@@ -153,6 +155,6 @@ final class BumpCoreTests: XCTestCase {
             ]
         ]
 
-        XCTAssertEqual(configByTargetName, expected)
+        #expect(configByTargetName == expected)
     }
 }

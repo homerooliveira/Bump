@@ -1,5 +1,4 @@
 public import FileManagerWrapper
-import Foundation
 public import XcodeProjWrapper
 
 // This struct is used to inject dependencies in the BumpCommand.

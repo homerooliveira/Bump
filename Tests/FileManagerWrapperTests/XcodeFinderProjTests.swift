@@ -1,102 +1,100 @@
 import FileManagerWrapperMock
+import Testing
 import XCTest
 
 @testable import FileManagerWrapper
 
-final class XcodeProjFinderTests: XCTestCase {
-    private let fileManagerWrapperMock = FileManagerWrapperMock()
-    private lazy var finder = XcodeProjFinder(fileManagerWrapper: fileManagerWrapperMock)
+final class XcodeProjFinderTests {
+    let fileManagerWrapper: FileManagerWrapperMock
+    let sut: XcodeProjFinder
 
-    override func setUpWithError() throws {
-        fileManagerWrapperMock.reset()
+    init() {
+        fileManagerWrapper = FileManagerWrapperMock()
+        sut = XcodeProjFinder(fileManagerWrapper: fileManagerWrapper)
     }
 
-    func testFindXcodeProjPath() throws {
+    deinit {
+        fileManagerWrapper.reset()
+    }
+
+    @Test func findXcodeProjPath() throws {
         let path = "/test"
-        fileManagerWrapperMock.fileExistsBeReturned = true
-        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+        fileManagerWrapper.fileExistsBeReturned = true
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
 
-        let result = try finder.findXcodeProj(path: path)
+        let result = try sut.findXcodeProj(path: path)
 
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, path)
-        XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: path))
-        XCTAssertEqual(result, "/test/test.xcodeproj")
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == path)
+        #expect(fileManagerWrapper.contentsOfDirectoryCalled)
+        #expect(fileManagerWrapper.atURLPassed == URL(string: path))
+        #expect(result == "/test/test.xcodeproj")
     }
 
-    func testFindXcodeProjPathWhenPathIsNil() throws {
-        fileManagerWrapperMock.fileExistsBeReturned = true
-        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
-        fileManagerWrapperMock.currentDirectoryPath = "/test"
+    @Test func findXcodeProjPathWhenPathIsNil() throws {
+        fileManagerWrapper.fileExistsBeReturned = true
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+        fileManagerWrapper.currentDirectoryPath = "/test"
 
-        let result = try finder.findXcodeProj(path: nil)
+        let result = try sut.findXcodeProj(path: nil)
 
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, fileManagerWrapperMock.currentDirectoryPath)
-        XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: fileManagerWrapperMock.currentDirectoryPath))
-        XCTAssertEqual(result, "/test/test.xcodeproj")
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == fileManagerWrapper.currentDirectoryPath)
+        #expect(fileManagerWrapper.contentsOfDirectoryCalled)
+        #expect(fileManagerWrapper.atURLPassed == URL(string: fileManagerWrapper.currentDirectoryPath))
+        #expect(result == "/test/test.xcodeproj")
     }
 
-    func testFindXcodeProjPathWhenFileExistsIsFalse() {
-        fileManagerWrapperMock.fileExistsBeReturned = false
+    @Test func findXcodeProjPathWhenFileExistsIsFalse() {
+        fileManagerWrapper.fileExistsBeReturned = false
 
-        XCTAssertThrowsError(try finder.findXcodeProj(path: "/test")) { error in
-            guard let findError = error as? XcodeProjFinder.FindError else {
-                XCTFail("Find error cannot be nil.")
-                return
-            }
-            XCTAssertEqual(findError.description, "Needs exist a path of .xcodeproj file or directory.")
+        #expect(
+            throws: XcodeProjFinder.FindError("Needs exist a path of .xcodeproj file or directory.")
+        ) {
+            try sut.findXcodeProj(path: "/test")
         }
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test")
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == "/test")
     }
 
-    func testFindXcodeProjPathWhenPathIsInvalid() {
-        fileManagerWrapperMock.fileExistsBeReturned = true
-        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+    @Test func findXcodeProjPathWhenPathIsInvalid() {
+        fileManagerWrapper.fileExistsBeReturned = true
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
 
-        XCTAssertThrowsError(try finder.findXcodeProj(path: "")) { error in
-            guard let findError = error as? XcodeProjFinder.FindError else {
-                XCTFail("Find error cannot be nil.")
-                return
-            }
-            XCTAssertEqual(findError.description, "Wrong directory or path.")
+        #expect(
+            throws: XcodeProjFinder.FindError("Wrong directory or path.")
+        ) {
+            try sut.findXcodeProj(path: "")
         }
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "")
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == "")
     }
 
-    func testFindXcodeProjPathWhenPathIsNotXcodeProj() {
-        fileManagerWrapperMock.fileExistsBeReturned = true
-        fileManagerWrapperMock.contentsOfDirectoryBeReturned = [URL(string: "/test")!]
+    @Test func findXcodeProjPathWhenPathIsNotXcodeProj() {
+        fileManagerWrapper.fileExistsBeReturned = true
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test")!]
 
-        XCTAssertThrowsError(try finder.findXcodeProj(path: "/test.txt")) { error in
-            guard let findError = error as? XcodeProjFinder.FindError else {
-                XCTFail("Find error cannot be nil.")
-                return
-            }
-            XCTAssertEqual(findError.description, "The path must be .xcodeproj file or directory.")
+        #expect(
+            throws: XcodeProjFinder.FindError("The path must be .xcodeproj file or directory.")
+        ) {
+            try sut.findXcodeProj(path: "/test.txt")
         }
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test.txt")
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == "/test.txt")
     }
 
-    func testFindXcodeProjPathWhenDirectoryIsEmpty() {
-        fileManagerWrapperMock.fileExistsBeReturned = true
-        fileManagerWrapperMock.contentsOfDirectoryBeReturned = []
+    @Test func findXcodeProjPathWhenDirectoryIsEmpty() {
+        fileManagerWrapper.fileExistsBeReturned = true
+        fileManagerWrapper.contentsOfDirectoryBeReturned = []
 
-        XCTAssertThrowsError(try finder.findXcodeProj(path: "/test")) { error in
-            guard let findError = error as? XcodeProjFinder.FindError else {
-                XCTFail("Find error cannot be nil.")
-                return
-            }
-            XCTAssertEqual(findError.description, "Needs exist a .xcodeproj file in this directory.")
+        #expect(
+            throws: XcodeProjFinder.FindError("Needs exist a .xcodeproj file in this directory.")
+        ) {
+            try sut.findXcodeProj(path: "/test")
         }
-        XCTAssertTrue(fileManagerWrapperMock.fileExistsCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atPathPassed, "/test")
-        XCTAssertTrue(fileManagerWrapperMock.contentsOfDirectoryCalled)
-        XCTAssertEqual(fileManagerWrapperMock.atURLPassed, URL(string: "/test"))
+        #expect(fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == "/test")
+        #expect(fileManagerWrapper.contentsOfDirectoryCalled)
+        #expect(fileManagerWrapper.atURLPassed == URL(string: "/test"))
     }
 }
