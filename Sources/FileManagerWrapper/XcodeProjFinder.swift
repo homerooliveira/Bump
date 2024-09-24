@@ -1,11 +1,11 @@
-import Foundation
+public import Foundation
 
 public protocol XcodeProjFinderProtocol {
     func findXcodeProj(path: String?) throws -> String
 }
 
 public struct XcodeProjFinder: XcodeProjFinderProtocol {
-    struct FindError: Error {
+    public struct FindError: Error, Equatable {
         let message: String
 
         init(_ message: String) {

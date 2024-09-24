@@ -78,6 +78,6 @@ for target in package.targets {
 	target.swiftSettings = (target.swiftSettings ?? []) + [
 		.unsafeFlags(["-warnings-as-errors"]),
 		.enableUpcomingFeature("ExistentialAny"),
-		// .enableUpcomingFeature("InternalImportsByDefault"), // Uncomment this line to enable the feature in Swift 6.0
+		.enableUpcomingFeature("InternalImportsByDefault"),
 	]
 }
