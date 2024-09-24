@@ -38,7 +38,7 @@ jobs:
     - name: Build
       run: swift build --verbose
     - name: Run tests
-      run: swift test --verbose --enable-code-coverage | xcbeautify --renderer github-actions --report junit
+      run: swift test --verbose --enable-swift-testing --enable-code-coverage | xcbeautify --renderer github-actions --report junit
     - name: Upload test results to Codecov
       uses: codecov/test-results-action@v1
       with:
