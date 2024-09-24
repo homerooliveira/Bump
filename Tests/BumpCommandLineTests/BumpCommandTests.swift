@@ -33,10 +33,10 @@ final class BumpCommandTests {
     @Test func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
         command.bundleIdentifiers = []
         command.mode = .build
-        
-        #expect { 
-            try command.validate() 
-        } throws: { error in 
+
+        #expect {
+            try command.validate()
+        } throws: { error in
             guard let error = error as? ValidationError else {
                 throw error
             }
