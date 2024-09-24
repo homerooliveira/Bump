@@ -20,7 +20,7 @@ struct EnvironmentTests {
         )
 
         #expect(environment.xcodeProjFinder is XcodeProjFinderMock)
-        #expect(try environment.xcodeProjWrapper("test") as? XcodeProjWrapperMock != nil)
+        #expect(try environment.xcodeProjWrapper("test") is XcodeProjWrapperMock)
     }
 
     @Test func testEnvironmentLiveInitialization() throws {

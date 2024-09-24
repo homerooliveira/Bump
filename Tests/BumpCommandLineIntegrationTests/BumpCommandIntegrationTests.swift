@@ -22,7 +22,7 @@ final class Box<T>: Equatable where T: Equatable {
 }
 
 struct BumpCommandIntegrationTests {
-    
+
     @Test func bumpWithDirectory() throws {
         var (command, logs) = makeCommand()
 
@@ -84,7 +84,7 @@ struct BumpCommandIntegrationTests {
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
             ])
-        ) 
+        )
     }
 
     @Test func bumpWithXcodeprojWhenVerboseIsTrue() throws {
@@ -110,7 +110,7 @@ struct BumpCommandIntegrationTests {
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
             ])
-        ) 
+        )
     }
 
     @Test func bumpWithXcodeprojWhenPathIsNil() {
@@ -150,8 +150,8 @@ struct BumpCommandIntegrationTests {
         #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
 
         // Remove the temporary file
-        try FileManager.default.removeItem(at: temporaryFile) 
-    }    
+        try FileManager.default.removeItem(at: temporaryFile)
+    }
 
     private func copyFileToTemporaryPath(fileURL: URL) throws -> URL {
         let fileManager = FileManager.default
