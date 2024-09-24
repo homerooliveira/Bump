@@ -1,4 +1,3 @@
-import Foundation
-import XcodeProjWrapper
+public import XcodeProjWrapper
 
 public typealias BuildConfigurationMock = BuildConfiguration

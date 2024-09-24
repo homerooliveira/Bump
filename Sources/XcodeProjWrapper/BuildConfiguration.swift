@@ -1,5 +1,5 @@
 private import SwiftExtensions
-internal import XcodeProj
+import XcodeProj
 import Foundation
 
 private enum BuildSettingKey: String {
