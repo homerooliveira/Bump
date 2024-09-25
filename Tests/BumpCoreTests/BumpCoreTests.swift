@@ -1,4 +1,5 @@
 import Testing
+import XcodeProjWrapper
 import XcodeProjWrapperMock
 
 @testable import BumpCore
@@ -14,7 +15,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .build)
 
         #expect(config.bundleIdentifier == "test")
@@ -32,7 +33,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .patch)
 
         #expect(config.bundleIdentifier == "test")
@@ -50,7 +51,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .minor)
 
         #expect(config.bundleIdentifier == "test")
@@ -68,7 +69,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .major)
 
         #expect(config.bundleIdentifier == "test")
@@ -86,7 +87,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .versionString("1.0.0"))
 
         #expect(config.bundleIdentifier == "test")
@@ -104,7 +105,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: nil, version: nil)
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: nil, version: nil)
         bump.applyBump(configuration: &config, flag: .versionString("1.0.0"))
 
         #expect(config.bundleIdentifier == "test")
@@ -122,7 +123,7 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfigurationMock(bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
+        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
         bump.applyBump(configuration: &config, flag: .versionString("1.0"))
 
         #expect(config.bundleIdentifier == "test")
@@ -143,9 +144,9 @@ struct BumpCoreTests {
 
         let configByTargetName = bump.getConfigurationsByTargetName()
 
-        let expected: [String: [BuildConfigurationMock]] = [
+        let expected: [String: [BuildConfiguration]] = [
             "Test1": [
-                BuildConfigurationMock(
+                BuildConfiguration(
                     bundleIdentifier: "test",
                     buildNumber: "1",
                     version: "1.0"

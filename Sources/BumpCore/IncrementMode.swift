@@ -1,6 +1,6 @@
 import Foundation
 
-public enum IncrementMode: RawRepresentable, Equatable {
+public enum IncrementMode: RawRepresentable, Equatable, Sendable {
     case major
     case minor
     case patch
