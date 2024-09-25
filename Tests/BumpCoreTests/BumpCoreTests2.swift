@@ -1,5 +1,5 @@
+import Testing
 import XcodeProjWrapperMock
-import XCTest
 
 @testable import BumpCore
 
@@ -19,14 +19,14 @@ struct BumpCoreTests2 {
 
         let expected = [
             "Test1": [
-                BuildConfigurationMock(
+                BuildConfiguration(
                     bundleIdentifier: "test",
                     buildNumber: "1",
                     version: "1.0"
                 )
             ],
             "Test2": [
-                BuildConfigurationMock(
+                BuildConfiguration(
                     bundleIdentifier: "com.test",
                     buildNumber: "1",
                     version: "1.0"
@@ -117,10 +117,10 @@ struct BumpCoreTests2 {
     @Test func bumpOutputVersionUnsureVersionHasThreeElements() throws {
         let xcodeProj = XcodeProjWrapperMock(
             targets: [
-                TargetMock(
+                Target(
                     name: "Test1",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0.0.1.1"
@@ -169,15 +169,15 @@ struct BumpCoreTests2 {
     @Test func bumpOutputVersionWithTwoBuildConfigs() throws {
         let xcodeProj = XcodeProjWrapperMock(
             targets: [
-                TargetMock(
+                Target(
                     name: "Test1",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0.0.1"
                         ),
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0.0.1"

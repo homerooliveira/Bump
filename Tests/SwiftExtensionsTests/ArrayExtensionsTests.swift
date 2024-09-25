@@ -4,29 +4,33 @@ import Testing
 @testable import SwiftExtensions
 
 struct ArrayExtensionsTests {
-    @Test func subscriptGet() {
-        enum Index: Int {
-            case zero
-            case one
-        }
-
-        let numbers = [0, 1]
-
-        #expect(numbers[Index.zero] == 0)
-        #expect(numbers[Index.one] == 1)
+    enum Index: Int {
+        case zero
+        case one
     }
 
-    @Test func subscriptSet() {
-        enum Index: Int {
-            case zero
-            case one
-        }
+    @Test(
+        arguments: [
+            (value: Index.zero, expected: 0),
+            (value: Index.one, expected: 1)
+        ]
+    )
+    func subscriptGet(value: Index, expected: Int) throws {
+        let numbers = [0, 1]
+        try #require(numbers[value] == expected)
+    }
 
+    @Test(
+        arguments: [
+            (value: Index.zero, expected: 12),
+            (value: Index.one, expected: 13)
+        ]
+    )
+    func subscriptSet(value: Index, expected: Int) throws {
         var numbers = [0, 1]
 
-        numbers[Index.zero] = 12
-        numbers[Index.one] = 13
+        numbers[value] = expected
 
-        #expect(numbers == [12, 13])
+        #expect(numbers[value] == expected)
     }
 }

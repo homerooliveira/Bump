@@ -1,23 +1,24 @@
+import XcodeProjWrapper
 import XcodeProjWrapperMock
 
 extension XcodeProjWrapperMock {
     static var mock: XcodeProjWrapperMock {
         XcodeProjWrapperMock(
             targets: [
-                TargetMock(
+                Target(
                     name: "Test1",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0"
                         )
                     ]
                 ),
-                TargetMock(
+                Target(
                     name: "Test2",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "com.test",
                             buildNumber: "1",
                             version: "1.0"
@@ -31,30 +32,30 @@ extension XcodeProjWrapperMock {
     static var mockWithThreeConfigs: XcodeProjWrapperMock {
         XcodeProjWrapperMock(
             targets: [
-                TargetMock(
+                Target(
                     name: "Test1",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0"
                         )
                     ]
                 ),
-                TargetMock(
+                Target(
                     name: "Test2",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "com.test",
                             buildNumber: "1",
                             version: "1.0"
                         )
                     ]
                 ),
-                TargetMock(
+                Target(
                     name: "Test3",
                     buildConfigurations: [
-                        BuildConfigurationMock(
+                        BuildConfiguration(
                             bundleIdentifier: "com.test",
                             buildNumber: "1",
                             version: "1.0"
