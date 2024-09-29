@@ -24,7 +24,9 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - name: Cache .build 
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_16.0.app
+    - name: Cache .build
       uses: actions/cache@v4.0.2
       with:
         path: .build

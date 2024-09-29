@@ -1,6 +1,6 @@
-internal import Foundation
-internal import SwiftExtensions
-import XcodeProjWrapper
+import Foundation
+import SwiftExtensions
+public import XcodeProjWrapper
 
 public struct Bump {
     private var xcodeProj: any XcodeProjWrapperProtocol
