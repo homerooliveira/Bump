@@ -1,6 +1,5 @@
 import FileManagerWrapperMock
 import Testing
-import XCTest
 
 @testable import FileManagerWrapper
 

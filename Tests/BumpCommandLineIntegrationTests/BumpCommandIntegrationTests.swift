@@ -4,7 +4,6 @@ import FileManagerWrapper
 import Foundation
 import Testing
 import XcodeProjWrapper
-import XCTest
 
 @testable import BumpCommandLine
 
