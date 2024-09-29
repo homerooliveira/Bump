@@ -5,7 +5,6 @@ import XcodeProjWrapper
 import Foundation
 import Testing
 import XcodeProjWrapper
-import XCTest
 
 @testable import BumpCommandLine
 
