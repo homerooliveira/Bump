@@ -21,7 +21,7 @@ concurrency:
 
 jobs:
   unused_code_lint:
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
     - uses: actions/checkout@v4
     - name: Select Xcode
