@@ -1,4 +1,5 @@
 import FileManagerWrapperMock
+import Foundation
 import Testing
 
 @testable import FileManagerWrapper
