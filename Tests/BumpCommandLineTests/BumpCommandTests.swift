@@ -1,11 +1,11 @@
-import ArgumentParser
-import Environment
-import FileManagerWrapperMock
-import XcodeProjWrapperMock
+internal import ArgumentParser
+internal import Environment
+internal import FileManagerWrapperMock
+internal import XcodeProjWrapperMock
 import Foundation
 import XCTest
 
-@testable import BumpCommandLine
+@testable internal import BumpCommandLine
 
 final class BumpCommandTests: XCTestCase {
     private var xcodeProjFinderMock = XcodeProjFinderMock()

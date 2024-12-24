@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -77,9 +77,7 @@ let package = Package(
 for target in package.targets {
 	target.swiftSettings = (target.swiftSettings ?? []) + [
 		.unsafeFlags(["-warnings-as-errors"]),
-		.enableExperimentalFeature("AccessLevelOnImport"),
-		.enableExperimentalFeature("StrictConcurrency"),
 		.enableUpcomingFeature("ExistentialAny"),
-		.enableUpcomingFeature("BareSlashRegexLiterals"),
+		// .enableUpcomingFeature("InternalImportsByDefault"), // Uncomment this line to enable the feature in Swift 6.0
 	]
 }

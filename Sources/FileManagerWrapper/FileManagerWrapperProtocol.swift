@@ -1,4 +1,4 @@
-public import Foundation
+import Foundation
 
 public protocol FileManagerProtocol {
     var currentDirectoryPath: String { get }

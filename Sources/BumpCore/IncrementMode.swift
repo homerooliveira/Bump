@@ -1,4 +1,4 @@
-import Foundation
+internal import Foundation
 
 public enum IncrementMode: RawRepresentable, Equatable {
     case major

@@ -1,4 +1,4 @@
-import XcodeProj
+internal import XcodeProj
 
 public struct Target {
     public let name: String

@@ -1,7 +1,7 @@
 import FileManagerWrapperMock
 import XCTest
 
-@testable import FileManagerWrapper
+@testable internal import FileManagerWrapper
 
 final class XcodeProjFinderTests: XCTestCase {
     private let fileManagerWrapperMock = FileManagerWrapperMock()

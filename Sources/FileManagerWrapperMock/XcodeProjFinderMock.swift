@@ -1,4 +1,4 @@
-public import FileManagerWrapper
+import FileManagerWrapper
 import Foundation
 
 public final class XcodeProjFinderMock: XcodeProjFinderProtocol {

@@ -1,4 +1,4 @@
-public import Foundation
+import Foundation
 
 extension FileManager: FileManagerProtocol {
     public func contentsOfDirectory(at url: URL) throws -> [URL] {

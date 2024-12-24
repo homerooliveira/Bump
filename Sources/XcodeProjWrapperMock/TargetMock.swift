@@ -1,3 +1,3 @@
-public import XcodeProjWrapper
+import XcodeProjWrapper
 
 public typealias TargetMock = Target
