@@ -1,7 +1,7 @@
 import Foundation
 import XCTest
 
-@testable internal import SwiftExtensions
+@testable import SwiftExtensions
 
 final class ArrayExtensionsTests: XCTestCase {
     func testSubscriptGet() throws {

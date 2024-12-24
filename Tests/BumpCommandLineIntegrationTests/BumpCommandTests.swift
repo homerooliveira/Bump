@@ -1,11 +1,11 @@
-internal import ArgumentParser
-internal import Environment
-internal import FileManagerWrapper
-internal import XcodeProjWrapper
+import ArgumentParser
+import Environment
+import FileManagerWrapper
+import XcodeProjWrapper
 import Foundation
 import XCTest
 
-@testable internal import BumpCommandLine
+@testable import BumpCommandLine
 
 final class BumpCommandIntegrationTests: XCTestCase {
     private var logs: [String] = []

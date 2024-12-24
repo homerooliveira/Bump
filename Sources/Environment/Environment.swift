@@ -1,6 +1,6 @@
-import FileManagerWrapper
+public import FileManagerWrapper
 import Foundation
-import XcodeProjWrapper
+public import XcodeProjWrapper
 
 // This struct is used to inject dependencies in the BumpCommand.
 // It is safe to use @unchecked Sendable because the properties are immutable.

@@ -1,4 +1,4 @@
-import XcodeProjWrapper
+public import XcodeProjWrapper
 
 public final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
     public var targets: [Target]

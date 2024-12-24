@@ -1,5 +1,5 @@
 private import PathKit
-internal import XcodeProj
+import XcodeProj
 import Foundation
 
 public struct XcodeProjWrapper: XcodeProjWrapperProtocol {

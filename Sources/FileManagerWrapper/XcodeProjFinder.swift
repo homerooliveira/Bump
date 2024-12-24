@@ -1,4 +1,4 @@
-import Foundation
+public import Foundation
 
 public protocol XcodeProjFinderProtocol {
     func findXcodeProj(path: String?) throws -> String
