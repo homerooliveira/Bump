@@ -1,4 +1,4 @@
-internal import Foundation
+import Foundation
 
 enum VersionIndex: Int {
     case major = 0

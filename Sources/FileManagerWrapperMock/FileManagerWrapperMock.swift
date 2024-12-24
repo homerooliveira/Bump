@@ -1,5 +1,5 @@
-import FileManagerWrapper
-import Foundation
+public import FileManagerWrapper
+public import Foundation
 
 public final class FileManagerWrapperMock: FileManagerProtocol {
     public var currentDirectoryPath: String = ""
