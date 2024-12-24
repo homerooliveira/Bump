@@ -45,7 +45,7 @@ jobs:
     - name: Generate coverage
       run: ./.scripts/generate_coverage.sh
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         files: info.lcov
         fail_ci_if_error: true
