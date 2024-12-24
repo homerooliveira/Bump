@@ -163,7 +163,7 @@ struct BumpCommandIntegrationTests {
     }
 
     private func fixturesPath() throws -> URL {
-        try XCTUnwrap(Bundle.module.resourceURL)
+        try #require(Bundle.module.resourceURL)
     }
 
 <<<<<<< HEAD:Tests/BumpCommandLineIntegrationTests/BumpCommandTests.swift
