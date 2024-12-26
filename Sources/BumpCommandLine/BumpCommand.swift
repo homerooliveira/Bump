@@ -3,8 +3,7 @@ import BumpCore
 import Environment
 import Foundation
 
-@main
-struct BumpCommand: ParsableCommand {
+package struct BumpCommand: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "bump",
         abstract: "Bump your projects."

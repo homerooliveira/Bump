@@ -9,7 +9,7 @@ let package = Package(
 		.macOS(.v13)
 	],
 	products: [
-		.executable(name: "bump", targets: ["BumpCommandLine"])
+		.executable(name: "bump", targets: ["bump"]),
 	],
 	dependencies: [
 		.package(
@@ -20,7 +20,8 @@ let package = Package(
 			.upToNextMajor(from: "1.3.0")),
 	],
 	targets: [
-		.executableTarget(
+		.executableTarget(name: String("bump"), dependencies: ["BumpCommandLine"]),
+		.target(
 			name: "BumpCommandLine",
 			dependencies: [
 				"BumpCore",
@@ -55,7 +56,8 @@ let package = Package(
 		.testTarget(
 			name: "BumpCommandLineIntegrationTests",
 			dependencies: ["BumpCommandLine", "Environment"],
-			resources: [.copy("Resources/")]),
+			resources: [.copy("Resources/")]
+        ),
 		.testTarget(
 			name: "SwiftExtensionsTests",
 			dependencies: ["SwiftExtensions"]),
