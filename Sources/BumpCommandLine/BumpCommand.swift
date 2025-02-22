@@ -1,7 +1,7 @@
 import ArgumentParser
-internal import BumpCore
-internal import Environment
-internal import Foundation
+import BumpCore
+import Environment
+import Foundation
 
 @main
 struct BumpCommand: ParsableCommand {

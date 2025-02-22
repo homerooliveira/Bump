@@ -1,4 +1,4 @@
-internal import XcodeProjWrapperMock
+import XcodeProjWrapperMock
 
 extension XcodeProjWrapperMock {
     static var mock: XcodeProjWrapperMock {

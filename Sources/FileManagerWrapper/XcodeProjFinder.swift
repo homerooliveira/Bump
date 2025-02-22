@@ -19,7 +19,7 @@ public struct XcodeProjFinder: XcodeProjFinderProtocol {
 
     private let fileManagerWrapper: any FileManagerProtocol
 
-    public init(fileManagerWrapper: any FileManagerProtocol = FileManager.default) {
+    public init(fileManagerWrapper: any FileManagerProtocol) {
         self.fileManagerWrapper = fileManagerWrapper
     }
 
