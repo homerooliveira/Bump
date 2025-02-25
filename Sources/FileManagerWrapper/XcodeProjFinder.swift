@@ -6,10 +6,10 @@ public protocol XcodeProjFinderProtocol {
 
 public struct XcodeProjFinder: XcodeProjFinderProtocol {
     public struct FindError: Error, Equatable {
-        let message: String
+        let description: String
 
-        init(_ message: String) {
-            self.message = message
+        init(_ description: String) {
+            self.description = description
         }
     }
 
