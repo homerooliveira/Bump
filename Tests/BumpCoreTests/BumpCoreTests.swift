@@ -2,8 +2,6 @@ import XcodeProjWrapperMock
 import XCTest
 import Testing
 import XcodeProjWrapper
-import XcodeProjWrapperMock
-
 @testable import BumpCore
 
 struct BumpCoreTests {

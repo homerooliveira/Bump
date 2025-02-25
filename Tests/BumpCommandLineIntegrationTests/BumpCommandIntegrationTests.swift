@@ -3,10 +3,7 @@ import Environment
 import FileManagerWrapper
 import Foundation
 import XcodeProjWrapper
-import Foundation
 import Testing
-import XcodeProjWrapper
-
 @testable import BumpCommandLine
 
 final class Box<T>: Equatable where T: Equatable {

@@ -4,8 +4,6 @@ import FileManagerWrapperMock
 import XcodeProjWrapperMock
 import Foundation
 import Testing
-import XcodeProjWrapperMock
-
 @testable import BumpCommandLine
 
 final class BumpCommandTests {
