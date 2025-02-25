@@ -1,4 +1,5 @@
 import ArgumentParser
+import BumpCore
 import Environment
 import FileManagerWrapper
 import Foundation

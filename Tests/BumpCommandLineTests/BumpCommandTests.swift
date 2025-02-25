@@ -1,4 +1,5 @@
 import ArgumentParser
+import BumpCore
 import Environment
 import FileManagerWrapperMock
 import XcodeProjWrapperMock

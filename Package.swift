@@ -81,5 +81,6 @@ for target in package.targets {
 		.unsafeFlags(["-warnings-as-errors"]),
 		.enableUpcomingFeature("ExistentialAny"),
 		.enableUpcomingFeature("InternalImportsByDefault"),
+		// .enableUpcomingFeature("MemberImportVisibility"), Swift 6.1 only
 	]
 }
