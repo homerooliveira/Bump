@@ -36,7 +36,7 @@ final class BumpCommandTests {
         command.mode = .build
 
         #expect {
-            try command.validate()
+            try self.command.validate()
         } throws: { error in
             guard let error = error as? ValidationError else {
                 throw error
@@ -50,7 +50,7 @@ final class BumpCommandTests {
         command.mode = .versionString("1.0.")
 
         #expect {
-            try command.validate()
+            try self.command.validate()
         } throws: { error in
             guard let error = error as? ValidationError else {
                 throw error
@@ -64,7 +64,7 @@ final class BumpCommandTests {
         command.mode = .versionString("1.0.0.0.1")
 
         #expect {
-            try command.validate()
+            try self.command.validate()
         } throws: { error in
             guard let error = error as? ValidationError else {
                 throw error
@@ -82,7 +82,7 @@ final class BumpCommandTests {
         #expect(
             throws: CocoaError(.fileNoSuchFile)
         ) {
-            try command.run()
+            try self.command.run()
         }
         #expect(xcodeProjFinderMock.findXcodeProjPathPassed == "test")
         #expect(xcodeProjFinderMock.findXcodeProjPathCalled)

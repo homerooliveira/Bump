@@ -51,7 +51,7 @@ final class XcodeProjFinderTests {
         #expect(
             throws: XcodeProjFinder.FindError("Needs exist a path of .xcodeproj file or directory.")
         ) {
-            try sut.findXcodeProj(path: "/test")
+            try self.sut.findXcodeProj(path: "/test")
         }
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == "/test")
@@ -64,7 +64,7 @@ final class XcodeProjFinderTests {
         #expect(
             throws: XcodeProjFinder.FindError("Wrong directory or path.")
         ) {
-            try sut.findXcodeProj(path: "")
+            try self.sut.findXcodeProj(path: "")
         }
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == "")
@@ -77,7 +77,7 @@ final class XcodeProjFinderTests {
         #expect(
             throws: XcodeProjFinder.FindError("The path must be .xcodeproj file or directory.")
         ) {
-            try sut.findXcodeProj(path: "/test.txt")
+            try self.sut.findXcodeProj(path: "/test.txt")
         }
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == "/test.txt")
@@ -90,7 +90,7 @@ final class XcodeProjFinderTests {
         #expect(
             throws: XcodeProjFinder.FindError("Needs exist a .xcodeproj file in this directory.")
         ) {
-            try sut.findXcodeProj(path: "/test")
+            try self.sut.findXcodeProj(path: "/test")
         }
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == "/test")

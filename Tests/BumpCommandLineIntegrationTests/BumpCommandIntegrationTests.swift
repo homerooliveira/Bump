@@ -1,6 +1,7 @@
 import ArgumentParser
 import Environment
 import FileManagerWrapper
+import Foundation
 import XcodeProjWrapper
 import Foundation
 import Testing
@@ -166,26 +167,18 @@ struct BumpCommandIntegrationTests {
         try #require(Bundle.module.resourceURL)
     }
 
-<<<<<<< HEAD:Tests/BumpCommandLineIntegrationTests/BumpCommandTests.swift
-    private func makeEnvironment() -> Environment {
-        Environment(
-            xcodeProjFinder: XcodeProjFinder(fileManagerWrapper: FileManager.default),
-            xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
-            logger: { self.logs.append($0) }
-=======
     private func makeCommand() -> (BumpCommand, Box<[String]>) {
         let logs: Box<[String]> = Box([])
 
         return (
             BumpCommand(
                 environment: Environment(
-                    xcodeProjFinder: XcodeProjFinder(),
+                    xcodeProjFinder: XcodeProjFinder(fileManagerWrapper: FileManager.default),
                     xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
                     logger: { logs.value.append($0) }
                 )
             ),
             logs
->>>>>>> b00c0d5 (Update code):Tests/BumpCommandLineIntegrationTests/BumpCommandIntegrationTests.swift
         )
     }
 }

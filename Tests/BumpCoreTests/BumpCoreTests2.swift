@@ -1,4 +1,5 @@
 import Testing
+import XcodeProjWrapper
 import XcodeProjWrapperMock
 
 @testable import BumpCore
