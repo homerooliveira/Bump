@@ -34,6 +34,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - name: Installing Periphery
-      run: brew install peripheryapp/periphery/periphery
+      run: brew install periphery
     - name: Run Periphery
       run: periphery scan --format github-actions --relative-results --strict

@@ -11,10 +11,6 @@ public struct XcodeProjFinder: XcodeProjFinderProtocol {
         init(_ message: String) {
             self.message = message
         }
-
-        var description: String {
-            message
-        }
     }
 
     private let fileManagerWrapper: any FileManagerProtocol
