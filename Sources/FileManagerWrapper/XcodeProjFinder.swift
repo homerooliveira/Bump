@@ -6,6 +6,7 @@ public protocol XcodeProjFinderProtocol {
 
 public struct XcodeProjFinder: XcodeProjFinderProtocol {
     public struct FindError: Error, Equatable {
+        // periphery:ignore - Because the periphery can't find the usage of this property.
         let description: String
 
         init(_ description: String) {
