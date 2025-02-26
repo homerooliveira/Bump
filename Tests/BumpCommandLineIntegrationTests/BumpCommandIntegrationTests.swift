@@ -1,22 +1,29 @@
 import ArgumentParser
+import BumpCore
 import Environment
 import FileManagerWrapper
-import XcodeProjWrapper
 import Foundation
-import XCTest
-
+import XcodeProjWrapper
+import Testing
 @testable import BumpCommandLine
 
-final class BumpCommandIntegrationTests: XCTestCase {
-    private var logs: [String] = []
-    private var command = BumpCommand()
+final class Box<T>: Equatable where T: Equatable {
+    var value: T
 
-    override func setUpWithError() throws {
-        logs = []
-        command = BumpCommand(environment: makeEnvironment())
+    init(_ value: T) {
+        self.value = value
     }
 
-    func testBumpWithDirectory() throws {
+    static func == (lhs: Box<T>, rhs: Box<T>) -> Bool {
+        lhs.value == rhs.value
+    }
+}
+
+struct BumpCommandIntegrationTests {
+
+    @Test func bumpWithDirectory() throws {
+        var (command, logs) = makeCommand()
+
         let resourcesPath = try fixturesPath()
 
         command.path = resourcesPath.path
@@ -28,12 +35,14 @@ final class BumpCommandIntegrationTests: XCTestCase {
 
         try command.run()
 
-        logs.sort()
+        logs.value.sort()
 
-        XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
+        #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
     }
 
-    func testBumpWithXcodeproj() throws {
+    @Test func bumpWithXcodeproj() throws {
+        var (command, logs) = makeCommand()
+
         let resourcesPath = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
@@ -46,12 +55,14 @@ final class BumpCommandIntegrationTests: XCTestCase {
 
         try command.run()
 
-        logs.sort()
+        logs.value.sort()
 
-        XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
+        #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
     }
 
-    func testBumpWithDirectoryWhenVerboseIsTrue() throws {
+    @Test func bumpWithDirectoryWhenVerboseIsTrue() throws {
+        var (command, logs) = makeCommand()
+
         let resourcesPath = try fixturesPath()
 
         command.path = resourcesPath.path
@@ -63,19 +74,20 @@ final class BumpCommandIntegrationTests: XCTestCase {
 
         try command.run()
 
-        logs.sort()
+        logs.value.sort()
 
-        XCTAssertEqual(
-            logs,
-            [
+        #expect(
+            logs == Box([
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
-            ]
+            ])
         )
     }
 
-    func testBumpWithXcodeprojWhenVerboseIsTrue() throws {
+    @Test func bumpWithXcodeprojWhenVerboseIsTrue() throws {
+        var (command, logs) = makeCommand()
+
         let resourcesPath = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
@@ -88,21 +100,20 @@ final class BumpCommandIntegrationTests: XCTestCase {
 
         try command.run()
 
-        logs.sort()
+        logs.value.sort()
 
-        XCTAssertEqual(
-            logs,
-            [
+        #expect(
+            logs == Box([
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
-            ]
+            ])
         )
-
-        try command.run()
     }
 
-    func testBumpWithXcodeprojWhenPathIsNil() throws {
+    @Test func bumpWithXcodeprojWhenPathIsNil() {
+        var (command, _) = makeCommand()
+
         command.path = nil
         command.bundleIdentifiers = ["com.test.Test1"]
         command.mode = .build
@@ -110,13 +121,16 @@ final class BumpCommandIntegrationTests: XCTestCase {
         command.verbose = false
         command.inPlace = false
 
-        // This will throw an error because the current directory does not have an xcodeproj file
-        XCTAssertThrowsError(try command.run())
+        #expect(throws: (any Error).self) {
+            try command.run()
+        }
     }
 
-    func testBumpWithInPlaceTrue() throws {
+    @Test func bumpWithInPlaceTrue() throws {
+        var (command, logs) = makeCommand()
+
         let resourcesPath = try fixturesPath()
-            .appending(component: "SampleProject.xcodeproj")
+            .appendingPathComponent("SampleProject.xcodeproj")
 
         let temporaryFile = try copyFileToTemporaryPath(fileURL: resourcesPath)
 
@@ -129,9 +143,9 @@ final class BumpCommandIntegrationTests: XCTestCase {
 
         try command.run()
 
-        logs.sort()
+        logs.value.sort()
 
-        XCTAssertEqual(logs, ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
+        #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
 
         // Remove the temporary file
         try FileManager.default.removeItem(at: temporaryFile)
@@ -148,14 +162,21 @@ final class BumpCommandIntegrationTests: XCTestCase {
     }
 
     private func fixturesPath() throws -> URL {
-        try XCTUnwrap(Bundle.module.resourceURL)
+        try #require(Bundle.module.resourceURL)
     }
 
-    private func makeEnvironment() -> Environment {
-        Environment(
-            xcodeProjFinder: XcodeProjFinder(fileManagerWrapper: FileManager.default),
-            xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
-            logger: { self.logs.append($0) }
+    private func makeCommand() -> (BumpCommand, Box<[String]>) {
+        let logs: Box<[String]> = Box([])
+
+        return (
+            BumpCommand(
+                environment: Environment(
+                    xcodeProjFinder: XcodeProjFinder(fileManagerWrapper: FileManager.default),
+                    xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
+                    logger: { logs.value.append($0) }
+                )
+            ),
+            logs
         )
     }
 }

@@ -5,15 +5,12 @@ public protocol XcodeProjFinderProtocol {
 }
 
 public struct XcodeProjFinder: XcodeProjFinderProtocol {
-    struct FindError: Error {
-        let message: String
+    public struct FindError: Error, Equatable {
+        // periphery:ignore - Because the periphery can't find the usage of this property.
+        let description: String
 
-        init(_ message: String) {
-            self.message = message
-        }
-
-        var description: String {
-            message
+        init(_ description: String) {
+            self.description = description
         }
     }
 

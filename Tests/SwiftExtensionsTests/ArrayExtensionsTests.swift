@@ -1,32 +1,36 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import SwiftExtensions
 
-final class ArrayExtensionsTests: XCTestCase {
-    func testSubscriptGet() throws {
-        enum Index: Int {
-            case zero
-            case one
-        }
-
-        let numbers = [0, 1]
-
-        XCTAssertEqual(numbers[Index.zero], 0)
-        XCTAssertEqual(numbers[Index.one], 1)
+struct ArrayExtensionsTests {
+    enum Index: Int {
+        case zero
+        case one
     }
 
-    func testSubscriptSet() throws {
-        enum Index: Int {
-            case zero
-            case one
-        }
+    @Test(
+        arguments: [
+            (value: Index.zero, expected: 0),
+            (value: Index.one, expected: 1)
+        ]
+    )
+    func subscriptGet(value: Index, expected: Int) throws {
+        let numbers = [0, 1]
+        try #require(numbers[value] == expected)
+    }
 
+    @Test(
+        arguments: [
+            (value: Index.zero, expected: 12),
+            (value: Index.one, expected: 13)
+        ]
+    )
+    func subscriptSet(value: Index, expected: Int) throws {
         var numbers = [0, 1]
 
-        numbers[Index.zero] = 12
-        numbers[Index.one] = 13
+        numbers[value] = expected
 
-        XCTAssertEqual(numbers, [12, 13])
+        #expect(numbers[value] == expected)
     }
 }

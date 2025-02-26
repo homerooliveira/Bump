@@ -1,10 +1,10 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import SwiftExtensions
 
-final class DictonaryExtensionsTests: XCTestCase {
-    func testSubscriptGet() throws {
+struct DictonaryExtensionsTests {
+    @Test func subscriptGet() {
         enum Index: String {
             case zero
             case one
@@ -12,11 +12,11 @@ final class DictonaryExtensionsTests: XCTestCase {
 
         let numbers = [ "zero": 0, "one": 1 ]
 
-        XCTAssertEqual(numbers[Index.zero], 0)
-        XCTAssertEqual(numbers[Index.one], 1)
+        #expect(numbers[Index.zero] == 0)
+        #expect(numbers[Index.one] == 1)
     }
 
-    func testSubscriptSet() throws {
+    @Test func subscriptSet() {
         enum Index: String {
             case zero
             case one
@@ -27,6 +27,6 @@ final class DictonaryExtensionsTests: XCTestCase {
         numbers[Index.zero] = 12
         numbers[Index.one] = 13
 
-        XCTAssertEqual(numbers, [ "zero": 12, "one": 13 ])
+        #expect(numbers == [ "zero": 12, "one": 13 ])
     }
 }

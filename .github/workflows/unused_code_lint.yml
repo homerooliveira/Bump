@@ -21,12 +21,12 @@ concurrency:
 
 jobs:
   unused_code_lint:
-    runs-on: macos-latest
+    runs-on: macos-15
     steps:
     - uses: actions/checkout@v4
     - name: Select Xcode
       run: sudo xcode-select -s /Applications/Xcode_16.2.app
-    - name: Cache .build 
+    - name: Cache .build
       uses: actions/cache@v4.2.0
       with:
         path: .build
@@ -34,6 +34,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - name: Installing Periphery
-      run: brew install peripheryapp/periphery/periphery
+      run: brew install periphery
     - name: Run Periphery
       run: periphery scan --format github-actions --relative-results --strict

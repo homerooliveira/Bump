@@ -1,16 +1,17 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import FileManagerWrapper
 
-final class URLTests: XCTestCase {
-    func testIsXcodeProjTrue() throws {
-        let url = try XCTUnwrap(URL(string: "test.xcodeproj"))
-        XCTAssertTrue(url.isXcodeProj)
-    }
-
-    func testIsXcodeProjFalse() throws {
-        let url = try XCTUnwrap(URL(string: "test.txt"))
-        XCTAssertFalse(url.isXcodeProj)
+struct URLTests {
+    @Test(
+        arguments: [
+            (value: "test.xcodeproj", expected: true),
+            (value: "test.txt", expected: false)
+        ]
+    )
+    func isXcodeProj(value: String, expected: Bool) throws {
+        let url = try #require(URL(string: value))
+        try #require(url.isXcodeProj == expected)
     }
 }

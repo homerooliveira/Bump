@@ -1,25 +1,32 @@
 import Foundation
-import XCTest
+import Testing
 
 @testable import BumpCore
 
-final class IncrementModeTests: XCTestCase {
-    func testRawValue() throws {
-        let expectedValues = ["major", "minor", "patch", "build", "1.0.0"]
-
-        let modes: [IncrementMode] = [.major, .minor, .patch, .build, .versionString("1.0.0")]
-
-        XCTAssertEqual(modes.map(\.rawValue), expectedValues)
+struct IncrementModeTests {
+    @Test(
+        arguments: [
+            (value: IncrementMode.major, expected: "major"),
+            (value: IncrementMode.minor, expected: "minor"),
+            (value: IncrementMode.patch, expected: "patch"),
+            (value: IncrementMode.build, expected: "build"),
+            (value: IncrementMode.versionString("1.0.0"), expected: "1.0.0")
+        ]
+    )
+    func rawValue(value: IncrementMode, expected: String) throws {
+        try #require(value.rawValue == expected)
     }
 
-    func testInit() throws {
-        let expectedModes: [IncrementMode] = [.major, .minor, .patch, .build, .versionString("1.0.0")]
-
-        let values = ["major", "minor", "patch", "build", "1.0.0"]
-
-        XCTAssertEqual(
-            values.compactMap(IncrementMode.init(rawValue:)),
-            expectedModes
-        )
+    @Test(
+        arguments: [
+            (value: "major", expected: IncrementMode.major),
+            (value: "minor", expected: IncrementMode.minor),
+            (value: "patch", expected: IncrementMode.patch),
+            (value: "build", expected: IncrementMode.build),
+            (value: "1.0.0", expected: IncrementMode.versionString("1.0.0"))
+        ]
+    )
+    func initFromRawValue(value: String, expected: IncrementMode) throws {
+        try #require(IncrementMode(rawValue: value) == expected)
     }
 }
