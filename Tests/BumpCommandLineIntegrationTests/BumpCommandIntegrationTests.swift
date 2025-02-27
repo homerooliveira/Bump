@@ -151,9 +151,9 @@ struct BumpCommandIntegrationTests {
 
     private func fixturesPath() throws -> URL {
         let root = try #require(Bundle.module.resourceURL)
-        
+
         let resources = try FileManager.default.contentsOfDirectory(at: root)
-        
+
         if let first = resources.first,
            first.lastPathComponent == "Resources" {
             return first
