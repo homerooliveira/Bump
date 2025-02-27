@@ -1,11 +1,11 @@
 import Foundation
 
-public protocol XcodeProjFinderProtocol {
+package protocol XcodeProjFinderProtocol {
     func findXcodeProj(path: String?) throws -> String
 }
 
-public struct XcodeProjFinder: XcodeProjFinderProtocol {
-    public struct FindError: Error, Equatable {
+package struct XcodeProjFinder: XcodeProjFinderProtocol {
+    package struct FindError: Error, Equatable {
         // periphery:ignore - Because the periphery can't find the usage of this property.
         let description: String
 
@@ -16,11 +16,11 @@ public struct XcodeProjFinder: XcodeProjFinderProtocol {
 
     private let fileManagerWrapper: any FileManagerProtocol
 
-    public init(fileManagerWrapper: any FileManagerProtocol) {
+    package init(fileManagerWrapper: any FileManagerProtocol) {
         self.fileManagerWrapper = fileManagerWrapper
     }
 
-    public func findXcodeProj(path: String?) throws -> String {
+    package func findXcodeProj(path: String?) throws -> String {
         let path = path ?? fileManagerWrapper.currentDirectoryPath
 
         guard fileManagerWrapper.fileExists(atPath: path) else {

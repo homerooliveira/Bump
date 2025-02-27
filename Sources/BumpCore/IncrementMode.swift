@@ -1,13 +1,13 @@
 import Foundation
 
-public enum IncrementMode: RawRepresentable, Equatable, Sendable {
+package enum IncrementMode: RawRepresentable, Equatable, Sendable {
     case major
     case minor
     case patch
     case build
     case versionString(String)
 
-    public var rawValue: String {
+    package var rawValue: String {
         switch self {
         case .major:
             return "major"
@@ -22,7 +22,7 @@ public enum IncrementMode: RawRepresentable, Equatable, Sendable {
         }
     }
 
-    public init?(rawValue: String) {
+    package init?(rawValue: String) {
         switch rawValue {
         case "major":
             self = .major

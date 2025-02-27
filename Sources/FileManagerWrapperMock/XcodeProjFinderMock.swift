@@ -1,20 +1,20 @@
-public import FileManagerWrapper
+import FileManagerWrapper
 import Foundation
 
-public final class XcodeProjFinderMock: XcodeProjFinderProtocol {
-    public init() {}
+package final class XcodeProjFinderMock: XcodeProjFinderProtocol {
+    package init() {}
 
-    public private(set) var findXcodeProjPathCalled = false
-    public private(set) var findXcodeProjPathPassed: String?
-    public var findXcodeProjPathBeReturned: Result<String, any Error> = .success("")
+    package private(set) var findXcodeProjPathCalled = false
+    package private(set) var findXcodeProjPathPassed: String?
+    package var findXcodeProjPathBeReturned: Result<String, any Error> = .success("")
 
-    public func findXcodeProj(path: String?) throws -> String {
+    package func findXcodeProj(path: String?) throws -> String {
         findXcodeProjPathCalled = true
         findXcodeProjPathPassed = path
         return try findXcodeProjPathBeReturned.get()
     }
 
-    public func reset() {
+    package func reset() {
         findXcodeProjPathCalled = false
         findXcodeProjPathBeReturned = .success("")
     }

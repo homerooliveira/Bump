@@ -1,32 +1,32 @@
-public import FileManagerWrapper
-public import Foundation
+import FileManagerWrapper
+package import Foundation
 
-public final class FileManagerWrapperMock: FileManagerProtocol {
-    public var currentDirectoryPath: String = ""
+package final class FileManagerWrapperMock: FileManagerProtocol {
+    package var currentDirectoryPath: String = ""
 
-    public init() {}
+    package init() {}
 
-    public var atPathPassed: String?
-    public private(set) var fileExistsCalled = false
-    public var fileExistsBeReturned = false
+    package var atPathPassed: String?
+    package private(set) var fileExistsCalled = false
+    package var fileExistsBeReturned = false
 
-    public func fileExists(atPath: String) -> Bool {
+    package func fileExists(atPath: String) -> Bool {
         atPathPassed = atPath
         fileExistsCalled = true
         return fileExistsBeReturned
     }
 
-    public var atURLPassed: URL?
-    public private(set) var contentsOfDirectoryCalled = false
-    public var contentsOfDirectoryBeReturned: [URL] = []
+    package var atURLPassed: URL?
+    package private(set) var contentsOfDirectoryCalled = false
+    package var contentsOfDirectoryBeReturned: [URL] = []
 
-    public func contentsOfDirectory(at url: URL) throws -> [URL] {
+    package func contentsOfDirectory(at url: URL) throws -> [URL] {
         atURLPassed = url
         contentsOfDirectoryCalled = true
         return contentsOfDirectoryBeReturned
     }
 
-    public func reset() {
+    package func reset() {
         currentDirectoryPath = ""
 
         atPathPassed = nil

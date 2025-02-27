@@ -8,16 +8,16 @@ private enum BuildSettingKey: String {
     case identifier = "PRODUCT_BUNDLE_IDENTIFIER"
 }
 
-public struct BuildConfiguration: Equatable {
+package struct BuildConfiguration: Equatable {
     // These properties are used to avoid dependency on XCBuildConfiguration
     let setBuildSettings: ((inout [String: Any]) -> Void) -> Void
     let getBuildSettings: () -> [String: Any]
 
-    public var bundleIdentifier: String {
+    package var bundleIdentifier: String {
         getBuildSettings()[BuildSettingKey.identifier] as? String ?? ""
     }
 
-    public var buildNumber: String? {
+    package var buildNumber: String? {
         get {
             getBuildSettings()[BuildSettingKey.buildNumber] as? String
         }
@@ -26,7 +26,7 @@ public struct BuildConfiguration: Equatable {
         }
     }
 
-    public var version: String? {
+    package var version: String? {
         get {
             getBuildSettings()[BuildSettingKey.version] as? String
         }
@@ -44,7 +44,7 @@ public struct BuildConfiguration: Equatable {
         }
     }
 
-    public init(bundleIdentifier: String, buildNumber: String?, version: String?) {
+    package init(bundleIdentifier: String, buildNumber: String?, version: String?) {
         var buildSettings = [String: Any]()
         buildSettings[BuildSettingKey.identifier] = bundleIdentifier
         buildSettings[BuildSettingKey.buildNumber] = buildNumber
@@ -58,7 +58,7 @@ public struct BuildConfiguration: Equatable {
         }
     }
 
-    public static func == (lhs: BuildConfiguration, rhs: BuildConfiguration) -> Bool {
+    package static func == (lhs: BuildConfiguration, rhs: BuildConfiguration) -> Bool {
         lhs.bundleIdentifier == rhs.bundleIdentifier
             && lhs.buildNumber == rhs.buildNumber
             && lhs.version == rhs.version

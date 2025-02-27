@@ -1,8 +1,8 @@
 import Foundation
 import SwiftExtensions
-public import XcodeProjWrapper
+package import XcodeProjWrapper
 
-public struct Bump {
+package struct Bump {
     private var xcodeProj: any XcodeProjWrapperProtocol
     private let bundleIdentifiers: Set<String>
     private let log: (String) -> Void
@@ -10,7 +10,7 @@ public struct Bump {
     private let useSameVersion: Bool
     private let inPlace: Bool
 
-    public init(
+    package init(
         xcodeProj: any XcodeProjWrapperProtocol,
         bundleIdentifiers: Set<String>,
         log: @escaping (String) -> Void,
@@ -26,7 +26,7 @@ public struct Bump {
         self.inPlace = inPlace
     }
 
-    public mutating func bump(flag: IncrementMode) throws {
+    package mutating func bump(flag: IncrementMode) throws {
         let configsByTargetName = getConfigurationsByTargetName()
 
         if useSameVersion {
