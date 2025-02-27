@@ -7,18 +7,6 @@ import XcodeProjWrapper
 import Testing
 @testable import BumpCommandLine
 
-final class Box<T>: Equatable where T: Equatable {
-    var value: T
-
-    init(_ value: T) {
-        self.value = value
-    }
-
-    static func == (lhs: Box<T>, rhs: Box<T>) -> Bool {
-        lhs.value == rhs.value
-    }
-}
-
 struct BumpCommandIntegrationTests {
 
     @Test func bumpWithDirectory() throws {
@@ -162,7 +150,16 @@ struct BumpCommandIntegrationTests {
     }
 
     private func fixturesPath() throws -> URL {
-        try #require(Bundle.module.resourceURL)
+        let root = try #require(Bundle.module.resourceURL)
+
+        let resources = try FileManager.default.contentsOfDirectory(at: root)
+
+        if let first = resources.first,
+           first.lastPathComponent == "Resources" {
+            return first
+        } else {
+            return root
+        }
     }
 
     private func makeCommand() -> (BumpCommand, Box<[String]>) {

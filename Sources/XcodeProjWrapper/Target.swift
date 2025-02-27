@@ -1,10 +1,10 @@
 import XcodeProj
 
-public struct Target {
-    public let name: String
-    public var buildConfigurations: [BuildConfiguration] = []
+package struct Target {
+    package let name: String
+    package var buildConfigurations: [BuildConfiguration] = []
 
-    public init(name: String, buildConfigurations: [BuildConfiguration]) {
+    package init(name: String, buildConfigurations: [BuildConfiguration]) {
         self.name = name
         self.buildConfigurations = buildConfigurations
     }

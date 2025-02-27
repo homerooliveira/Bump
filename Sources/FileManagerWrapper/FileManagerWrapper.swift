@@ -1,7 +1,7 @@
-public import Foundation
+package import Foundation
 
 extension FileManager: FileManagerProtocol {
-    public func contentsOfDirectory(at url: URL) throws -> [URL] {
+    package func contentsOfDirectory(at url: URL) throws -> [URL] {
         try contentsOfDirectory(at: url, includingPropertiesForKeys: nil)
     }
 }

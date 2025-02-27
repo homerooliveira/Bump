@@ -1,15 +1,15 @@
-public import FileManagerWrapper
+package import FileManagerWrapper
 import Foundation
-public import XcodeProjWrapper
+package import XcodeProjWrapper
 
 // This struct is used to inject dependencies in the BumpCommand.
 // It is safe to use @unchecked Sendable because the properties are immutable.
-public struct Environment: @unchecked Sendable {
-    public let xcodeProjFinder: any XcodeProjFinderProtocol
-    public let xcodeProjWrapper: (String) throws -> any XcodeProjWrapperProtocol
-    public let logger: (String) -> Void
+package struct Environment: @unchecked Sendable {
+    package let xcodeProjFinder: any XcodeProjFinderProtocol
+    package let xcodeProjWrapper: (String) throws -> any XcodeProjWrapperProtocol
+    package let logger: (String) -> Void
 
-    public init(
+    package init(
         xcodeProjFinder: any XcodeProjFinderProtocol,
         xcodeProjWrapper: @escaping (String) throws -> any XcodeProjWrapperProtocol,
         logger: @escaping (String) -> Void
@@ -21,7 +21,7 @@ public struct Environment: @unchecked Sendable {
 }
 
 extension Environment {
-    public static let live = Self(
+    package static let live = Self(
         xcodeProjFinder: XcodeProjFinder(fileManagerWrapper: FileManager.default),
         xcodeProjWrapper: { try XcodeProjWrapper(path: $0) },
         logger: { print($0) }
@@ -30,7 +30,7 @@ extension Environment {
 
 // This extension is necessary to make Environment to be used in the BumpCommand as injected dependency.
 extension Environment: Decodable {
-    public init(from decoder: any Decoder) throws {
+    package init(from decoder: any Decoder) throws {
         self = Self.live
     }
 }

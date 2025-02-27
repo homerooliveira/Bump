@@ -2,7 +2,7 @@ import Foundation
 
 extension Dictionary {
     @inlinable
-    public subscript<T>(_ key: T) -> Value? where T: RawRepresentable, T.RawValue == Key {
+    package subscript<T>(_ key: T) -> Value? where T: RawRepresentable, T.RawValue == Key {
         get {
             self[key.rawValue]
         }

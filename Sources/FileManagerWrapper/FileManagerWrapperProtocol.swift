@@ -1,6 +1,6 @@
-public import Foundation
+package import Foundation
 
-public protocol FileManagerProtocol {
+package protocol FileManagerProtocol {
     var currentDirectoryPath: String { get }
 
     func fileExists(atPath: String) -> Bool

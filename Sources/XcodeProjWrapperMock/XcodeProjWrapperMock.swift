@@ -1,18 +1,18 @@
-public import XcodeProjWrapper
+package import XcodeProjWrapper
 
-public final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
-    public var targets: [Target]
-    public private(set) var saveChangesCalled = false
+package final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
+    package var targets: [Target]
+    package private(set) var saveChangesCalled = false
 
-    public init(targets: [Target] = []) {
+    package init(targets: [Target] = []) {
         self.targets = targets
     }
 
-    public func saveChanges() {
+    package func saveChanges() {
         saveChangesCalled = true
     }
 
-    public func reset() {
+    package func reset() {
         targets = []
         saveChangesCalled = false
     }

@@ -20,7 +20,7 @@ let package = Package(
 			.upToNextMajor(from: "1.3.0")),
 	],
 	targets: [
-		.executableTarget(name: String("bump"), dependencies: ["BumpCommandLine"]),
+		.executableTarget(name: "bump", dependencies: ["BumpCommandLine"]),
 		.target(
 			name: "BumpCommandLine",
 			dependencies: [
