@@ -154,12 +154,12 @@ struct BumpCommandIntegrationTests {
 
         let resources = try FileManager.default.contentsOfDirectory(at: root)
 
-        if let first = resources.first,
-           first.lastPathComponent == "Resources" {
-            return first
-        } else {
-            return root
-        }
+        // if let first = resources.first,
+        //    first.lastPathComponent == "Resources" {
+        //     return first
+        // } else {
+        return root
+        // }
     }
 
     private func makeCommand() -> (BumpCommand, Box<[String]>) {
