@@ -25,7 +25,7 @@ struct BumpCommandIntegrationTests {
 
         logs.value.sort()
 
-        #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
+        #expect(logs.value == ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
     }
 
     @Test func bumpWithXcodeproj() throws {
@@ -45,7 +45,7 @@ struct BumpCommandIntegrationTests {
 
         logs.value.sort()
 
-        #expect(logs == Box(["1.5.0.2", "1.5.0.2", "2.5.0.2"]))
+        #expect(logs.value == ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
     }
 
     @Test func bumpWithDirectoryWhenVerboseIsTrue() throws {
@@ -65,11 +65,11 @@ struct BumpCommandIntegrationTests {
         logs.value.sort()
 
         #expect(
-            logs == Box([
+            logs.value == [
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
-            ])
+            ]
         )
     }
 
@@ -91,11 +91,11 @@ struct BumpCommandIntegrationTests {
         logs.value.sort()
 
         #expect(
-            logs == Box([
+            logs.value == [
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
                 "TestIntetion 2.5.0.1 -> 2.5.0.2"
-            ])
+            ]
         )
     }
 
@@ -133,7 +133,7 @@ struct BumpCommandIntegrationTests {
 
         logs.value.sort()
 
-        #expect(logs == Box(["1.1.0.2", "1.5.0.2", "2.5.0.2"]))
+        #expect(logs.value == ["1.1.0.2", "1.5.0.2", "2.5.0.2"])
 
         // Remove the temporary file
         try FileManager.default.removeItem(at: temporaryFile)
