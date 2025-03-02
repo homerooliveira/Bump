@@ -39,6 +39,7 @@ jobs:
       run: swift build --verbose
     - name: Run tests
       run: swift test --verbose --enable-swift-testing --enable-code-coverage --xunit-output result.xml
+      continue-on-error: true
     - name: Upload test results to Codecov
       uses: codecov/test-results-action@v1
       with:
@@ -68,4 +69,4 @@ jobs:
     - name: Build with Xcode
       run: xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' build
     - name: Run tests
-      run: xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' test | xcbeautify --renderer github-actions
+      run: set -o pipefail && xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' test | xcbeautify --renderer github-actions
