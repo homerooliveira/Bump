@@ -77,10 +77,10 @@ let package = Package(
 )
 
 for target in package.targets {
-	target.swiftSettings = (target.swiftSettings ?? []) + [
-		.unsafeFlags(["-warnings-as-errors"]),
-		.enableUpcomingFeature("ExistentialAny"),
-		.enableUpcomingFeature("InternalImportsByDefault"),
-		// .enableUpcomingFeature("MemberImportVisibility"), Swift 6.1 only
-	]
+    target.swiftSettings = (target.swiftSettings ?? []) + [
+        .unsafeFlags(["-warnings-as-errors"]),
+        .enableUpcomingFeature("ExistentialAny"),
+        .enableUpcomingFeature("InternalImportsByDefault"),
+        // .enableUpcomingFeature("MemberImportVisibility"), Swift 6.1 only
+    ]
 }
