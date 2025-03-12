@@ -5,7 +5,7 @@ import Testing
 import XcodeProjWrapper
 import XcodeProjWrapperMock
 
-@testable import Environment
+@testable import BumpCommandLine
 
 struct EnvironmentTests {
     @Test func testEnvironmentInitialization() throws {
