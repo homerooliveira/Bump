@@ -1,13 +1,13 @@
 {
-  "originHash" : "cd269b5396000d5a7931074c32e8388ff1e4e063593ac46f75ade0931a3d57f4",
+  "originHash" : "73060f50c8615bf85286e93c127df01f44e7c415399fde81d04f6c56ea4c5559",
   "pins" : [
     {
       "identity" : "aexml",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tadija/AEXML",
       "state" : {
-        "revision" : "38f7d00b23ecd891e1ee656fa6aeebd6ba04ecc3",
-        "version" : "4.6.1"
+        "revision" : "db806756c989760b35108146381535aec231092b",
+        "version" : "4.7.0"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/tuist/xcodeproj.git",
       "state" : {
-        "revision" : "02bc2dd6224aa59147941d85fdc45a7677af62f6",
-        "version" : "8.27.3"
+        "revision" : "b1caa062d4aaab3e3d2bed5fe0ac5f8ce9bf84f4",
+        "version" : "8.27.7"
       }
     }
   ],
