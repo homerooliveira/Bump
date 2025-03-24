@@ -10,7 +10,7 @@ struct IncrementModeTests {
             (value: IncrementMode.minor, expected: "minor"),
             (value: IncrementMode.patch, expected: "patch"),
             (value: IncrementMode.build, expected: "build"),
-            (value: IncrementMode.versionString("1.0.0"), expected: "1.0.0")
+            (value: IncrementMode.versionString("1.0.0"), expected: "1.0.0"),
         ]
     )
     func rawValue(value: IncrementMode, expected: String) throws {
@@ -23,7 +23,7 @@ struct IncrementModeTests {
             (value: "minor", expected: IncrementMode.minor),
             (value: "patch", expected: IncrementMode.patch),
             (value: "build", expected: IncrementMode.build),
-            (value: "1.0.0", expected: IncrementMode.versionString("1.0.0"))
+            (value: "1.0.0", expected: IncrementMode.versionString("1.0.0")),
         ]
     )
     func initFromRawValue(value: String, expected: IncrementMode) throws {

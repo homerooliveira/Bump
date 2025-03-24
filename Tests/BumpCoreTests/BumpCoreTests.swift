@@ -1,7 +1,8 @@
-import XcodeProjWrapperMock
-import XCTest
 import Testing
+import XCTest
 import XcodeProjWrapper
+import XcodeProjWrapperMock
+
 @testable import BumpCore
 
 struct BumpCoreTests {
@@ -123,7 +124,11 @@ struct BumpCoreTests {
             inPlace: false
         )
 
-        var config = BuildConfiguration(bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
+        var config = BuildConfiguration(
+            bundleIdentifier: "test",
+            buildNumber: "1.0",
+            version: "1.0"
+        )
         bump.applyBump(configuration: &config, flag: .versionString("1.0"))
 
         #expect(config.bundleIdentifier == "test")

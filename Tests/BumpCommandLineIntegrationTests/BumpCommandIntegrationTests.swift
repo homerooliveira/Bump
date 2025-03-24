@@ -2,8 +2,9 @@ import ArgumentParser
 import BumpCore
 import FileManagerWrapper
 import Foundation
-import XcodeProjWrapper
 import Testing
+import XcodeProjWrapper
+
 @testable import BumpCommandLine
 
 struct BumpCommandIntegrationTests {
@@ -67,7 +68,7 @@ struct BumpCommandIntegrationTests {
             logs.value == [
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
-                "TestIntetion 2.5.0.1 -> 2.5.0.2"
+                "TestIntetion 2.5.0.1 -> 2.5.0.2",
             ]
         )
     }
@@ -93,7 +94,7 @@ struct BumpCommandIntegrationTests {
             logs.value == [
                 "Test1 1.5.0.1 -> 1.5.0.2",
                 "Test2Intention 1.5.0.1 -> 1.5.0.2",
-                "TestIntetion 2.5.0.1 -> 2.5.0.2"
+                "TestIntetion 2.5.0.1 -> 2.5.0.2",
             ]
         )
     }
@@ -153,12 +154,12 @@ struct BumpCommandIntegrationTests {
 
         let resources = try FileManager.default.contentsOfDirectory(at: root)
 
-        if let first = resources.first,
-           first.lastPathComponent == "Resources" {
-            return first
-        } else {
+        guard let first = resources.first,
+            first.lastPathComponent == "Resources"
+        else {
             return root
         }
+        return first
     }
 
     private func makeCommand() -> (BumpCommand, Box<[String]>) {

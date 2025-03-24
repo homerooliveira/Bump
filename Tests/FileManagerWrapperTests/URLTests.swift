@@ -7,7 +7,7 @@ struct URLTests {
     @Test(
         arguments: [
             (value: "test.xcodeproj", expected: true),
-            (value: "test.txt", expected: false)
+            (value: "test.txt", expected: false),
         ]
     )
     func isXcodeProj(value: String, expected: Bool) throws {

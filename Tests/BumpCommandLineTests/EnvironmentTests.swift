@@ -10,7 +10,9 @@ import XcodeProjWrapperMock
 struct EnvironmentTests {
     @Test func testEnvironmentInitialization() throws {
         let mockXcodeProjFinder = XcodeProjFinderMock()
-        let mockXcodeProjWrapper: (String) throws -> any XcodeProjWrapperProtocol = { _ in XcodeProjWrapperMock() }
+        let mockXcodeProjWrapper: (String) throws -> any XcodeProjWrapperProtocol = { _ in
+            XcodeProjWrapperMock()
+        }
         let mockLogger: (String) -> Void = { _ in }
 
         let environment = Environment(
@@ -27,7 +29,10 @@ struct EnvironmentTests {
         let environment = Environment.live
 
         #expect(environment.xcodeProjFinder is XcodeProjFinder)
-        #expect(throws: (any Error).self, "XcodeProjWrapper should throw an error because the path is invalid") {
+        #expect(
+            throws: (any Error).self,
+            "XcodeProjWrapper should throw an error because the path is invalid"
+        ) {
             try environment.xcodeProjWrapper("test")
         }
     }
@@ -40,7 +45,10 @@ struct EnvironmentTests {
         let environment = try decoder.decode(Environment.self, from: data)
 
         #expect(environment.xcodeProjFinder is XcodeProjFinder)
-        #expect(throws: (any Error).self, "XcodeProjWrapper should throw an error because the path is invalid") {
+        #expect(
+            throws: (any Error).self,
+            "XcodeProjWrapper should throw an error because the path is invalid"
+        ) {
             try environment.xcodeProjWrapper("test")
         }
     }

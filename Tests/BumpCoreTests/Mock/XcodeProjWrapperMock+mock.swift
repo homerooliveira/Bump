@@ -24,7 +24,7 @@ extension XcodeProjWrapperMock {
                             version: "1.0"
                         )
                     ]
-                )
+                ),
             ]
         )
     }
@@ -61,7 +61,7 @@ extension XcodeProjWrapperMock {
                             version: "1.0"
                         )
                     ]
-                )
+                ),
             ]
         )
     }

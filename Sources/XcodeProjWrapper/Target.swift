@@ -11,7 +11,8 @@ package struct Target {
 
     init(target: PBXNativeTarget) {
         self.name = target.name
-        self.buildConfigurations = target.buildConfigurationList?
+        self.buildConfigurations =
+            target.buildConfigurationList?
             .buildConfigurations
             .map { BuildConfiguration(buildConfiguration: $0) } ?? []
     }
