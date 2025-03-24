@@ -56,7 +56,9 @@ let package = Package(
         .testTarget(
             name: "BumpCommandLineTests",
             dependencies: [
-                "BumpCommandLine"
+                "BumpCommandLine",
+                "FileManagerWrapperMock",
+                "XcodeProjWrapperMock",
             ]
         ),
         .testTarget(
