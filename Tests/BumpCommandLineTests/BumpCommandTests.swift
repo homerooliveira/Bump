@@ -1,9 +1,10 @@
 import ArgumentParser
 import BumpCore
 import FileManagerWrapperMock
-import XcodeProjWrapperMock
 import Foundation
 import Testing
+import XcodeProjWrapperMock
+
 @testable import BumpCommandLine
 
 final class BumpCommandTests {
@@ -53,7 +54,8 @@ final class BumpCommandTests {
             guard let error = error as? ValidationError else {
                 throw error
             }
-            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            return error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
     }
 
@@ -67,7 +69,8 @@ final class BumpCommandTests {
             guard let error = error as? ValidationError else {
                 throw error
             }
-            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+            return error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
     }
 

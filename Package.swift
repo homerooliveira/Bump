@@ -9,15 +9,17 @@ let package = Package(
         .macOS(.v13)
     ],
     products: [
-        .executable(name: "bump", targets: ["bump"]),
+        .executable(name: "bump", targets: ["bump"])
     ],
     dependencies: [
         .package(
             url: "https://github.com/tuist/xcodeproj.git",
-            .upToNextMajor(from: "8.17.0")),
+            .upToNextMajor(from: "8.17.0")
+        ),
         .package(
             url: "https://github.com/apple/swift-argument-parser.git",
-            .upToNextMajor(from: "1.3.0")),
+            .upToNextMajor(from: "1.3.0")
+        ),
     ],
     targets: [
         .executableTarget(name: "bump", dependencies: ["BumpCommandLine"]),
@@ -27,47 +29,58 @@ let package = Package(
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
                 "BumpCore",
                 "FileManagerWrapper",
-            ]),
+            ]
+        ),
         .target(
             name: "BumpCore",
-            dependencies: ["XcodeProjWrapper", "SwiftExtensions"]),
+            dependencies: ["XcodeProjWrapper", "SwiftExtensions"]
+        ),
         .target(name: "FileManagerWrapper"),
         .target(
             name: "FileManagerWrapperMock",
-            dependencies: ["FileManagerWrapper"]),
+            dependencies: ["FileManagerWrapper"]
+        ),
         .target(name: "SwiftExtensions"),
         .target(
             name: "XcodeProjWrapper",
-            dependencies: ["SwiftExtensions", .product(name: "XcodeProj", package: "xcodeproj")]),
+            dependencies: ["SwiftExtensions", .product(name: "XcodeProj", package: "xcodeproj")]
+        ),
         .target(
             name: "XcodeProjWrapperMock",
-            dependencies: ["XcodeProjWrapper"]),
+            dependencies: ["XcodeProjWrapper"]
+        ),
         .testTarget(
             name: "BumpCoreTests",
-            dependencies: ["BumpCore", "XcodeProjWrapperMock"]),
+            dependencies: ["BumpCore", "XcodeProjWrapperMock"]
+        ),
         .testTarget(
             name: "BumpCommandLineTests",
             dependencies: [
-                "BumpCommandLine",
-            ]),
+                "BumpCommandLine"
+            ]
+        ),
         .testTarget(
             name: "BumpCommandLineIntegrationTests",
             dependencies: ["BumpCommandLine"],
-            resources: [.copy("Resources/")]),
+            resources: [.copy("Resources/")]
+        ),
         .testTarget(
             name: "SwiftExtensionsTests",
-            dependencies: ["SwiftExtensions"]),
+            dependencies: ["SwiftExtensions"]
+        ),
         .testTarget(
             name: "FileManagerWrapperTests",
-            dependencies: ["FileManagerWrapper", "FileManagerWrapperMock"]),
+            dependencies: ["FileManagerWrapper", "FileManagerWrapperMock"]
+        ),
     ]
 )
 
 for target in package.targets {
-    target.swiftSettings = (target.swiftSettings ?? []) + [
-        .unsafeFlags(["-warnings-as-errors"]),
-        .enableUpcomingFeature("ExistentialAny"),
-        .enableUpcomingFeature("InternalImportsByDefault"),
-        // .enableUpcomingFeature("MemberImportVisibility"), Swift 6.1 only
-    ]
+    target.swiftSettings =
+        (target.swiftSettings ?? []) + [
+            .unsafeFlags(["-warnings-as-errors"]),
+            .enableUpcomingFeature("ExistentialAny"),
+            .enableUpcomingFeature("InternalImportsByDefault"),
+            .enableUpcomingFeature("MemberImportVisibility"),
+        ]
 }

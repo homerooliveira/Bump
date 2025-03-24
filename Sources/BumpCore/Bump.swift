@@ -171,7 +171,8 @@ package struct Bump {
 
     private func bumpBuildVersion(from configuration: inout BuildConfiguration) {
         let version = getVersion(configuration.version).joined(separator: ".")
-        let buildNumber = configuration.buildNumber?
+        let buildNumber =
+            configuration.buildNumber?
             .split(separator: ".")
             .last
             .flatMap { Int($0) } ?? 0
