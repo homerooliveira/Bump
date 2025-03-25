@@ -1,6 +1,6 @@
+import Foundation
 private import SwiftExtensions
 import XcodeProj
-import Foundation
 
 private enum BuildSettingKey: String {
     case version = "MARKETING_VERSION"
