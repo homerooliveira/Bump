@@ -14,7 +14,7 @@ let package = Package(
 	dependencies: [
 		.package(
 			url: "https://github.com/tuist/xcodeproj.git",
-			.upToNextMajor(from: "8.17.0")),
+			.upToNextMajor(from: "9.0.0")),
 		.package(
 			url: "https://github.com/apple/swift-argument-parser.git",
 			.upToNextMajor(from: "1.3.0")),
