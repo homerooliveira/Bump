@@ -14,7 +14,7 @@ package struct BuildConfiguration: Equatable {
     let getBuildSettings: (String) -> String?
 
     package var bundleIdentifier: String {
-        get { getBuildSettings(BuildSettingKey.identifier.rawValue) ?? "" }
+        getBuildSettings(BuildSettingKey.identifier.rawValue) ?? ""
     }
 
     package var buildNumber: String? {
