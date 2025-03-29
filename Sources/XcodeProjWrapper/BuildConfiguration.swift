@@ -10,37 +10,37 @@ private enum BuildSettingKey: String {
 
 package struct BuildConfiguration: Equatable {
     // These properties are used to avoid dependency on XCBuildConfiguration
-    let setBuildSettings: ((inout [String: Any]) -> Void) -> Void
-    let getBuildSettings: () -> [String: Any]
+    let setBuildSettings: (String, String) -> Void
+    let getBuildSettings: (String) -> String?
 
     package var bundleIdentifier: String {
-        getBuildSettings()[BuildSettingKey.identifier] as? String ?? ""
+        get { getBuildSettings(BuildSettingKey.identifier.rawValue) ?? "" }
     }
 
     package var buildNumber: String? {
         get {
-            getBuildSettings()[BuildSettingKey.buildNumber] as? String
+            getBuildSettings(BuildSettingKey.buildNumber.rawValue)
         }
         set {
-            setBuildSettings { $0[BuildSettingKey.buildNumber] = newValue }
+            setBuildSettings(BuildSettingKey.buildNumber.rawValue, newValue ?? "")
         }
     }
 
     package var version: String? {
         get {
-            getBuildSettings()[BuildSettingKey.version] as? String
+            getBuildSettings(BuildSettingKey.version.rawValue)
         }
         set {
-            setBuildSettings { $0[BuildSettingKey.version] = newValue }
+            setBuildSettings(BuildSettingKey.version.rawValue, newValue ?? "")
         }
     }
 
     init(buildConfiguration: XCBuildConfiguration) {
-        self.setBuildSettings = { closure in
-            closure(&buildConfiguration.buildSettings)
+        self.setBuildSettings = { key, value in
+            buildConfiguration.buildSettings[key] = .string(value)
         }
-        self.getBuildSettings = {
-            buildConfiguration.buildSettings
+        self.getBuildSettings = { key in
+            buildConfiguration.buildSettings[key]?.stringValue
         }
     }
 
@@ -50,11 +50,11 @@ package struct BuildConfiguration: Equatable {
         buildSettings[BuildSettingKey.buildNumber] = buildNumber
         buildSettings[BuildSettingKey.version] = version
 
-        self.setBuildSettings = { closure in
-            closure(&buildSettings)
+        self.setBuildSettings = { key, value in
+            buildSettings[key] = value
         }
-        self.getBuildSettings = {
-            buildSettings
+        self.getBuildSettings = { key in
+            buildSettings[key] as? String
         }
     }
 
