@@ -17,7 +17,7 @@ let package = Package(
 			.upToNextMajor(from: "9.0.0")),
 		.package(
 			url: "https://github.com/apple/swift-argument-parser.git",
-			.upToNextMajor(from: "1.3.0")),
+			.upToNextMajor(from: "1.5.0")),
 	],
 	targets: [
 		.executableTarget(name: "bump", dependencies: ["BumpCommandLine"]),
@@ -67,11 +67,11 @@ let package = Package(
 		.testTarget(
 			name: "EnvironmentTests",
 			dependencies: [
-				"Environment", 
+				"Environment",
 				"FileManagerWrapper",
 				"FileManagerWrapperMock",
 				"XcodeProjWrapper",
-				"XcodeProjWrapperMock", 
+				"XcodeProjWrapperMock",
 			]),
 	]
 )
