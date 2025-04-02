@@ -21,8 +21,7 @@ package struct BumpCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "The path of .xcodeproj file or directory. Default value is the current directory."
-    )
+        help: "The path of .xcodeproj file or directory. Default value is the current directory.")
     var path: String?
 
     @Flag(name: .shortAndLong, help: "Show all the targets")
@@ -30,14 +29,12 @@ package struct BumpCommand: ParsableCommand {
 
     @Flag(
         name: .shortAndLong,
-        help: "Get the version of the first target and set it to the rest of the targets."
-    )
+        help: "Get the version of the first target and set it to the rest of the targets.")
     var useSameVersion = false
 
     @Flag(
         inversion: .prefixedNo,
-        help: "If set to true will override the targets versions of xcodeproj."
-    )
+        help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
 
     var environment = Environment.live

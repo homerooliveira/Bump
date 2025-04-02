@@ -34,44 +34,39 @@ final class BumpCommandTests {
         command.bundleIdentifiers = []
         command.mode = .build
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message == "Bundle Identifiers cannot be empty."
         }
+
+        #expect(error.message == "Bundle Identifiers cannot be empty.")
     }
 
     @Test func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.")
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message
-                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
+
+        #expect(
+            error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+        )
     }
 
     @Test func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.0.0.1")
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message
-                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
+
+        #expect(
+            error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+        )
     }
 
     @Test func testBumpRunErrorWhenFileNotExist() throws {
@@ -80,9 +75,7 @@ final class BumpCommandTests {
         command.bundleIdentifiers = ["test"]
         command.mode = .build
 
-        #expect(
-            throws: CocoaError(.fileNoSuchFile)
-        ) {
+        try #require(throws: CocoaError(.fileNoSuchFile)) {
             try self.command.run()
         }
         #expect(xcodeProjFinderMock.findXcodeProjPathPassed == "test")

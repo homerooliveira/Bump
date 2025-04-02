@@ -41,7 +41,8 @@ final class XcodeProjFinderTests {
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == fileManagerWrapper.currentDirectoryPath)
         #expect(fileManagerWrapper.contentsOfDirectoryCalled)
-        #expect(fileManagerWrapper.atURLPassed == URL(string: fileManagerWrapper.currentDirectoryPath))
+        #expect(
+            fileManagerWrapper.atURLPassed == URL(string: fileManagerWrapper.currentDirectoryPath))
         #expect(result == "/test/test.xcodeproj")
     }
 

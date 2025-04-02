@@ -125,10 +125,7 @@ struct BumpCoreTests {
         )
 
         var config = BuildConfiguration(
-            bundleIdentifier: "test",
-            buildNumber: "1.0",
-            version: "1.0"
-        )
+            bundleIdentifier: "test", buildNumber: "1.0", version: "1.0")
         bump.applyBump(configuration: &config, flag: .versionString("1.0"))
 
         #expect(config.bundleIdentifier == "test")

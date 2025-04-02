@@ -12,16 +12,21 @@ package struct BuildConfiguration: Equatable {
     // These properties are used to avoid dependency on XCBuildConfiguration
     let setBuildSettings: (String, String) -> Void
     let getBuildSettings: (String) -> String?
+    let setBuildSettings: (String, String) -> Void
+    let getBuildSettings: (String) -> String?
 
     package var bundleIdentifier: String {
+        getBuildSettings(BuildSettingKey.identifier.rawValue) ?? ""
         getBuildSettings(BuildSettingKey.identifier.rawValue) ?? ""
     }
 
     package var buildNumber: String? {
         get {
             getBuildSettings(BuildSettingKey.buildNumber.rawValue)
+            getBuildSettings(BuildSettingKey.buildNumber.rawValue)
         }
         set {
+            setBuildSettings(BuildSettingKey.buildNumber.rawValue, newValue ?? "")
             setBuildSettings(BuildSettingKey.buildNumber.rawValue, newValue ?? "")
         }
     }
@@ -29,8 +34,10 @@ package struct BuildConfiguration: Equatable {
     package var version: String? {
         get {
             getBuildSettings(BuildSettingKey.version.rawValue)
+            getBuildSettings(BuildSettingKey.version.rawValue)
         }
         set {
+            setBuildSettings(BuildSettingKey.version.rawValue, newValue ?? "")
             setBuildSettings(BuildSettingKey.version.rawValue, newValue ?? "")
         }
     }
@@ -38,23 +45,29 @@ package struct BuildConfiguration: Equatable {
     init(buildConfiguration: XCBuildConfiguration) {
         self.setBuildSettings = { key, value in
             buildConfiguration.buildSettings[key] = .string(value)
+        self.setBuildSettings = { key, value in
+            buildConfiguration.buildSettings[key] = .string(value)
         }
+        self.getBuildSettings = { key in
+            buildConfiguration.buildSettings[key]?.stringValue
         self.getBuildSettings = { key in
             buildConfiguration.buildSettings[key]?.stringValue
         }
     }
 
     package init(bundleIdentifier: String, buildNumber: String?, version: String?) {
-        var buildSettings = [String: Any]()
+        var buildSettings = [String: String]()
         buildSettings[BuildSettingKey.identifier] = bundleIdentifier
         buildSettings[BuildSettingKey.buildNumber] = buildNumber
         buildSettings[BuildSettingKey.version] = version
 
         self.setBuildSettings = { key, value in
             buildSettings[key] = value
+        self.setBuildSettings = { key, value in
+            buildSettings[key] = value
         }
         self.getBuildSettings = { key in
-            buildSettings[key] as? String
+            buildSettings[key]
         }
     }
 
