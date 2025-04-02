@@ -12,7 +12,7 @@ struct ArrayExtensionsTests {
     @Test(
         arguments: [
             (value: Index.zero, expected: 0),
-            (value: Index.one, expected: 1)
+            (value: Index.one, expected: 1),
         ]
     )
     func subscriptGet(value: Index, expected: Int) throws {
@@ -23,7 +23,7 @@ struct ArrayExtensionsTests {
     @Test(
         arguments: [
             (value: Index.zero, expected: 12),
-            (value: Index.one, expected: 13)
+            (value: Index.one, expected: 13),
         ]
     )
     func subscriptSet(value: Index, expected: Int) throws {

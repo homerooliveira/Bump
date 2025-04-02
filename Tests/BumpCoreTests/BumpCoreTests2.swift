@@ -32,7 +32,7 @@ struct BumpCoreTests2 {
                     buildNumber: "1",
                     version: "1.0"
                 )
-            ]
+            ],
         ]
 
         #expect(configByTargetName == expected)
@@ -182,7 +182,7 @@ struct BumpCoreTests2 {
                             bundleIdentifier: "test",
                             buildNumber: "1",
                             version: "1.0.0.1"
-                        )
+                        ),
                     ]
                 )
             ]

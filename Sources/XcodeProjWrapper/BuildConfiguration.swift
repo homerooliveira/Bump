@@ -1,6 +1,6 @@
+import Foundation
 private import SwiftExtensions
 import XcodeProj
-import Foundation
 
 private enum BuildSettingKey: String {
     case version = "MARKETING_VERSION"
@@ -45,7 +45,7 @@ package struct BuildConfiguration: Equatable {
     }
 
     package init(bundleIdentifier: String, buildNumber: String?, version: String?) {
-        var buildSettings = [String: Any]()
+        var buildSettings = [String: String]()
         buildSettings[BuildSettingKey.identifier] = bundleIdentifier
         buildSettings[BuildSettingKey.buildNumber] = buildNumber
         buildSettings[BuildSettingKey.version] = version
@@ -54,7 +54,7 @@ package struct BuildConfiguration: Equatable {
             buildSettings[key] = value
         }
         self.getBuildSettings = { key in
-            buildSettings[key] as? String
+            buildSettings[key]
         }
     }
 
