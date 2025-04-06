@@ -91,7 +91,7 @@ package struct Bump {
     }
 
     func getConfigurationsByTargetName() -> [String: [BuildConfiguration]] {
-        // Using lazy to avoid create intermediate arrays.
+        // Using lazy to avoid creating intermediate arrays.
         xcodeProj
             .targets
             .lazy
@@ -118,43 +118,28 @@ package struct Bump {
     func applyBump(configuration: inout BuildConfiguration, flag: IncrementMode) {
         switch flag {
         case .major:
-            bumpMajorVersion(from: &configuration)
-
+            bumpVersion(from: &configuration, versionIndex: .major)
         case .minor:
-            bumpMinorVersion(from: &configuration)
-
+            bumpVersion(from: &configuration, versionIndex: .minor)
         case .patch:
-            bumpPatchVersion(from: &configuration)
-
+            bumpVersion(from: &configuration, versionIndex: .patch)
         case .build:
             bumpBuildVersion(from: &configuration)
-
         case .versionString(let version):
             setVersion(version, from: &configuration)
         }
     }
 
-    private func bumpMajorVersion(from configuration: inout BuildConfiguration) {
+    private func bumpVersion(from configuration: inout BuildConfiguration, versionIndex: VersionIndex) {
         changeVersionsNumbers(from: &configuration) { versionNumbers in
-            let major = Int(versionNumbers[VersionIndex.major]) ?? 0
-            versionNumbers[VersionIndex.major] = "\(major + 1)"
-            versionNumbers[VersionIndex.minor] = "0"
-            versionNumbers[VersionIndex.patch] = "0"
-        }
-    }
-
-    private func bumpMinorVersion(from configuration: inout BuildConfiguration) {
-        changeVersionsNumbers(from: &configuration) { versionNumbers in
-            let minor = Int(versionNumbers[VersionIndex.minor]) ?? 0
-            versionNumbers[VersionIndex.minor] = "\(minor + 1)"
-            versionNumbers[VersionIndex.patch] = "0"
-        }
-    }
-
-    private func bumpPatchVersion(from configuration: inout BuildConfiguration) {
-        changeVersionsNumbers(from: &configuration) { versionNumbers in
-            let patch = Int(versionNumbers[VersionIndex.patch]) ?? 0
-            versionNumbers[VersionIndex.patch] = "\(patch + 1)"
+            let currentValue = Int(versionNumbers[versionIndex]) ?? 0
+            versionNumbers[versionIndex] = "\(currentValue + 1)"
+            if versionIndex != .patch {
+                versionNumbers[VersionIndex.patch] = "0"
+            }
+            if versionIndex == .major {
+                versionNumbers[VersionIndex.minor] = "0"
+            }
         }
     }
 
@@ -171,13 +156,17 @@ package struct Bump {
 
     private func bumpBuildVersion(from configuration: inout BuildConfiguration) {
         let version = getVersion(configuration.version).joined(separator: ".")
-        let buildNumber =
-            configuration.buildNumber?
+        let buildNumber = getBuildNumber(configuration.buildNumber)
+        configuration.version = version
+        configuration.buildNumber = "\(version).\(buildNumber)"
+    }
+
+    private func getBuildNumber(_ buildNumber: String?) -> String {
+        buildNumber?
             .split(separator: ".")
             .last
-            .flatMap { Int($0) } ?? 0
-        configuration.version = version
-        configuration.buildNumber = "\(version).\(buildNumber + 1)"
+            .flatMap { Int($0) }
+            .map { "\($0 + 1)" } ?? "1"
     }
 
     private func getVersion(_ version: String?) -> [Substring] {
