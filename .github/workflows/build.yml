@@ -67,7 +67,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-spm-
     - name: Build with Xcode
-      run: xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' build
+      run: xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' build | xcbeautify --renderer github-actions
     - name: Run tests
       run: set -o pipefail && xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' test | xcbeautify --renderer github-actions
   linux:
@@ -75,12 +75,12 @@ jobs:
     container: swift:6.1
     steps:
         - uses: actions/checkout@v4
-        # - name: Cache .build
-        #   uses: actions/cache@v4.2.3
-        #   with:
-        #     path: ./.build
-        #     key: ${{ runner.os }}-spm-${{ hashFiles('./**/Package.resolved') }}
-        #     restore-keys: |
-        #       ${{ runner.os }}-spm-
+        - name: Cache .build
+          uses: actions/cache@v4.2.3
+          with:
+            path: .build
+            key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved', '*/Package.resolved') }}
+            restore-keys: |
+              ${{ runner.os }}-spm-
         - name: Run tests
           run: swift test --enable-swift-testing
