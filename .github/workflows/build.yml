@@ -35,10 +35,8 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
-    - name: Build with Swift Package Manager
-      run: swift build --verbose
     - name: Run tests
-      run: swift test --verbose --enable-swift-testing --enable-code-coverage --xunit-output result.xml
+      run: swift test --enable-code-coverage --xunit-output result.xml
       continue-on-error: true
     - name: Upload test results to Codecov
       uses: codecov/test-results-action@v1
@@ -83,4 +81,4 @@ jobs:
             restore-keys: |
               ${{ runner.os }}-spm-
         - name: Run tests
-          run: swift test --enable-swift-testing
+          run: swift test
