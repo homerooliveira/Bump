@@ -9,7 +9,7 @@ on:
       - 'Package.swift'
       - 'Package.resolved'
   pull_request:
-    paths: 
+    paths:
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'

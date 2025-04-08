@@ -75,12 +75,12 @@ jobs:
     container: swift:6.1
     steps:
         - uses: actions/checkout@v4
-        - name: Cache .build
-          uses: actions/cache@v4.2.3
-          with:
-            path: ./.build
-            key: ${{ runner.os }}-spm-${{ hashFiles('./**/Package.resolved') }}
-            restore-keys: |
-              ${{ runner.os }}-spm-
+        # - name: Cache .build
+        #   uses: actions/cache@v4.2.3
+        #   with:
+        #     path: ./.build
+        #     key: ${{ runner.os }}-spm-${{ hashFiles('./**/Package.resolved') }}
+        #     restore-keys: |
+        #       ${{ runner.os }}-spm-
         - name: Run tests
           run: swift test --enable-swift-testing
