@@ -72,7 +72,7 @@ jobs:
       run: set -o pipefail && xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' test | xcbeautify --renderer github-actions
   linux:
     runs-on: ubuntu-latest
-    container: swift:6.0
+    container: swift:6.1
     steps:
         - uses: actions/checkout@v4
         - name: Run tests
