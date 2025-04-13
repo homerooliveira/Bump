@@ -7,7 +7,7 @@ import XcodeProjWrapperMock
 
 @testable import BumpCommandLine
 
-final class BumpCommandTests {
+struct BumpCommandTests {
     private let xcodeProjFinderMock: XcodeProjFinderMock
     private let xcodeProjWrapperMock: XcodeProjWrapperMock
     private var command: BumpCommand
@@ -25,12 +25,7 @@ final class BumpCommandTests {
         command = BumpCommand(environment: environment)
     }
 
-    deinit {
-        xcodeProjFinderMock.reset()
-        xcodeProjWrapperMock.reset()
-    }
-
-    @Test func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
+    @Test mutating func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
         command.bundleIdentifiers = []
         command.mode = .build
 
@@ -41,7 +36,7 @@ final class BumpCommandTests {
         #expect(error.message == "Bundle Identifiers cannot be empty.")
     }
 
-    @Test func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
+    @Test mutating func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.")
 
@@ -55,7 +50,7 @@ final class BumpCommandTests {
         )
     }
 
-    @Test func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
+    @Test mutating func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.0.0.1")
 
@@ -69,7 +64,7 @@ final class BumpCommandTests {
         )
     }
 
-    @Test func testBumpRunErrorWhenFileNotExist() throws {
+    @Test mutating func testBumpRunErrorWhenFileNotExist() throws {
         xcodeProjFinderMock.findXcodeProjPathBeReturned = .failure(CocoaError(.fileNoSuchFile))
         command.path = "test"
         command.bundleIdentifiers = ["test"]

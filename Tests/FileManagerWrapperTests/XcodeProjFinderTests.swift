@@ -4,17 +4,12 @@ import Testing
 
 @testable import FileManagerWrapper
 
-final class XcodeProjFinderTests {
-    let fileManagerWrapper: FileManagerWrapperMock
+struct  XcodeProjFinderTests {
+    let fileManagerWrapper = FileManagerWrapperMock()
     let sut: XcodeProjFinder
 
     init() {
-        fileManagerWrapper = FileManagerWrapperMock()
         sut = XcodeProjFinder(fileManagerWrapper: fileManagerWrapper)
-    }
-
-    deinit {
-        fileManagerWrapper.reset()
     }
 
     @Test func findXcodeProjPath() throws {
