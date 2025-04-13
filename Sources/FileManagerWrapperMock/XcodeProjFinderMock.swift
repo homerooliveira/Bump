@@ -13,9 +13,4 @@ package final class XcodeProjFinderMock: XcodeProjFinderProtocol {
         findXcodeProjPathPassed = path
         return try findXcodeProjPathBeReturned.get()
     }
-
-    package func reset() {
-        findXcodeProjPathCalled = false
-        findXcodeProjPathBeReturned = .success("")
-    }
 }
