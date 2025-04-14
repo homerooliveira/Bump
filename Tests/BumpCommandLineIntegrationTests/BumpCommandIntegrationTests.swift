@@ -115,38 +115,43 @@ struct BumpCommandIntegrationTests {
     }
 
     @Test func bumpWithInPlaceTrue() throws {
-        var (command, logs) = makeCommand()
-
-        let resourcesPath = try fixturesPath()
+         let fileURL = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
-        let temporaryFile = try copyFileToTemporaryPath(fileURL: resourcesPath)
+        try withTemporaryCopyFile(fileURL: fileURL) { temporaryFile in
+            var (command, logs) = makeCommand()
 
-        command.path = temporaryFile.path
-        command.bundleIdentifiers = ["com.test.Test1"]
-        command.mode = .build
-        command.useSameVersion = false
-        command.verbose = false
-        command.inPlace = true
+            command.path = temporaryFile.path
+            command.bundleIdentifiers = ["com.test.Test1"]
+            command.mode = .build
+            command.useSameVersion = false
+            command.verbose = false
+            command.inPlace = true
 
-        try command.run()
+            try command.run()
 
-        logs.value.sort()
+            logs.value.sort()
 
-        #expect(logs.value == ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
-
-        // Remove the temporary file
-        try FileManager.default.removeItem(at: temporaryFile)
+            #expect(logs.value == ["1.5.0.2", "1.5.0.2", "2.5.0.2"])
+        }
     }
 
-    private func copyFileToTemporaryPath(fileURL: URL) throws -> URL {
+    private func withTemporaryCopyFile(
+        fileURL: URL,
+        _ body: (URL) throws -> Void
+    ) throws {
         let fileManager = FileManager.default
         let tempDirectory = fileManager.temporaryDirectory
-        let tempFileURL = tempDirectory.appendingPathComponent("SampleProject.xcodeproj")
+        let tempFileURL = tempDirectory.appendingPathComponent(
+            fileURL.lastPathComponent,
+            isDirectory: fileURL.hasDirectoryPath
+        )
 
         try fileManager.copyItem(at: fileURL, to: tempFileURL)
 
-        return tempFileURL
+        try body(tempFileURL)
+
+        try fileManager.removeItem(at: tempFileURL)
     }
 
     private func fixturesPath() throws -> URL {
