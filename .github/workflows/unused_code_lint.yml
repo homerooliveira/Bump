@@ -36,4 +36,4 @@ jobs:
     - name: Installing Periphery
       run: brew install periphery
     - name: Run Periphery
-      run: periphery scan --format github-actions --relative-results
+      run: periphery scan --format github-actions --relative-results --clean-build

@@ -4,7 +4,7 @@ import Testing
 
 @testable import FileManagerWrapper
 
-struct  XcodeProjFinderTests {
+struct XcodeProjFinderTests {
     let fileManagerWrapper = FileManagerWrapperMock()
     let sut: XcodeProjFinder
 

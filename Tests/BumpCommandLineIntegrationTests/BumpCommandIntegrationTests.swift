@@ -115,7 +115,7 @@ struct BumpCommandIntegrationTests {
     }
 
     @Test func bumpWithInPlaceTrue() throws {
-         let fileURL = try fixturesPath()
+        let fileURL = try fixturesPath()
             .appendingPathComponent("SampleProject.xcodeproj")
 
         try withTemporaryCopyFile(fileURL: fileURL) { temporaryFile in
