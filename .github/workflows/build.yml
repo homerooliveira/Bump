@@ -68,7 +68,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: |
-          ~/.derivedData
+          ~/Library/Developer/Xcode/DerivedData
         key: |
           deriveddata-xcodebuild-macos-16.3-build-${{ hashFiles('**/Sources/**/*.swift', '**/Tests/**/*.swift') }}
         restore-keys: |
