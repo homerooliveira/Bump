@@ -64,6 +64,15 @@ jobs:
         key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
         restore-keys: |
           ${{ runner.os }}-spm-
+    - name: Cache derived data
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.derivedData
+        key: |
+          deriveddata-xcodebuild-macos-16.3-build-${{ hashFiles('**/Sources/**/*.swift', '**/Tests/**/*.swift') }}
+        restore-keys: |
+          deriveddata-xcodebuild-macos-16.3-build-
     - name: Build with Xcode
       run: xcodebuild -scheme Bump -sdk macosx -destination 'platform=macOS' build | xcbeautify --renderer github-actions
     - name: Run tests
@@ -71,19 +80,6 @@ jobs:
   linux:
     runs-on: ubuntu-latest
     container: swift:6.1
-    steps:
-        - uses: actions/checkout@v4
-        - name: Cache .build
-          uses: actions/cache@v4.2.3
-          with:
-            path: .build
-            key: ${{ runner.os }}-spm-${{ hashFiles('Package.resolved', '*/Package.resolved') }}
-            restore-keys: |
-              ${{ runner.os }}-spm-
-        - name: Run tests
-          run: swift test
-  windows:
-    runs-on: windows-latest
     steps:
         - uses: actions/checkout@v4
         - name: Cache .build
