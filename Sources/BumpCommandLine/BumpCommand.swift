@@ -1,6 +1,5 @@
 import ArgumentParser
 import BumpCore
-import Environment
 import FileManagerWrapper
 import Foundation
 
@@ -13,19 +12,29 @@ package struct BumpCommand: ParsableCommand {
     @Argument(help: "Bundle Identifiers to search aplications/frameworks.")
     var bundleIdentifiers: [String]
 
-    @Option(name: .shortAndLong, help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    @Option(
+        name: .shortAndLong,
+        help:
+            "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'."
+    )
     var mode: IncrementMode
 
-    @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the current directory.")
+    @Option(
+        name: .shortAndLong,
+        help: "The path of .xcodeproj file or directory. Default value is the current directory.")
     var path: String?
 
     @Flag(name: .shortAndLong, help: "Show all the targets")
     var verbose = false
 
-    @Flag(name: .shortAndLong, help: "Get the version of the first target and set it to the rest of the targets.")
+    @Flag(
+        name: .shortAndLong,
+        help: "Get the version of the first target and set it to the rest of the targets.")
     var useSameVersion = false
 
-    @Flag(inversion: .prefixedNo, help: "If set to true will override the targets versions of xcodeproj.")
+    @Flag(
+        inversion: .prefixedNo,
+        help: "If set to true will override the targets versions of xcodeproj.")
     var inPlace: Bool = true
 
     var environment = Environment.live
@@ -40,7 +49,9 @@ package struct BumpCommand: ParsableCommand {
             let hasValidFormat = try versionPattern.wholeMatch(in: version) != nil
 
             guard hasValidFormat else {
-                throw ValidationError("Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`.")
+                throw ValidationError(
+                    "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+                )
             }
         }
     }

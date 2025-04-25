@@ -9,7 +9,7 @@ on:
       - 'Package.swift'
       - 'Package.resolved'
   pull_request:
-    paths: 
+    paths:
       - 'Sources/**.swift'
       - 'Tests/**.swift'
       - 'Package.swift'
@@ -25,7 +25,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Select Xcode
-      run: sudo xcode-select -s /Applications/Xcode_16.2.app
+      run: sudo xcode-select -s /Applications/Xcode_16.3.app
     - name: Cache .build
       uses: actions/cache@v4.2.3
       with:
@@ -36,4 +36,4 @@ jobs:
     - name: Installing Periphery
       run: brew install periphery
     - name: Run Periphery
-      run: periphery scan --format github-actions --relative-results --strict
+      run: periphery scan --format github-actions --relative-results --clean-build

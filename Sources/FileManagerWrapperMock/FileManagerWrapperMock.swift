@@ -25,16 +25,4 @@ package final class FileManagerWrapperMock: FileManagerProtocol {
         contentsOfDirectoryCalled = true
         return contentsOfDirectoryBeReturned
     }
-
-    package func reset() {
-        currentDirectoryPath = ""
-
-        atPathPassed = nil
-        fileExistsCalled = false
-        fileExistsBeReturned = false
-
-        atURLPassed = nil
-        contentsOfDirectoryCalled = false
-        contentsOfDirectoryBeReturned = []
-    }
 }

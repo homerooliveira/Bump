@@ -1,6 +1,6 @@
+import Foundation
 private import PathKit
 import XcodeProj
-import Foundation
 
 package struct XcodeProjWrapper: XcodeProjWrapperProtocol {
     private let path: Path

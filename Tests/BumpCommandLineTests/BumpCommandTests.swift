@@ -1,13 +1,13 @@
 import ArgumentParser
 import BumpCore
-import Environment
 import FileManagerWrapperMock
-import XcodeProjWrapperMock
 import Foundation
 import Testing
+import XcodeProjWrapperMock
+
 @testable import BumpCommandLine
 
-final class BumpCommandTests {
+struct BumpCommandTests {
     private let xcodeProjFinderMock: XcodeProjFinderMock
     private let xcodeProjWrapperMock: XcodeProjWrapperMock
     private var command: BumpCommand
@@ -25,62 +25,52 @@ final class BumpCommandTests {
         command = BumpCommand(environment: environment)
     }
 
-    deinit {
-        xcodeProjFinderMock.reset()
-        xcodeProjWrapperMock.reset()
-    }
-
-    @Test func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
+    @Test mutating func testBumpValidationErrorWhenBundleIdentifiersIsEmpty() throws {
         command.bundleIdentifiers = []
         command.mode = .build
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message == "Bundle Identifiers cannot be empty."
         }
+
+        #expect(error.message == "Bundle Identifiers cannot be empty.")
     }
 
-    @Test func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
+    @Test mutating func testBumpValidationErrorWhenBuildNumberIsLessThanThreeNumbers() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.")
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
+
+        #expect(
+            error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+        )
     }
 
-    @Test func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
+    @Test mutating func testBumpValidationErrorWhenBuildNumberIsGreaterThanThreeDots() throws {
         command.bundleIdentifiers = ["test"]
         command.mode = .versionString("1.0.0.0.1")
 
-        #expect {
+        let error = try #require(throws: ValidationError.self) {
             try self.command.validate()
-        } throws: { error in
-            guard let error = error as? ValidationError else {
-                throw error
-            }
-            return error.message == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
         }
+
+        #expect(
+            error.message
+                == "Invalid format, the version must only have numbers and have two dots or three dots. Example of versions: `1.0.0` or `1.0.0.1`."
+        )
     }
 
-    @Test func testBumpRunErrorWhenFileNotExist() throws {
+    @Test mutating func testBumpRunErrorWhenFileNotExist() throws {
         xcodeProjFinderMock.findXcodeProjPathBeReturned = .failure(CocoaError(.fileNoSuchFile))
         command.path = "test"
         command.bundleIdentifiers = ["test"]
         command.mode = .build
 
-        #expect(
-            throws: CocoaError(.fileNoSuchFile)
-        ) {
+        try #require(throws: CocoaError(.fileNoSuchFile)) {
             try self.command.run()
         }
         #expect(xcodeProjFinderMock.findXcodeProjPathPassed == "test")
