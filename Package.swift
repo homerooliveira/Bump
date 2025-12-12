@@ -1,4 +1,4 @@
-// swift-tools-version:6.0
+// swift-tools-version:6.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -76,11 +76,13 @@ let package = Package(
 	]
 )
 
+let commonSwiftSettings: [SwiftSetting] = [
+	.unsafeFlags(["-warnings-as-errors"]),
+	.enableUpcomingFeature("ExistentialAny"),
+	.enableUpcomingFeature("InternalImportsByDefault"),
+	.enableUpcomingFeature("MemberImportVisibility"),
+]
+
 for target in package.targets {
-	target.swiftSettings = (target.swiftSettings ?? []) + [
-		.unsafeFlags(["-warnings-as-errors"]),
-		.enableUpcomingFeature("ExistentialAny"),
-		.enableUpcomingFeature("InternalImportsByDefault"),
-		// .enableUpcomingFeature("MemberImportVisibility"), Swift 6.1 only
-	]
+	target.swiftSettings = (target.swiftSettings ?? []) + commonSwiftSettings
 }

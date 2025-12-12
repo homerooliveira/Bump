@@ -11,7 +11,7 @@ struct URLTests {
         ]
     )
     func isXcodeProj(value: String, expected: Bool) throws {
-        let url = try #require(URL(string: value))
+        let url = URL(fileURLWithPath: value)
         try #require(url.isXcodeProj == expected)
     }
 }

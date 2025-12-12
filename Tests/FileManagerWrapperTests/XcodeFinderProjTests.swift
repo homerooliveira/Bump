@@ -4,7 +4,7 @@ import Testing
 
 @testable import FileManagerWrapper
 
-final class XcodeProjFinderTests {
+struct XcodeProjFinderTests {
     let fileManagerWrapper: FileManagerWrapperMock
     let sut: XcodeProjFinder
 
@@ -13,27 +13,23 @@ final class XcodeProjFinderTests {
         sut = XcodeProjFinder(fileManagerWrapper: fileManagerWrapper)
     }
 
-    deinit {
-        fileManagerWrapper.reset()
-    }
-
     @Test func findXcodeProjPath() throws {
         let path = "/test"
         fileManagerWrapper.fileExistsBeReturned = true
-        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(fileURLWithPath: "/test/test.xcodeproj")]
 
         let result = try sut.findXcodeProj(path: path)
 
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == path)
         #expect(fileManagerWrapper.contentsOfDirectoryCalled)
-        #expect(fileManagerWrapper.atURLPassed == URL(string: path))
+        #expect(fileManagerWrapper.atURLPassed == URL(fileURLWithPath: path))
         #expect(result == "/test/test.xcodeproj")
     }
 
     @Test func findXcodeProjPathWhenPathIsNil() throws {
         fileManagerWrapper.fileExistsBeReturned = true
-        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(fileURLWithPath: "/test/test.xcodeproj")]
         fileManagerWrapper.currentDirectoryPath = "/test"
 
         let result = try sut.findXcodeProj(path: nil)
@@ -41,7 +37,7 @@ final class XcodeProjFinderTests {
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == fileManagerWrapper.currentDirectoryPath)
         #expect(fileManagerWrapper.contentsOfDirectoryCalled)
-        #expect(fileManagerWrapper.atURLPassed == URL(string: fileManagerWrapper.currentDirectoryPath))
+        #expect(fileManagerWrapper.atURLPassed == URL(fileURLWithPath: fileManagerWrapper.currentDirectoryPath))
         #expect(result == "/test/test.xcodeproj")
     }
 
@@ -59,20 +55,20 @@ final class XcodeProjFinderTests {
 
     @Test func findXcodeProjPathWhenPathIsInvalid() {
         fileManagerWrapper.fileExistsBeReturned = true
-        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test/test.xcodeproj")!]
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(fileURLWithPath: "/test/test.xcodeproj")]
 
         #expect(
             throws: XcodeProjFinder.FindError("Wrong directory or path.")
         ) {
             try self.sut.findXcodeProj(path: "")
         }
-        #expect(fileManagerWrapper.fileExistsCalled)
-        #expect(fileManagerWrapper.atPathPassed == "")
+        #expect(!fileManagerWrapper.fileExistsCalled)
+        #expect(fileManagerWrapper.atPathPassed == nil)
     }
 
     @Test func findXcodeProjPathWhenPathIsNotXcodeProj() {
         fileManagerWrapper.fileExistsBeReturned = true
-        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(string: "/test")!]
+        fileManagerWrapper.contentsOfDirectoryBeReturned = [URL(fileURLWithPath: "/test")]
 
         #expect(
             throws: XcodeProjFinder.FindError("The path must be .xcodeproj file or directory.")
@@ -95,6 +91,6 @@ final class XcodeProjFinderTests {
         #expect(fileManagerWrapper.fileExistsCalled)
         #expect(fileManagerWrapper.atPathPassed == "/test")
         #expect(fileManagerWrapper.contentsOfDirectoryCalled)
-        #expect(fileManagerWrapper.atURLPassed == URL(string: "/test"))
+        #expect(fileManagerWrapper.atURLPassed == URL(fileURLWithPath: "/test"))
     }
 }

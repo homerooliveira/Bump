@@ -2,6 +2,20 @@ import Foundation
 import SwiftExtensions
 package import XcodeProjWrapper
 
+package enum BumpError: Error, Equatable, Sendable {
+    case noMatchingTargets(bundleIdentifiers: Set<String>)
+}
+
+extension BumpError: LocalizedError {
+    package var errorDescription: String? {
+        switch self {
+        case .noMatchingTargets(let bundleIdentifiers):
+            let identifiers = bundleIdentifiers.sorted().joined(separator: ", ")
+            return "No targets matched the provided bundle identifiers: \(identifiers)."
+        }
+    }
+}
+
 package struct Bump {
     private var xcodeProj: any XcodeProjWrapperProtocol
     private let bundleIdentifiers: Set<String>
@@ -28,19 +42,25 @@ package struct Bump {
 
     package mutating func bump(flag: IncrementMode) throws {
         let configsByTargetName = getConfigurationsByTargetName()
+        let orderedTargetNames = xcodeProj
+            .targets
+            .map(\.name)
+            .filter { configsByTargetName[$0]?.isEmpty == false }
+
+        guard !orderedTargetNames.isEmpty else {
+            throw BumpError.noMatchingTargets(bundleIdentifiers: bundleIdentifiers)
+        }
 
         if useSameVersion {
-            let configs = configsByTargetName
-                .values
-                .lazy
-                .flatMap { $0 }
+            let configs = orderedTargetNames
+                .flatMap { configsByTargetName[$0] ?? [] }
 
             guard var config = configs.first else { return }
 
             let (oldBuildNumber, buildNumber) = applyBumpInFirstConfig(&config, flag: flag)
 
             if isVerbose {
-                let allTargets = configsByTargetName.keys.joined(separator: ", ")
+                let allTargets = orderedTargetNames.joined(separator: ", ")
                 log(allTargets)
                 log("\(oldBuildNumber) -> \(buildNumber)")
             } else {
@@ -49,8 +69,12 @@ package struct Bump {
 
             applyBumpToRemainingConfigs(configs.dropFirst(), flag: .versionString(buildNumber))
         } else {
-            for (targetName, configs) in configsByTargetName {
-                guard var config = configs.first else { continue }
+            for targetName in orderedTargetNames {
+                guard let configs = configsByTargetName[targetName],
+                      let firstConfig = configs.first
+                else { continue }
+
+                var config = firstConfig
 
                 let (oldBuildNumber, buildNumber) = applyBumpInFirstConfig(&config, flag: flag)
 

@@ -11,9 +11,4 @@ package final class XcodeProjWrapperMock: XcodeProjWrapperProtocol {
     package func saveChanges() {
         saveChangesCalled = true
     }
-
-    package func reset() {
-        targets = []
-        saveChangesCalled = false
-    }
 }

@@ -10,10 +10,10 @@ package struct BumpCommand: ParsableCommand {
         abstract: "Bump your projects."
     )
 
-    @Argument(help: "Bundle Identifiers to search aplications/frameworks.")
+    @Argument(help: "Bundle identifiers to match against target bundle IDs (use 'all' for every target).")
     var bundleIdentifiers: [String]
 
-    @Option(name: .shortAndLong, help: "Increment mode to bump version or build number. Either 'major', 'minor', 'patch', or 'build'.")
+    @Option(name: .shortAndLong, help: "Increment mode. Choose 'major', 'minor', 'patch', 'build', or pass an explicit version like '1.2.3'.")
     var mode: IncrementMode
 
     @Option(name: .shortAndLong, help: "The path of .xcodeproj file or directory. Default value is the current directory.")

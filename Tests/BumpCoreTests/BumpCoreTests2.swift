@@ -206,4 +206,21 @@ struct BumpCoreTests2 {
         #expect(logs.count == 1)
         #expect(!xcodeProj.saveChangesCalled)
     }
+
+    @Test func bumpThrowsWhenNoTargetsMatchBundleIdentifiers() throws {
+        var bump = try Bump(
+            xcodeProj: XcodeProjWrapperMock.mock,
+            bundleIdentifiers: ["missing.bundle"],
+            log: { _ in },
+            isVerbose: false,
+            useSameVersion: false,
+            inPlace: true
+        )
+
+        #expect(
+            throws: BumpError.noMatchingTargets(bundleIdentifiers: ["missing.bundle"])
+        ) {
+            try bump.bump(flag: .build)
+        }
+    }
 }

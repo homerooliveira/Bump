@@ -5,7 +5,7 @@ package protocol XcodeProjFinderProtocol {
 }
 
 package struct XcodeProjFinder: XcodeProjFinderProtocol {
-    package struct FindError: Error, Equatable {
+    package struct FindError: Error, Equatable, Sendable {
         // periphery:ignore - Because the periphery can't find the usage of this property.
         let description: String
 
@@ -21,15 +21,18 @@ package struct XcodeProjFinder: XcodeProjFinderProtocol {
     }
 
     package func findXcodeProj(path: String?) throws -> String {
-        let path = path ?? fileManagerWrapper.currentDirectoryPath
+        let providedPath = path ?? fileManagerWrapper.currentDirectoryPath
+        let expandedPath = (providedPath as NSString).expandingTildeInPath
 
-        guard fileManagerWrapper.fileExists(atPath: path) else {
+        guard !expandedPath.isEmpty else {
+            throw FindError("Wrong directory or path.")
+        }
+
+        guard fileManagerWrapper.fileExists(atPath: expandedPath) else {
             throw FindError("Needs exist a path of .xcodeproj file or directory.")
         }
 
-        guard let dirURL = URL(string: path) else {
-            throw FindError("Wrong directory or path.")
-        }
+        let dirURL = URL(fileURLWithPath: expandedPath).standardizedFileURL
 
         if dirURL.isXcodeProj {
             return dirURL.path
